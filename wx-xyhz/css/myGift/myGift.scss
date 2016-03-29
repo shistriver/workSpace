@@ -7,6 +7,7 @@ html,body{
 #container{
   .order-list{
     margin-top: 10px;
+    display: none;
     li{
       background-color: #fff;
       .status{
@@ -97,7 +98,35 @@ html,body{
           margin-left: 5px;
         }
       }
+      .btn-box{
+        padding: 10px 15px;
+        border-bottom: 1px solid #f2f2f2;
+        height: 50px;
+        box-sizing: border-box;
+        button{
+          padding:0 10px;
+          box-sizing: border-box;
+          height: 30px;
+          box-sizing: border-box;
+          background-color: #fff;
+          border: 1px solid #797979;
+          font-size: 12px;
+          border-radius: 3px;
+          float: right;
+          color: #797979;
+        }
+        .mr10{
+          margin-right: 10px;
+        }
+       .color-red{
+          color: #f55;
+          border-color: #f55;
+        }
+      }
     }
 
+  }
+  .cur-ul{
+    display: block;
   }
 }

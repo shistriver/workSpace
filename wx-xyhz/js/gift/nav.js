@@ -2,7 +2,7 @@
  * @Author: xin
  * @Date:   2015-08-05 13:30:10
  * @Last Modified by:   xinyi
- * @Last Modified time: 2015-11-25 18:20:53
+ * @Last Modified time: 2016-03-28 18:03:18
  */
 
 //'use strict';
@@ -36,7 +36,7 @@
                        // alert(ot_top);
                          $(window).scrollTop(ot_top);
                          $(this).addClass('cur').siblings('span').removeClass('cur');
-                         $('ul.ui-fall:eq(' + i + ')').addClass('cur_ul').siblings('ul').removeClass('cur_ul');
+                         $('ul.order-list:eq(' + i + ')').addClass('cur-ul').siblings('ul').removeClass('cur-ul');
                      });
                  });
              };

@@ -108,4 +108,15 @@ body{
     word-break: break-all;
     color: $color_storm_dust_approx;
   }
+  .zhifu-btn{
+    height: 50px;
+    background-color: #f55;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 18px;
+    color: #fff;
+    z-index: 1;
+  }
 }

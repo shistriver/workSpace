@@ -80,5 +80,15 @@ body {
   box-sizing: border-box;
   word-break: break-all;
   color: #616162; }
+#container .zhifu-btn {
+  height: 50px;
+  background-color: #f55;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 18px;
+  color: #fff;
+  z-index: 1; }
 
 /*# sourceMappingURL=giftDetail.css.map */

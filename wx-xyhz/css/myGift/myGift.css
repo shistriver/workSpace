@@ -5,7 +5,8 @@ html, body {
   background-color: #f8f8f8; }
 
 #container .order-list {
-  margin-top: 10px; }
+  margin-top: 10px;
+  display: none; }
   #container .order-list li {
     background-color: #fff; }
     #container .order-list li .status {
@@ -83,5 +84,28 @@ html, body {
         float: right;
         color: #333;
         margin-left: 5px; }
+    #container .order-list li .btn-box {
+      padding: 10px 15px;
+      border-bottom: 1px solid #f2f2f2;
+      height: 50px;
+      box-sizing: border-box; }
+      #container .order-list li .btn-box button {
+        padding: 0 10px;
+        box-sizing: border-box;
+        height: 30px;
+        box-sizing: border-box;
+        background-color: #fff;
+        border: 1px solid #797979;
+        font-size: 12px;
+        border-radius: 3px;
+        float: right;
+        color: #797979; }
+      #container .order-list li .btn-box .mr10 {
+        margin-right: 10px; }
+      #container .order-list li .btn-box .color-red {
+        color: #f55;
+        border-color: #f55; }
+#container .cur-ul {
+  display: block; }
 
 /*# sourceMappingURL=myGift.css.map */
