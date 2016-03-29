@@ -1,0 +1,88 @@
+@import url(../comm/resetH5.css);
+//colors
+$concrete: #f2f2f2;
+$white: #fff;
+$color_storm_dust_approx: #616162;
+$color_mine_shaft_approx: #333;
+$color_pumice_approx: #c9c9c9;
+$color_stack_approx: #8c8c8d;
+
+//urls
+$url_0: url(../../img/ic_gd_choose_right.png);
+body{
+  background-color: #f8f8f8;
+}
+#container{
+  .gift_giving_wrap {
+    padding: 8px 8px 10px;
+    border-top: 1px solid $concrete;
+    border-bottom: 1px solid $concrete;
+    background: $white;
+  }
+  .margin_t15{
+    margin-top: 15px;
+  }
+  .gift_giving_box {
+    position: relative;
+    overflow: hidden;
+    .info-left {
+      float: left;
+      width: 82px;
+      height: 82px;
+    }
+    .info-right {
+      position: relative;
+      margin-left: 92px;
+    }
+    .gift_det_wrap {
+      font-size: 14px;
+      margin-top: 10px;
+      overflow: hidden;
+      .gift-color{
+        color: #8c8c8d;
+      }
+      .float_l{
+        float:left;
+      }
+      .float_r{
+        float:right;
+      }
+      .gift_price {
+        color: $color_mine_shaft_approx;
+        display: inline-block;
+        margin-top:6px;
+      }
+      .no_margin{
+        margin:0;
+      }
+    }
+    .margin_t25{
+      margin-top: 25px;
+    }
+  }
+  .wish_content{
+    background: #fff;
+    border-bottom: 1px solid $concrete;
+    textarea{
+      width: 100%;
+      height:120px;
+      padding: 20px 10px 0;
+      box-sizing: border-box;
+      font-size: 14px;
+      outline: none;
+    }
+    .limit_box{
+      text-align: right;
+      margin-right:10px;
+      margin-bottom: 10px;
+      color:$color_stack_approx;
+      font-size: 14px;
+      .limit_min{
+
+      }
+      .limit_max{
+
+      }
+    }
+  }
+}

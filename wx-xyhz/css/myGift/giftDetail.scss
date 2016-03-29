@@ -1,0 +1,111 @@
+@import url(../comm/resetH5.css);
+//colors
+$concrete: #f2f2f2;
+$white: #fff;
+$color_storm_dust_approx: #616162;
+$color_mine_shaft_approx: #333;
+$color_pumice_approx: #c9c9c9;
+$color_stack_approx: #8c8c8d;
+
+//urls
+$url_0: url(../../img/ic_gd_choose_right.png);
+body{
+  background-color: #f8f8f8;
+}
+#container{
+  .commodity_wrap {
+    padding: 8px 8px 14px;
+    border-top: 1px solid $concrete;
+    border-bottom: 1px solid $concrete;
+    background: $white;
+  }
+  .commodity_box {
+    position: relative;
+    padding-bottom: 10px;
+    overflow: hidden;
+    .info-left {
+      float: left;
+      width: 72px;
+      height: 72px;
+    }
+    .info-right {
+      position: relative;
+      margin-left: 82px;
+    }
+    .arrow {
+      background-image: $url_0;
+      width: 8px;
+      height: 16px;
+      background-image: url(../../img/ic_gd_choose_right.png);
+      background-repeat: no-repeat;
+      background-position: right center;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      margin-top: -8px;
+      background-size: 8px;
+    }
+    .taste_wrap {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      font-size: 14px;
+      .taste-name {
+        color: $color_stack_approx;
+        margin-left: 82px;
+        display: inline-block;
+      }
+      .number {
+        float: right;
+        margin-right: 20px;
+        color: $color_pumice_approx;
+      }
+    }
+  }
+  .price_wrap {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    .price {
+      display: block;
+      color: $color_mine_shaft_approx;
+      font-size: 16px;
+      i {
+        font-style: normal;
+      }
+    }
+    .price_old {
+      display: block;
+      text-decoration: line-through;
+      font-size: 10px;
+      color: $color_pumice_approx;
+      i {
+        font-style: normal;
+      }
+    }
+  }
+  .item-list {
+    color: $color_stack_approx;
+    padding: 0 1rem;
+    height: 37px;
+    line-height: 37px;
+    font-size: 14px;
+    background-color: $white;
+    border-bottom: 1px solid $concrete;
+    .money {
+      float: right;
+    }
+  }
+  .list-line {
+    margin-top: 14px;
+    border-top: 1px solid $concrete;
+  }
+  .info-right .detailed .det-title {
+    font-size: 14px;
+    padding-right: 80px;
+    box-sizing: border-box;
+    word-break: break-all;
+    color: $color_storm_dust_approx;
+  }
+}

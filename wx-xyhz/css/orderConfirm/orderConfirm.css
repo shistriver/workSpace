@@ -1,0 +1,178 @@
+@import url(../comm/resetH5.css);
+body {
+  background-color: #f8f8f8; }
+
+#container .user-info {
+  height: 53px;
+  margin: 12px 0;
+  padding: 0 28px 0 10px;
+  background: #fff;
+  font-size: 14px;
+  position: relative; }
+  #container .user-info .info-top {
+    padding: 5px 0;
+    overflow: hidden; }
+    #container .user-info .info-top .name {
+      float: left; }
+    #container .user-info .info-top .iphone {
+      float: right; }
+  #container .user-info .arrow {
+    background-image: url(../../img/ic_gd_choose_right.png);
+    width: 8px;
+    height: 16px;
+    background-image: url(../../img/ic_gd_choose_right.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -8px;
+    background-size: 8px; }
+  #container .user-info .address {
+    color: #c9c9c9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+#container .commodity_wrap {
+  padding: 8px 8px 10px;
+  border-top: 1px solid #f2f2f2;
+  border-bottom: 1px solid #f2f2f2;
+  background: #fff; }
+#container .purchase-form {
+  height: 24px;
+  color: #8c8c8d;
+  font-size: 14px;
+  line-height: 24px;
+  padding: 0 10px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #f2f2f2; }
+#container .commodity_box {
+  position: relative;
+  overflow: hidden; }
+  #container .commodity_box .info-left {
+    float: left;
+    width: 72px;
+    height: 72px; }
+  #container .commodity_box .info-right {
+    position: relative;
+    margin-left: 82px; }
+  #container .commodity_box .taste_wrap {
+    font-size: 14px; }
+    #container .commodity_box .taste_wrap .weight {
+      color: #8c8c8d; }
+    #container .commodity_box .taste_wrap .taste-name {
+      color: #333;
+      display: inline-block; }
+    #container .commodity_box .taste_wrap .number {
+      float: right;
+      color: #c9c9c9; }
+#container .txtarea {
+  margin-top: 12px; }
+  #container .txtarea textarea {
+    width: 100%;
+    height: 58px;
+    padding: 10px 10px;
+    font-size: 12px;
+    color: #c9c9c9;
+    outline: none;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2; }
+#container .price_wrap {
+  position: absolute;
+  right: 20px;
+  top: 0; }
+  #container .price_wrap .price {
+    display: block;
+    color: #333;
+    font-size: 16px; }
+    #container .price_wrap .price i {
+      font-style: normal; }
+  #container .price_wrap .price_old {
+    display: block;
+    text-decoration: line-through;
+    font-size: 10px;
+    color: #c9c9c9; }
+    #container .price_wrap .price_old i {
+      font-style: normal; }
+#container .item-list {
+  color: #8c8c8d;
+  padding: 0 10px;
+  height: 37px;
+  line-height: 37px;
+  font-size: 14px;
+  background-color: #fff;
+  border-bottom: 1px solid #f2f2f2; }
+  #container .item-list .money {
+    float: right; }
+  #container .item-list .color3 {
+    color: #333; }
+  #container .item-list .pay_check_com {
+    width: 24px;
+    height: 24px;
+    background-size: cover;
+    float: right;
+    margin-top: 7px; }
+  #container .item-list .pay_checked {
+    background-image: url(../../img/ic_pay_checked.png); }
+  #container .item-list .pay_check {
+    background-image: url(../../img/ic_pay_check.png); }
+  #container .item-list .num-box {
+    float: right;
+    width: 81px;
+    margin-top: 5px; }
+    #container .item-list .num-box .reduce-btn {
+      width: 27px;
+      height: 27px;
+      float: left;
+      background: url(../../img/ic_shuliang_1.png);
+      background-size: cover; }
+    #container .item-list .num-box .num-txt {
+      width: 27px;
+      float: left;
+      height: 27px;
+      background-color: #f8f8f8;
+      text-align: center; }
+    #container .item-list .num-box .plus-btn {
+      width: 27px;
+      height: 27px;
+      float: right;
+      background: url(../../img/ic_shuliang_3.png);
+      background-size: cover; }
+#container .list-line {
+  margin-top: 14px;
+  border-top: 1px solid #f2f2f2; }
+#container .info-right .detailed .det-title {
+  font-size: 14px;
+  box-sizing: border-box;
+  word-break: break-all;
+  color: #616162; }
+
+.order-confirm {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 41px;
+  line-height: 41px;
+  border-top: 1px solid #f2f2f2;
+  background: #fff; }
+  .order-confirm .order-left {
+    float: left;
+    padding-left: 10px; }
+    .order-confirm .order-left .pay-txt {
+      float: left;
+      font-size: 14px; }
+    .order-confirm .order-left .num-box {
+      float: left;
+      color: #f55; }
+      .order-confirm .order-left .num-box .integer {
+        font-size: 18px; }
+  .order-confirm .order-right {
+    float: right;
+    width: 111px;
+    font-size: 16px;
+    background: #f55;
+    color: #fff;
+    text-align: center; }
+
+/*# sourceMappingURL=orderConfirm.css.map */

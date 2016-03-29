@@ -1,0 +1,87 @@
+@import url(../comm/comm.css);
+html, body {
+  height: 100%;
+  min-height: 100%;
+  background-color: #f8f8f8; }
+
+#container .order-list {
+  margin-top: 10px; }
+  #container .order-list li {
+    background-color: #fff; }
+    #container .order-list li .status {
+      border-top: 1px solid #f2f2f2;
+      border-bottom: 1px solid #f2f2f2;
+      padding: 10px 15px;
+      box-sizing: border-box;
+      height: 50px; }
+      #container .order-list li .status img {
+        float: left;
+        width: 30px;
+        height: 30px;
+        border-radius: 30px; }
+      #container .order-list li .status p {
+        height: 30px;
+        line-height: 30px;
+        float: left;
+        margin-left: 5px;
+        font-size: 14px;
+        color: #797979; }
+      #container .order-list li .status span {
+        height: 30px;
+        line-height: 30px;
+        float: right;
+        font-size: 14px;
+        color: #ff5555; }
+    #container .order-list li .gift {
+      overflow: hidden;
+      padding: 10px;
+      box-sizing: border-box; }
+      #container .order-list li .gift img {
+        width: 70px;
+        height: 70px;
+        float: left; }
+      #container .order-list li .gift .right {
+        height: 70px;
+        position: relative;
+        margin-left: 70px;
+        padding: 5px;
+        font-size: 14px;
+        box-sizing: border-box;
+        color: #797979; }
+        #container .order-list li .gift .right p {
+          overflow: hidden;
+          height: 34px;
+          line-height: 17px;
+          color: #333;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical; }
+        #container .order-list li .gift .right span {
+          position: absolute;
+          left: 5px;
+          bottom: 5px; }
+        #container .order-list li .gift .right i {
+          position: absolute;
+          right: 5px;
+          bottom: 5px; }
+    #container .order-list li .money {
+      height: 40px;
+      border-top: 1px solid #f2f2f2;
+      border-bottom: 1px solid #f2f2f2;
+      padding: 10px 15px;
+      box-sizing: border-box;
+      font-size: 15px; }
+      #container .order-list li .money span {
+        height: 20px;
+        line-height: 20px;
+        color: #797979;
+        float: right; }
+      #container .order-list li .money i {
+        height: 20px;
+        line-height: 20px;
+        float: right;
+        color: #333;
+        margin-left: 5px; }
+
+/*# sourceMappingURL=myGift.css.map */

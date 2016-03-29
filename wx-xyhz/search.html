@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport" />
+	<title></title>
+	<link href="css/search/search.css" rel="stylesheet" type="text/css" />
+    <link href="http://7xlen1.com2.z0.glb.qiniucdn.com/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="js/lib/jquery.cookie.js"></script>
+    <script src="js/comm/comm.js"></script>
+    <script src="js/search/ret-list.js"></script>
+    <script src="js/search/search.js"></script>
+</head>
+<body> 
+	<div id="container">
+    <div class="input-area">
+      <span class="cancle">取消</span>
+      <div class="input-box">
+      <span class="s-icon img-l"><img src="img/ic_search.png" alt=""></span>
+        <input type="text" placeholder="请输入关键字搜索"  required="required">
+        <span class="s-icon img-r clear"><img src="img/ic_search.png" data-close="img/ic_close.png" alt=""></span>
+      </div>
+    </div>
+    <div class="hs-area">
+    <h3 class="hs-title" >热搜礼物</h3>
+    <div id="loadImg" style="width:100%;padding:20%;box-sizing:border-box">
+        <img style="width:100%" src="http://7xl439.com2.z0.glb.qiniucdn.com/loadImg.gif">
+      </div>
+      <ul>
+        <!-- <li>
+          <span class="txt">减肥神器</span><span class="tag rec">荐</span>
+        </li> -->
+      </ul>
+      <button class="change">换一批</button>
+    </div>
+    <div class="history-area" style="display: none;">
+      <p class="title">搜索记录</p>
+      <ul>
+        <!-- <li>生日礼物</li>
+        <li>单车</li>
+        <li>麦片</li>
+        <li>生日礼物</li>
+        <li>健身</li>
+        <li>生日礼物</li> -->
+      </ul>
+      <p class="history-no" style="display: none">暂无搜索记录</p>
+      <p class="clear"><span>清空历史记录</span></p>
+    </div>
+    <div class="search-ret-area" style="display: none;">
+      <!-- <div class="chosed_area" style="display:none">
+        <div class="chosed_wrap">
+          <span class="cur"><i>综合</i></span>
+          <span ><i>价格</i></span>
+          <span><i>热度</i></span>
+          <span ><i>最新</i></span>
+          <span><i>筛选</i></span>
+        </div>
+      </div> -->
+      <div class="no-data" style="display: none">
+        <img src="img/no_data.png" alt="">
+        <p>
+        <span>没有找到相关的礼物哦~</span><br>
+        <i>尝试找找其他感兴趣的礼物吧~</i>
+        </p>
+      </div>
+      <ul class="ui-fall">
+        <!-- <li class="item" data-goodsid="">
+        <div class="img-c" style="background-image: url(http://7xj26i.com2.z0.glb.qiniucdn.com/@/BackstageManager/files/image/20160304/songjiaran/20160304171731_98350.jpg);">
+            <img class="bq-icon" src="img/ic_biaoqian.png" alt="">
+            <span class="guang">卖光了</span>
+          </div>
+          <div class="info-c">
+            <h3>这是内容这是内容这是内容</h3>
+            <span class="price">¥<strong>0.22</strong></span>
+            <span class='love'></span>
+          </div>
+        </li>
+        <li class="item" data-goodsid="">
+        <div class="img-c" style="background-image: url(http://7xj26i.com2.z0.glb.qiniucdn.com/@/BackstageManager/files/image/20160304/songjiaran/20160304171731_98350.jpg);">
+            <span class="guang">卖光了</span>
+          </div>
+          <div class="info-c">
+            <h3>这是内容这是内容这是内容</h3>
+            <span class="price">¥<strong>0.22</strong></span>
+            <span class='love'>3988</span>
+          </div>
+        </li> -->
+      </ul>
+       <div id="loader" style="display: none"><img style="width:10%;margin-left:45%" src="http://7xl439.com2.z0.glb.qiniucdn.com/loading.gif"></div> 
+      <!-- <div id="loadImg" style="width:100%;padding:20%;box-sizing:border-box">
+        <img style="width:100%" src="http://7xl439.com2.z0.glb.qiniucdn.com/loadImg.gif">
+      </div> -->
+  </div>
+</div>
+<span id="to_top"></span>
+  <button id="statusTip" style="position:fixed;z-index:10000;left:50%;top:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:60%;height:60px;background-color:rgba(0,0,0,.8);color:#fff;font-size:16px;border-radius:5px;display: none"></button>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

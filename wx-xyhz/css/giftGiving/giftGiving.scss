@@ -1,0 +1,203 @@
+@import url(../comm/resetH5.css);
+//colors
+$concrete: #f2f2f2;
+$white: #fff;
+$color_storm_dust_approx: #616162;
+$color_mine_shaft_approx: #333;
+$color_pumice_approx: #c9c9c9;
+$color_stack_approx: #8c8c8d;
+
+//urls
+$url_0: url(../../img/ic_gd_choose_right.png);
+body{
+  background-color: #f8f8f8;
+}
+#container{
+  .gift_giving_wrap {
+    padding: 8px 8px 10px;
+    border-top: 1px solid $concrete;
+    border-bottom: 1px solid $concrete;
+    background: $white;
+  }
+  .gift_giving_box {
+    position: relative;
+    overflow: hidden;
+    .info-left {
+      float: left;
+      width: 82px;
+      height: 82px;
+    }
+    .info-right {
+      position: relative;
+      margin-left: 92px;
+    }
+    .gift_det_wrap {
+      font-size: 14px;
+      margin-top: 10px;
+      .gift-color{
+        color: #8c8c8d;
+      }
+      .gift_price {
+        color: $color_pumice_approx;
+        display: inline-block;
+        margin-top:6px;
+        .icon_price{
+          width: 16px;
+          height: 10px;
+          margin-left: 4px;
+          display: inline-block;
+          background: url(../../img/icon_yincangjiage.png) no-repeat;
+          background-size: cover;
+        }
+      }
+      .gift_num {
+        float: right;
+        color: $color_stack_approx;
+        margin-top: 6px;
+      }
+    }
+  }
+  .price_wrap {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    .price {
+      display: block;
+      color: $color_mine_shaft_approx;
+      font-size: 16px;
+      i {
+        font-style: normal;
+      }
+    }
+  }
+  .info-right .detailed .det-title {
+    font-size: 14px;
+    padding-right: 16px;
+    box-sizing: border-box;
+    word-break: break-all;
+    color: $color_storm_dust_approx;
+  }
+  .gift_price_hide{
+    padding: 0 10px;
+    background: #fff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+    position: relative;
+    .btn-wrap{
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      width: 46px;
+      height: 38px;
+      .chk_btn{
+        display: none;
+      }
+      .chk_btn+label{
+        background-color: #fafbfa;
+        padding: 9px;
+        border-radius: 50px;
+        display: inline-block;
+        position: relative;
+        margin-right: 30px;
+        -webkit-transition: all 0.1s ease-in;
+        transition: all 0.1s ease-in;
+        width: 28px;
+        height: 8px;
+      }
+      .chk_btn+label:before{
+        content: " ";
+        background: #fff;
+        position: absolute;
+        top:1px;
+        left:1px;
+        z-index: 9;
+        box-shadow: 0 3px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.3);
+        border-radius: 100%;
+        -webkit-transition:all 0.1s ease-in;
+        transition:all 0.1s ease-in;
+        width: 24px;
+        height: 24px;
+
+      }
+      .chk_btn+label:after{
+        content:" ";
+        position: absolute;
+        top:0;
+        left:0;
+        box-shadow:inset 0 0 0 0 #eee, 0 0 1px rgba(0,0,0,0.4);
+        -webkit-transition:box-shadow 0.1s ease-in;
+        transition:box-shadow 0.1s ease-in;
+        width:100%;
+        height:100%;
+        border-radius: 100px;
+
+      }
+      .chk_btn:checked+label:before{
+        content: " ";
+        position:absolute;
+        left:26px;
+        border-radius: 100px;
+      }
+      .chk_btn:checked+label:after{
+        content:" ";
+        position:absolute;
+        background: #4cda60;
+        box-shadow: 0 0 1px #4cda60;
+      }
+    }
+  }
+  .bless_box{
+    margin-top: 15px;
+    .offer_bless{
+      height:55px;
+      background: #fff;
+      padding-left:10px;
+      line-height: 55px;
+      font-size: 16px;
+    }
+    .bless_body{
+      margin-left: 8px;
+      padding: 15px 0 0 20px;
+      border-top: 1px solid #f2f2f2;
+      border-bottom: 1px solid #f2f2f2;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      .head_portrait{
+        width:68px;
+        height:68px;
+        float:left;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      .bless_right{
+        margin: 6px 20px 0 78px;
+        .portrait_name{
+          font-size: 14px;
+        }
+        .bless_con{
+          margin: 0px;
+          width: 180px;
+          height: 60px;
+          margin-top: 10px;
+          outline: none;
+        }
+      }
+      .bless_btn{
+        width: 68px;
+        height: 27px;
+        border: 1px solid #f55;
+        color:#f55;
+        border-radius: 10px;
+        text-align: center;
+        line-height: 27px;
+        background: #fff;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        margin-top: -13px;
+      }
+    }
+  }
+}

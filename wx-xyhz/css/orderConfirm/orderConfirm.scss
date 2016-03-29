@@ -1,0 +1,227 @@
+@import url(../comm/resetH5.css);
+//colors
+$concrete: #f2f2f2;
+$white: #fff;
+$color_storm_dust_approx: #616162;
+$color_mine_shaft_approx: #333;
+$color_pumice_approx: #c9c9c9;
+$color_stack_approx: #8c8c8d;
+
+//urls
+$url_0: url(../../img/ic_gd_choose_right.png);
+body{
+  background-color: #f8f8f8;
+}
+#container{
+  .user-info{
+    height: 53px;
+    margin:12px 0;
+    padding: 0 28px 0 10px;
+    background: #fff;
+    font-size: 14px;
+    position: relative;
+    .info-top{
+      padding: 5px 0;
+      overflow: hidden;
+      .name{
+        float:left;
+      }
+      .iphone{
+        float:right;
+      }
+    }
+    .arrow {
+      background-image: $url_0;
+      width: 8px;
+      height: 16px;
+      background-image: url(../../img/ic_gd_choose_right.png);
+      background-repeat: no-repeat;
+      background-position: right center;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      margin-top: -8px;
+      background-size: 8px;
+    }
+    .address{
+      color:$color_pumice_approx;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+  }
+  .commodity_wrap {
+    padding: 8px 8px 10px;
+    border-top: 1px solid $concrete;
+    border-bottom: 1px solid $concrete;
+    background: $white;
+  }
+  .purchase-form{
+    height: 24px;
+    color: #8c8c8d;
+    font-size: 14px;
+    line-height: 24px;
+    padding: 0 10px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #f2f2f2;
+  }
+  .commodity_box {
+    position: relative;
+    overflow: hidden;
+    .info-left {
+      float: left;
+      width: 72px;
+      height: 72px;
+    }
+    .info-right {
+      position: relative;
+      margin-left: 82px;
+    }
+    .taste_wrap {
+      font-size: 14px;
+      .weight{
+        color: #8c8c8d;
+      }
+      .taste-name {
+        color: #333;
+        display: inline-block;
+      }
+      .number {
+        float: right;
+        color: $color_pumice_approx;
+      }
+    }
+  }
+  .txtarea{
+    margin-top:12px;
+    textarea{
+      width: 100%;
+      height: 58px;
+      padding: 10px 10px;
+      font-size: 12px;
+      color: #c9c9c9;
+      outline: none;
+      border-top: 1px solid #f2f2f2;
+      border-bottom: 1px solid #f2f2f2;
+    }
+  }
+  .price_wrap {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    .price {
+      display: block;
+      color: $color_mine_shaft_approx;
+      font-size: 16px;
+      i {
+        font-style: normal;
+      }
+    }
+    .price_old {
+      display: block;
+      text-decoration: line-through;
+      font-size: 10px;
+      color: $color_pumice_approx;
+      i {
+        font-style: normal;
+      }
+    }
+  }
+  .item-list {
+    color: $color_stack_approx;
+    padding: 0 10px;
+    height: 37px;
+    line-height: 37px;
+    font-size: 14px;
+    background-color: $white;
+    border-bottom: 1px solid $concrete;
+    .money {
+      float: right;
+    }
+    .color3{
+      color:$color_mine_shaft_approx;
+    }
+    .pay_check_com{
+      width: 24px;
+      height: 24px;
+      background-size: cover;
+      float: right;
+      margin-top: 7px;
+    }
+    .pay_checked{
+      background-image: url(../../img/ic_pay_checked.png);
+    }
+    .pay_check{
+      background-image: url(../../img/ic_pay_check.png);
+    }
+    .num-box{
+      float:right;
+      width: 81px;
+      margin-top: 5px;
+      .reduce-btn{
+        width: 27px;
+        height: 27px;
+        float: left;
+        background: url(../../img/ic_shuliang_1.png);
+        background-size: cover;
+      }
+      .num-txt{
+        width: 27px;
+        float: left;
+        height: 27px;
+        background-color: #f8f8f8;
+        text-align: center;
+      }
+      .plus-btn{
+        width: 27px;
+        height: 27px;
+        float: right;
+        background: url(../../img/ic_shuliang_3.png);
+        background-size: cover;
+      }
+    }
+  }
+  .list-line {
+    margin-top: 14px;
+    border-top: 1px solid $concrete;
+  }
+  .info-right .detailed .det-title {
+    font-size: 14px;
+    box-sizing: border-box;
+    word-break: break-all;
+    color: $color_storm_dust_approx;
+  }
+}
+.order-confirm{
+  position: fixed;
+  left:0;
+  bottom: 0;
+  width:100%;
+  height:41px;
+  line-height: 41px;
+  border-top: 1px solid $concrete;
+  background: #fff;
+  .order-left{
+    float: left;
+    padding-left: 10px;
+    .pay-txt{
+      float:left;
+      font-size: 14px;
+    }
+    .num-box{
+      float:left;
+      color:#f55;
+      .integer{
+        font-size: 18px;
+      }
+    }
+  }
+  .order-right{
+    float:right;
+    width:111px;
+    font-size: 16px;
+    background: #f55;
+    color: #fff;
+    text-align: center;
+  }
+}
