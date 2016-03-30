@@ -5,10 +5,16 @@
 require.config({
     paths: {
         'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'
-    }
+    },
+    shim: {
+　　　　'cookieCrud': {
+　　　　　　deps: ['jquery'],
+　　　　　　exports: 'jQuery.fn.cookie'
+　　　　}
+　　}
 });
-define(['jquery'],
-    function ($) {
+define(['jquery, cookieCrud'],
+    function ($,$.cookie) {
         var
             addCoo = function(key) {
                 var history,
