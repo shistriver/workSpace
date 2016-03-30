@@ -9,7 +9,7 @@ require.config({
     shim: {
 　　　　'cookieCrud': {
 　　　　　　deps: ['jquery'],
-　　　　　　exports: 'jQuery.fn.cookie'
+　　　　　　exports: '$.cookie'
 　　　　}
 　　}
 });
