@@ -2,7 +2,7 @@
  * @Author: xinyi
  * @Date:   2016-03-22 16:08:07
  * @Last Modified by:   xinyi
- * @Last Modified time: 2016-03-31 11:05:03
+ * @Last Modified time: 2016-03-31 17:46:29
  */
 (function() {
 	require.config({
@@ -10,15 +10,19 @@
 			'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min',
 			'doDom': 'app/doDom',
             'jquery.cookie': 'lib/jquery.cookie',
-            'cookieCrud': 'app/cookieCrud'
+            'config': 'app/config',
+            'cookieCrud': 'app/cookieCrud',
+            'beforeSend': 'app/beforeSend',
+            'callback': 'app/callback',
+            'dataService': 'app/dataService',
+            'paging': 'app/paging',
+            'onScroll': 'app/onScroll'
         }
 	});
 	require(['doDom', 'cookieCrud'],
 		function(doDom,cookieCrud) {
-            cookieCrud.getCoo();
-            cookieCrud.addCoo();
-            cookieCrud.clearCoo();
-            doDom.doDom();
+            
+            doDom.doDom(true);
 		}
 	);
 

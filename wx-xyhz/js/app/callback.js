@@ -2,27 +2,22 @@
  * Created by guixin on 2016/3/29.
  */
 //请求数据服务
-require.config({
-    paths: {
-        'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'
-    }
-});
-difine(['jquery'],
-    function($) {
+
+define(['jquery','cookieCrud', 'beforeSend', 'paging', 'config'],
+    function($, cookieCrud, beforeSend, paging, config) {
         var
             showGoodsListData = function(li) {
                 if (li.status == '0') {
-                    if (li.data == null || li.data.length == 0) {
+                    if (config.pageIndex == 1 && (li.data == null || li.data.length == 0)) {
                         $('.no-data').show();
                         $('#loader').hide();
                         $('.ui-fall').html('').hide();
-                        return false;
-                    } else if (li.data.length < page_size) {
+                        config.loadFlag = false;
+                    } else if (li.data.length < config.pageSize) {
                         $('#loader').hide();
-                        return false;
-                    }
-
-                    var nextpagehtml = '';
+                        config.loadFlag = false;
+                    }else{
+                        var nextpagehtml = '';
                     for (var i = 0; i < li.data.length; i++) {
                         var price = parseFloat(li.data[i].p_price).toFixed(2);
                         nextpagehtml += '<li class="item" data-goodsid="' + li.data[i].goods_id + '">';
@@ -37,17 +32,62 @@ difine(['jquery'],
                         nextpagehtml += '</div></li>';
                     }
                     $('.ui-fall').html($('.ui-fall').html() + nextpagehtml);
-                    return true;
+                    config.loadFlag = true;
+                    }
                 } else {
                     $('.no-data').show();
                     $('#loader').hide();
                     $('.ui-fall').html('').hide();
-                    return false;
+                    config.loadFlag = false;
                 }
-            };
+            },
+            showKeyListData = function (ret) {
+                    if (ret.status == '0') {
+                        config.label_count = ret.data.label_count;
+                        var label = ret.data.label;
+                        if (label == null || label.length == 0) {
+                            $('.hs-area').hide();
+                            $('#statusTip').html('没有了').fadeIn(500).delay(1000).fadeOut(500);
+                        } else {
+                            var len = label.length < 10 ? label.length : 10;
+                            var nexthtml = '';
+                            for (var i = 0; i < len; i++) {
+                                nexthtml += '<li><span class="txt">' + label[i].hot_word + '</span>';
+                                nexthtml += label[i].label_info == '' ? '' : '<span class="tag" style="background-color:' + label[i].label_color + '">' + label[i].label_info + '</span></li>'
+                            }
+                            $('#loadImg').hide();
+                            $('.hs-area ul').html(nexthtml).show();
+                        }
+                        $('.hs-area ul li').on('click', function(event) {
+                            var key = $(this).find('.txt').text();
+                            $('.hs-area').hide();
+                            $('.history-area').hide();
+                            $('.search-ret-area').show();
+                            cookieCrud.addCoo(key);
+                            doSearch(key);
+                        });
+                        //点选历史记录
+                        $('.history-area ul').on('click', 'li', function(event) {
+                            $('.history-area').hide();
+                            $('.history-area').hide();
+                            $('.search-ret-area').show();
+                            var key = $(this).text();
+                            doSearch(key);
+                        });
+                    } else {
+                        $('.hs-area').hide();
+                        $('#statusTip').html('没有了').fadeIn(500).delay(1000).fadeOut(500);
+                    }
+                    function doSearch(key) {
+                        var url = encodeURI('good/?search_type=1&name=' + key);
+                        console.log(key);
+                        paging.pageGetData(url, beforeSend.showGoodsListDataLoading, showGoodsListData);
+                    }
+                };
 
         return {
-            showGoodsListData: showGoodsListData
+            showGoodsListData: showGoodsListData,
+            showKeyListData: showKeyListData
         };
     }
 );

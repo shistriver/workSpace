@@ -1,26 +1,24 @@
 /**
  * Created by guixin on 2016/3/29.
  */
-//获取链接中search字段的值
+//分页
 
-define(['jquery', 'onScroll', 'dataService', 'callback', 'beforeSend'],
-	function($, onScroll, dataService, beforeSend,callback) {
+define(['jquery', 'onScroll', 'dataService', 'config'],
+	function($, onScroll, dataService, config) {
 		var
-			pageIndex = 1, // 当前页数，默认设为第 1 页  
-			pageSize = 10, // 每页显示的数量
-			pageGetData = function(id){
-				var 
-					iIntervalId = setInterval(function(){
-						if (onScroll.isOnScroll) {
-							id += id + '&page_size=' + pageSize + '&page=' + pageIndex
-							if (dataService.getData(id, beforeSend.showGoodsListDataLoading, callback.showGoodsListData)) {
-								pageIndex++;
-							}else{
-								clearInterval(iIntervalId);
-							}
-						} else {}
+			pageGetData = function(id, beforeSendFn, callbackFn) {
+				var
+					iIntervalId = setInterval(function() {
+						if ((config.pageIndex == 1 || onScroll.isOnScroll()) && config.loadFlag) {
+							urlId = id + '&page_size=' + config.pageSize + '&page=' + config.pageIndex;
+							dataService.getData(urlId, beforeSendFn, callbackFn);
+							config.pageIndex++;
+						} else {
+							clearInterval(iIntervalId);
+						}
+						console.log(config.loadFlag + 'gggg'+onScroll.isOnScroll());
 					}, 1000);
-				
+
 			};
 
 		return {
