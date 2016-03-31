@@ -9,13 +9,17 @@
 		paths: {
 			'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min',
 			'doDom': 'app/doDom',
-            'test': 'app/test'
-		}
+            'jquery.cookie': 'lib/jquery.cookie',
+            'cookieCrud': 'app/cookieCrud'
+        }
 	});
-	require(['doDom, test'],
-		function(doDom,test) {
-            test.fff();
-//			doDom.doDom();
+	require(['doDom', 'cookieCrud'],
+		function(doDom,cookieCrud) {
+            cookieCrud.getCoo();
+            cookieCrud.addCoo();
+            cookieCrud.clearCoo();
+            doDom.doDom();
 		}
 	);
+
 })();

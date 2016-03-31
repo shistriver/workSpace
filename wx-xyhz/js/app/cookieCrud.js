@@ -3,7 +3,7 @@
  */
 //cookie操作
 
-/*define(['jquery'],
+define(['jquery','jquery.cookie'],
     function ($) {
         var
             addCoo = function(key) {
@@ -54,30 +54,12 @@
             clearCoo = function() {
                 $.cookie("history", null)
             }
-            console.log('cccccc');
         return {
             clearCoo: clearCoo, //清空cookie
             addCoo: addCoo, //添加
             getCoo: getCoo //获取
-            fn:function(){
-                console.log('fddsgdfs');
-            }
         };
     }
-);*/
+);
 
-/**
- * Created by guixin on 2016/3/29.
- */
-//cookie操作
-
-
-
-define([], function() {
-    return {
-        doDom: function() {
-            console.log("app2");
-        }
-    }
-});
 
