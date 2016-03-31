@@ -3,7 +3,7 @@
  */
 //获取链接中search字段的值
 
-difine(['jquery', 'onScroll', 'dataService', 'callback', 'beforeSend'],
+define(['jquery', 'onScroll', 'dataService', 'callback', 'beforeSend'],
 	function($, onScroll, dataService, beforeSend,callback) {
 		var
 			pageIndex = 1, // 当前页数，默认设为第 1 页  

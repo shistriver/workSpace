@@ -7,7 +7,7 @@ require.config({
         'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'
     }
 });
-difine(['jquery'],
+define(['jquery'],
     function($) {
         var
             showGoodsListDataLoading = function() {

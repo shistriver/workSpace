@@ -8,7 +8,7 @@ require.config({
         'config' : 'config'
     }
 });
-difine(['jquery','config'],
+define(['jquery','config'],
 	function($,config) {
 		var
             callApi = function (url, type, beforeSend, callback) {

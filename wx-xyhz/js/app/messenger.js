@@ -9,13 +9,13 @@ require.config({
 	}
 });
 
-difine(['jquery', 'dataService'],
+define(['jquery', 'dataService'],
 	function($, dataService) {
 		var
 			beforeSend = function(){
 				$('#loader').show();
 			},
-			
+
 			showMessage = function(id) {
 				dataservice.getData(id, function(ret) {
 					$("#messagebox").html(ret);

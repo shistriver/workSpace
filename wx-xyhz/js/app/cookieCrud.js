@@ -2,19 +2,9 @@
  * Created by guixin on 2016/3/29.
  */
 //cookie操作
-require.config({
-    paths: {
-        'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'
-    },
-    shim: {
-　　　　'cookieCrud': {
-　　　　　　deps: ['jquery'],
-　　　　　　exports: '$.cookie'
-　　　　}
-　　}
-});
-define(['jquery, cookieCrud'],
-    function ($,$.cookie) {
+
+/*define(['jquery'],
+    function ($) {
         var
             addCoo = function(key) {
                 var history,
@@ -64,11 +54,30 @@ define(['jquery, cookieCrud'],
             clearCoo = function() {
                 $.cookie("history", null)
             }
-
+            console.log('cccccc');
         return {
             clearCoo: clearCoo, //清空cookie
             addCoo: addCoo, //添加
             getCoo: getCoo //获取
+            fn:function(){
+                console.log('fddsgdfs');
+            }
         };
     }
-);
+);*/
+
+/**
+ * Created by guixin on 2016/3/29.
+ */
+//cookie操作
+
+
+
+define([], function() {
+    return {
+        doDom: function() {
+            console.log("app2");
+        }
+    }
+});
+
