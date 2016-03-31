@@ -11,7 +11,7 @@
 			'doDom': 'app/doDom',
             'jquery.cookie': 'lib/jquery.cookie',
             'cookieCrud': 'app/cookieCrud',
-            'myWish': 'app/myWish',
+            'limitChar': 'app/limitChar',
             'checkedBtn': 'app/checkedBtn'
         }
 	});
@@ -23,15 +23,15 @@
             doDom.doDom();
 		}
 	);
-    require(['app/limitChar'],
-        function(myWish) {
-            myWish.limit('#wish_area',true,'.limit_min',70);
+    require(['limitChar'],
+        function(limitChar) {
+            limitChar.limit('#wish_area',true,'.limit_min',70);
         }
     );
-    require(['app/limitChar','checkedBtn'],
-        function(myWish,checkedBtn) {
+    require(['limitChar','checkedBtn'],
+        function(limitChar,checkedBtn) {
             checkedBtn.tabCheck;
-            myWish.limit('#txt_area',false,'',70);
+            limitChar.limit('#txt_area',false,'',70);
         }
     );
 })();
