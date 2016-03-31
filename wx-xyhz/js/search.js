@@ -10,7 +10,9 @@
 			'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min',
 			'doDom': 'app/doDom',
             'jquery.cookie': 'lib/jquery.cookie',
-            'cookieCrud': 'app/cookieCrud'
+            'cookieCrud': 'app/cookieCrud',
+            'myWish': 'app/myWish',
+            'checkedBtn': 'app/checkedBtn'
         }
 	});
 	require(['doDom', 'cookieCrud'],
@@ -21,5 +23,15 @@
             doDom.doDom();
 		}
 	);
-
+    require(['app/limitChar'],
+        function(myWish) {
+            myWish.limit('#wish_area',true,'.limit_min',70);
+        }
+    );
+    require(['app/limitChar','checkedBtn'],
+        function(myWish,checkedBtn) {
+            checkedBtn.tabCheck;
+            myWish.limit('#txt_area',false,'',70);
+        }
+    );
 })();
