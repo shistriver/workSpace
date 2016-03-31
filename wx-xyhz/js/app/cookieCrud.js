@@ -54,6 +54,7 @@ define(['jquery','jquery.cookie'],
             clearCoo = function() {
                 $.cookie("history", null)
             }
+//        console.log(111)
         return {
             clearCoo: clearCoo, //清空cookie
             addCoo: addCoo, //添加
