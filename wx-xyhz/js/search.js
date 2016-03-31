@@ -2,7 +2,7 @@
  * @Author: xinyi
  * @Date:   2016-03-22 16:08:07
  * @Last Modified by:   xinyi
- * @Last Modified time: 2016-03-31 17:46:29
+ * @Last Modified time: 2016-03-31 11:05:03
  */
 (function() {
 	require.config({
@@ -16,7 +16,9 @@
             'callback': 'app/callback',
             'dataService': 'app/dataService',
             'paging': 'app/paging',
-            'onScroll': 'app/onScroll'
+            'onScroll': 'app/onScroll',
+            'limitChar': 'app/limitChar',
+            'checkedBtn': 'app/checkedBtn'
         }
 	});
 	require(['doDom', 'cookieCrud'],
@@ -25,5 +27,15 @@
             doDom.doDom(true);
 		}
 	);
-
+    require(['limitChar'],
+        function(limitChar) {
+            limitChar.limit('#wish_area',true,'.limit_min',70);
+        }
+    );
+    require(['limitChar','checkedBtn'],
+        function(limitChar,checkedBtn) {
+            checkedBtn.tabCheck;
+            limitChar.limit('#txt_area',false,'',70);
+        }
+    );
 })();
