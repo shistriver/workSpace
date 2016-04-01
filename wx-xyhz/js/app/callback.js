@@ -3,8 +3,8 @@
  */
 //请求数据服务
 
-define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara'],
-    function($, cookieCrud, beforeSend, paging, config, getUrlPara) {
+define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 'goodsModify'],
+    function($, cookieCrud, beforeSend, paging, config, getUrlPara, goodsModify) {
         var
             showGoodsListData = function(li) {
                 if (li.status == '0') {
@@ -94,6 +94,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara'],
                     var
                         productId = getUrlPara.getUrlPara('productId'),
                         productNum = Number(getUrlPara.getUrlPara('productNum')).toFixed(2);
+                        styleIndex = 0,//购买形式 默认为0,0：自买   1：凑份子 2：送礼
                         specName = (function() {//规格名
                         for (var p in ret.data.products[0].spec) {
                             return p;
@@ -110,7 +111,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara'],
                             fre_rule_enable: ret.data.products[productId].fre_rule_enable,
                             freight: ret.data.products[productId].freight
                         },
-                        totalPrice = function(index){
+                        totalPrice = function(index, productNum){//0：自买   1：凑份子 2：送礼
                             index = index || 0;
                             if(iRet.fre_rule_enable != '0'){
                                 iRet.gift_cut_freight = Number(ret.data.products[productId].gift_freight_rule[0].cut_freight).toFixed(2);//2
@@ -132,18 +133,39 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara'],
                                    return Number(iRet.p_price * productNum - cut).toFixed(2);
                             }
                         },
-                        commodityBox = '<div class="info-left"><img src="'+iRet.image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.short_name+'</h3></div><div class="taste_wrap"><div class="weight">'+iRet.specName+'：<span>'+iRet.spec+'</span></div><p class="taste-name"><span>￥'+iRet.p_price+'</span></p><span class="number">×1</span></div></div>';
+                        commodityBox = '<div class="info-left"><img src="'+iRet.image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.short_name+'</h3></div><div class="taste_wrap"><div class="weight">'+iRet.specName+'：<span>'+iRet.spec+'</span></div><p class="taste-name"><span>￥'+iRet.p_price+'</span></p><span class="number">×<i>1</i></span></div></div>';
 
                     $('.commodity_box').html(commodityBox);
 
                     //totalPrice(0);//默认自买
-                    $('.order-confirm .integer').text(totalPrice(0).split('.')[0]);
-                    $('.order-confirm .point').text('.'+totalPrice(0).split('.')[1]);
+                     runtimeTotalPrice(styleIndex, productNum);
 
-                    $('#payStyle .item-list').click(function(event) {
-                        
+                    var check_img = ['url(img/ic_pay_checked.png)', 'url(img/ic_pay_check.png)']
+                    $('#payStyle .item-list').on('click', function() {
+                        $(this).find('.pay_check_com').css({
+                            'background-image': check_img[0]
+                        }).parent().siblings().find('.pay_check_com').css({
+                            'background-image': check_img[1]
+                        });
+
+                        styleIndex = $(this).index();
+                        runtimeTotalPrice(styleIndex, productNum);
                     });
 
+                    $('#goodsAdd').on('click', function() {
+                        var productNum = goodsModify.numAdd();
+                        runtimeTotalPrice(styleIndex, productNum);
+                    });
+                    $('#goodsDec').on('click', function() {
+                        var productNum = goodsModify.numDec();
+                        runtimeTotalPrice(styleIndex, productNum);
+                    });
+
+                    function runtimeTotalPrice(index, productNum){
+                        $('.order-confirm')
+                        .find('.integer').text(totalPrice(index, productNum).split('.')[0]).end()
+                        .find('.point').text('.'+totalPrice(index, productNum).split('.')[1]);
+                    }
                 } else {}
             };
 
