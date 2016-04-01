@@ -11,15 +11,12 @@ define([],
                   loadFlag = true,
                   pageIndex = 1, // 当前页数，默认设为第 1 页 
                   pageSize = 10; // 每页显示的数量
-                  images = {
-                       
-                  }
             return {
                   baseUrl: baseUrl,
                   label_count: label_count,
                   loadFlag: loadFlag,
                   pageIndex: pageIndex,
-                  pageSize: pageSize
+                  pageSize: pageSize,
             };
       }
 );

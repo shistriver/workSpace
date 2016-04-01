@@ -76,7 +76,9 @@ body {
     color: #c9c9c9;
     outline: none;
     border-top: 1px solid #f2f2f2;
-    border-bottom: 1px solid #f2f2f2; }
+    border-bottom: 1px solid #f2f2f2;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box; }
 #container .price_wrap {
   position: absolute;
   right: 20px;
@@ -124,7 +126,7 @@ body {
       width: 27px;
       height: 27px;
       float: left;
-      background: url(../../img/ic_shuliang_1.png);
+      background: url(../../img/ic_shuliang_2.png);
       background-size: cover; }
     #container .item-list .num-box .num-txt {
       width: 27px;

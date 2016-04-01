@@ -46,4 +46,20 @@
         box-sizing: border-box;
         display: inline-block; }
 
+.Warning {
+  width: 180px;
+  height: 54px;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 54px;
+  display: none;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -25px;
+  margin-left: -90px; }
+
 /*# sourceMappingURL=comm.css.map */
