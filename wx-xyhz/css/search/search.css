@@ -1,43 +1,51 @@
 @import url(../comm/comm.css);
 @import url(ui-fall.css);
 #container .input-area {
-  padding: 10px 10px;
-  border-bottom: 1px solid #f2f2f2;
-  background-color: #fff; }
-  #container .input-area .input-box {
-    margin-right: 50px;
-    height: 30px;
-    position: relative; }
-    #container .input-area .input-box input {
-      width: 100%;
+  height: 50px; }
+  #container .input-area .input-fixed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+    padding: 10px 10px;
+    border-bottom: 1px solid #f2f2f2;
+    background-color: #fff;
+    width: 100%;
+    box-sizing: border-box; }
+    #container .input-area .input-fixed .input-box {
+      margin-right: 50px;
       height: 30px;
-      border-radius: 30px;
-      background-color: #f8f8f8;
-      box-sizing: border-box;
-      padding-left: 20px;
-      font-size: 14px;
-      color: #333; }
-    #container .input-area .input-box ::-webkit-input-placeholder {
-      font-size: 14px; }
-    #container .input-area .input-box .s-icon {
-      position: absolute;
-      width: 16px;
-      height: 16px; }
-    #container .input-area .input-box .img-l {
-      display: none;
-      left: 10px;
-      top: 7px; }
-    #container .input-area .input-box .img-r {
-      right: 10px;
-      top: 7px; }
-  #container .input-area .cancle {
-    width: 40px;
-    height: 30px;
-    text-align: center;
-    float: right;
-    line-height: 30px;
-    color: #333;
-    font-size: 16px; }
+      position: relative; }
+      #container .input-area .input-fixed .input-box input {
+        width: 100%;
+        height: 30px;
+        border-radius: 30px;
+        background-color: #f8f8f8;
+        box-sizing: border-box;
+        padding-left: 20px;
+        font-size: 14px;
+        color: #333; }
+      #container .input-area .input-fixed .input-box ::-webkit-input-placeholder {
+        font-size: 14px; }
+      #container .input-area .input-fixed .input-box .s-icon {
+        position: absolute;
+        width: 16px;
+        height: 16px; }
+      #container .input-area .input-fixed .input-box .img-l {
+        display: none;
+        left: 10px;
+        top: 7px; }
+      #container .input-area .input-fixed .input-box .img-r {
+        right: 10px;
+        top: 7px; }
+    #container .input-area .input-fixed .cancle {
+      width: 40px;
+      height: 30px;
+      text-align: center;
+      float: right;
+      line-height: 30px;
+      color: #333;
+      font-size: 16px; }
 #container .input-area-focus .input-box input {
   padding-left: 30px; }
 #container .input-area-focus .input-box .img-l {
