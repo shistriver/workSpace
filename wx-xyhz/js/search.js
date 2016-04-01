@@ -47,8 +47,7 @@
     );
     require(['tabSwitch'],
         function(tabSwitch) {
-            tabSwitch.tabBar('.pay_check',false);
-            tabSwitch.tabBar('.pay_checked',true);
+            tabSwitch.tabBar();
         }
     );
 })()

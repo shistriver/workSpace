@@ -9,7 +9,7 @@ require.config({
     }
 });
 
-difine(["jquery"],
+define(["jquery"],
 	function($) {
 		var
 			toTop = function() {
