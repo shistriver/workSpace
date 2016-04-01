@@ -37,7 +37,7 @@ define([],
 		// 		var iTop = document.documentElement.scrollTop + document.body.scrollTop;
 		// 		return ((iTop + getClientHeight()) > parseInt(getPageHeight() * 0.6)) || reachBottom() ;
 		// 	};
-		var isOnScroll function(){
+		var isOnScroll = function(){
             var pageHeight = Math.max(document.body.scrollHeight,document.body.offsetHeight),
             	viewportHeight = window.innerHeight || 
                 document.documentElement.clientHeight ||
@@ -45,7 +45,7 @@ define([],
             	scrollHeight = window.pageYOffset ||
                 document.documentElement.scrollTop ||
                 document.body.scrollTop || 0;
-            return (viewportHeight + scrollHeight) > (pageHeight * 0.8);
+            return (viewportHeight + scrollHeight) > (pageHeight - 50);
         }
 
 		return {
