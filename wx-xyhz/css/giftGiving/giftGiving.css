@@ -59,7 +59,8 @@ body {
   height: 60px;
   line-height: 60px;
   font-size: 16px;
-  position: relative; }
+  position: relative;
+  overflow: hidden; }
   #container .gift_price_hide .btn-wrap {
     position: absolute;
     top: 6px;
