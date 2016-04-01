@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport" />
-    <title></title>
-    <link href="css/comm/comm.css" rel="stylesheet" type="text/css" />
-    <link href="css/orderConfirm/orderConfirm.css" rel="stylesheet" type="text/css" />
+    <title>确认订单</title>
     <link href="http://7xlen1.com2.z0.glb.qiniucdn.com/favicon.ico" type="image/x-icon" rel="shortcut icon" />
-   <!-- <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="js/comm/comm.js"></script>
-    <script src="js/search/ret-list.js"></script>
-    <script src="js/orderConfirm/orderConfirm.js"></script>-->
-    <script src="js/lib/require.js" data-main="js/search" defer async="true"></script>
+    <link href="css/orderConfirm/orderConfirm.css" rel="stylesheet" type="text/css" />
+    <script src="js/lib/require.js" data-main="js/orderConfirm" defer async="true"></script>
 </head>
 <body>
 <div id="container">
@@ -24,7 +19,7 @@
         <div class="address">手剥薄壳 香脆巴旦木200g（偏远地区不配送）</div>
     </div>
     <div class="commodity_wrap">
-        <div class="commodity_box">
+        <div class="commodity_box"><!-- 
             <div class="info-left">
                 <img src="img/20160218135537_29463.jpg" alt="">
             </div>
@@ -37,7 +32,7 @@
                     <p class="taste-name"><span>￥11.9</span></p>
                     <span class="number">×1</span>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -56,7 +51,7 @@
         </div>
     </div>
     <div class="purchase-form">购买形式</div>
-    <div class="item">
+    <div class="item" id="payStyle">
         <div class="item-list">
             <span class="static color3">自己付款</span>
             <span class="pay_check_com pay_checked"></span>

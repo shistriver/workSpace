@@ -3,7 +3,7 @@
  */
 //获取链接中search字段的值
 
-difine([],
+define([],
 	function() {
 		var
 			getUrlPara = function(sParam) {

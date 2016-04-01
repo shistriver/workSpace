@@ -3,8 +3,8 @@
  */
 //请求数据服务
 
-define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config'],
-    function($, cookieCrud, beforeSend, paging, config) {
+define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara'],
+    function($, cookieCrud, beforeSend, paging, config, getUrlPara) {
         var
             showGoodsListData = function(li) {
                 if (li.status == '0') {
@@ -88,11 +88,69 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config'],
                     console.log(key);
                     paging.pageGetData(url, beforeSend.showGoodsListDataLoading, showGoodsListData);
                 }
+            },
+            showOrderConfirmData = function(ret) {
+                if (ret.status == '0') {
+                    var
+                        productId = getUrlPara.getUrlPara('productId'),
+                        productNum = Number(getUrlPara.getUrlPara('productNum')).toFixed(2);
+                        specName = (function() {//规格名
+                        for (var p in ret.data.products[0].spec) {
+                            return p;
+                        }
+                    })();
+                    console.log(productId);
+                    var
+                        iRet = {
+                            image_url: ret.data.products[productId].image_url,
+                            short_name: ret.data.short_name,
+                            specName: specName,
+                            spec: ret.data.products[productId].spec[specName],
+                            p_price: Number(ret.data.products[productId].p_price).toFixed(2),
+                            fre_rule_enable: ret.data.products[productId].fre_rule_enable,
+                            freight: ret.data.products[productId].freight
+                        },
+                        totalPrice = function(index){
+                            index = index || 0;
+                            if(iRet.fre_rule_enable != '0'){
+                                iRet.gift_cut_freight = Number(ret.data.products[productId].gift_freight_rule[0].cut_freight).toFixed(2);//2
+                                iRet.raise_cut_freight = Number(ret.data.products[productId].raise_freight_rule[0].cut_freight).toFixed(2);//1
+                                iRet.self_buy_cut_freight = Number(ret.data.products[productId].self_buy_freight_rule[0].cut_freight).toFixed(2);//0
+
+                                if(index == 0){
+                                    return computeFreight(iRet.self_buy_cut_freight);
+                                }else if(index == 1){
+                                    return computeFreight(iRet.raise_cut_freight);
+                                }else if(index == 2){
+                                    return computeFreight(iRet.gift_cut_freight);
+                                }else{}
+                            }else{
+                                return computeFreight(iRet.freight);
+                            }
+
+                            function computeFreight(cut){
+                                   return Number(iRet.p_price * productNum - cut).toFixed(2);
+                            }
+                        },
+                        commodityBox = '<div class="info-left"><img src="'+iRet.image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.short_name+'</h3></div><div class="taste_wrap"><div class="weight">'+iRet.specName+'：<span>'+iRet.spec+'</span></div><p class="taste-name"><span>￥'+iRet.p_price+'</span></p><span class="number">×1</span></div></div>';
+
+                    $('.commodity_box').html(commodityBox);
+
+                    //totalPrice(0);//默认自买
+                    $('.order-confirm .integer').text(totalPrice(0).split('.')[0]);
+                    $('.order-confirm .point').text('.'+totalPrice(0).split('.')[1]);
+
+                    $('#payStyle .item-list').click(function(event) {
+                        
+                    });
+
+                } else {}
             };
 
         return {
             showGoodsListData: showGoodsListData,
-            showKeyListData: showKeyListData
+            showKeyListData: showKeyListData,
+            showOrderConfirmData: showOrderConfirmData
         };
     }
 );
