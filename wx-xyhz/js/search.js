@@ -19,7 +19,8 @@
             'onScroll': 'app/onScroll',
             'limitChar': 'app/limitChar',
             'checkedBtn': 'app/checkedBtn',
-            'goodsModify': 'app/goodsModify'
+            'goodsModify': 'app/goodsModify',
+            'tabSwitch': 'app/tabSwitch'
         }
 	});
 	require(['doDom', 'cookieCrud'],
@@ -30,7 +31,7 @@
 	);
     require(['limitChar'],
         function(limitChar) {
-            limitChar.limit('#wish_area',true,'.limit_min',70);
+            limitChar.limit('#wish_area',true,'.limit_min',10);
         }
     );
     require(['limitChar','checkedBtn'],
@@ -44,4 +45,9 @@
             goodsModify.goodsModify();
         }
     );
-})();
+    require(['tabSwitch'],
+        function(tabSwitch) {
+            tabSwitch.tabBar();
+        }
+    );
+})()
