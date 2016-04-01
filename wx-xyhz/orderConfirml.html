@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport" />
     <title></title>
+    <link href="css/comm/comm.css" rel="stylesheet" type="text/css" />
     <link href="css/orderConfirm/orderConfirm.css" rel="stylesheet" type="text/css" />
     <link href="http://7xlen1.com2.z0.glb.qiniucdn.com/favicon.ico" type="image/x-icon" rel="shortcut icon" />
-    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+   <!-- <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="js/comm/comm.js"></script>
     <script src="js/search/ret-list.js"></script>
-    <script src="js/orderConfirm/orderConfirm.js"></script>
+    <script src="js/orderConfirm/orderConfirm.js"></script>-->
+    <script src="js/lib/require.js" data-main="js/search" defer async="true"></script>
 </head>
 <body>
 <div id="container">
@@ -43,9 +45,9 @@
         <div class="item-list">
             <span class="static">数量</span>
             <div class="num-box">
-                <botton class="reduce-btn"></botton>
-                <input class="num-txt" type="text" value="1"/>
-                <botton class="plus-btn"></botton>
+                <botton id="goodsDec" class="reduce-btn"></botton>
+                <input id="goodsNum" class="num-txt" type="text" value="1"/>
+                <botton id="goodsAdd" class="plus-btn"></botton>
             </div>
         </div>
         <div class="item-list">
@@ -79,5 +81,8 @@
     </div>
     <div class="order-right">确认订单</div>
 </div>
+<!--<div class="Warning">-->
+    <!--<p>范围是：1~178</p>-->
+<!--</div>-->
 </body>
 </html>

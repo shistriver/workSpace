@@ -18,7 +18,8 @@
             'paging': 'app/paging',
             'onScroll': 'app/onScroll',
             'limitChar': 'app/limitChar',
-            'checkedBtn': 'app/checkedBtn'
+            'checkedBtn': 'app/checkedBtn',
+            'goodsModify': 'app/goodsModify'
         }
 	});
 	require(['doDom', 'cookieCrud'],
@@ -36,6 +37,11 @@
         function(limitChar,checkedBtn) {
             checkedBtn.tabCheck;
             limitChar.limit('#txt_area',false,'',70);
+        }
+    );
+    require(['goodsModify'],
+        function(goodsModify) {
+            goodsModify.goodsModify();
         }
     );
 })();
