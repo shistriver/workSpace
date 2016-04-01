@@ -31,7 +31,7 @@
 	);
     require(['limitChar'],
         function(limitChar) {
-            limitChar.limit('#wish_area',true,'.limit_min',10);
+            limitChar.limit('#wish_area',true,'.limit_min',70);
         }
     );
     require(['limitChar','checkedBtn'],

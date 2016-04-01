@@ -25,26 +25,18 @@ define(['jquery'],function($) {
             }
         });
 */
+
         $(id).bind('input propertychange', function() {
-            var oValue = $(this).val();
-            var num = Math.ceil(getLength(oValue)/2);
-            console.log(num);
-            if(oValue=='' || num > max){
-                oValue = oValue.substr(0,max);
+            var curLength = $(this).val().length;
+            if(curLength > max){
+                var oValue = $(this).val().substr(0,max);
                 $(this).val(oValue);
-                if(booleanV){
-                    $(className).html(max);
-                }
-                return;
             }else{
                 if(booleanV){
-                    $(className).html(num);
+                    $(className).text(curLength);
                 }
             }
         });
-        function getLength(str){
-            return String(str).replace(/[^\x00-\xff]/g,'aa').length;
-        }
     }
     return {
         limit:limit
