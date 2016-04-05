@@ -20,7 +20,8 @@
             'limitChar': 'app/limitChar',
             'checkedBtn': 'app/checkedBtn',
             'goodsModify': 'app/goodsModify',
-            'tabSwitch': 'app/tabSwitch'
+            'tabSwitch': 'app/tabSwitch',
+            'pay': 'app/pay'
         }
 	});
 	require(['doDom', 'cookieCrud'],
@@ -48,6 +49,11 @@
     require(['tabSwitch'],
         function(tabSwitch) {
             tabSwitch.tabBar();
+        }
+    );
+    require(['pay'],
+        function(pay) {
+            pay.fn();
         }
     );
 })()

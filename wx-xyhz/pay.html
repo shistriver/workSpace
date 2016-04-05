@@ -6,7 +6,8 @@
 	<title>支付货款</title>
   <link href="http://7xlen1.com2.z0.glb.qiniucdn.com/favicon.ico" type="image/x-icon" rel="shortcut icon" />
   <link href="css/pay/pay.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+  <!--<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+    <script src="js/lib/require.js" data-main="js/pay.js" defer async="true"></script>
 </head>
 <body> 
 	<div id="container">
@@ -31,14 +32,15 @@
                 <span class="static">付款方式</span>
             </div>
         </div>
-        <ul class="pay-style-list">
+        <ul class="pay-style-list" id="payment">
             <li>
                 <img class="zhifu-ic" src="img/ic_zhifubao.png" alt="">
                 <div class="txt">
                     <h2>支付宝付款</h2>
                     <p>使用支付宝账号即可付款</p>
                 </div>
-                <img class="choose-ic" src="img/ic_pay_check.png" data-checked="img/ic_pay_check.png" alt="">
+                <!--<img class="choose-ic" src="img/ic_pay_check.png" data-checked="img/ic_pay_check.png" alt="">-->
+                <input type="checkbox" class="choose-ic"/>
             </li>
             <li>
                 <img class="zhifu-ic" src="img/ic_weixin_zhifu.png" alt="">
@@ -46,7 +48,8 @@
                     <h2>微信付款</h2>
                     <p>建议安装微信客户端的用户使用</p>
                 </div>
-                <img class="choose-ic" src="img/ic_pay_check.png" data-checked="img/ic_pay_check.png" alt="">
+                <!--<img class="choose-ic" src="img/ic_pay_checked.png" data-checked="img/ic_pay_check.png" alt="">-->
+                <input type="checkbox" class="choose-ic pay_check" checked/>
             </li>
         </ul>
         <button class="zhifu-btn">立即支付</button>

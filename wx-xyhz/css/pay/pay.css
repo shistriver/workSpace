@@ -48,7 +48,12 @@ body {
     height: 20px;
     position: absolute;
     right: 10px;
-    top: 20px; }
+    top: 20px;
+    background: url(../../img/ic_pay_check.png) no-repeat;
+    background-size: cover; }
+  #container .pay-style-list li .pay_check {
+    background: url(../../img/ic_pay_checked.png) no-repeat;
+    background-size: cover; }
 #container .zhifu-btn {
   height: 50px;
   background-color: #f55;

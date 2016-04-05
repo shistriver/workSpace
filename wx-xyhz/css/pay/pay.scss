@@ -70,6 +70,12 @@ body{
         position: absolute;
         right: 10px;
         top: 20px;
+        background: url(../../img/ic_pay_check.png) no-repeat;
+        background-size: cover;
+      }
+      .pay_check{
+        background: url(../../img/ic_pay_checked.png) no-repeat;
+        background-size: cover;
       }
     }
 
