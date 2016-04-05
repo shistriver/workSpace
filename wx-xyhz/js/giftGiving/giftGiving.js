@@ -14,7 +14,7 @@ $(function(){
     $('#txt_area').bind('input propertychange', function() {
         var num = Math.ceil(getLength($('#txt_area').val())/2);
         var oValue = $(this).val();
-        if(oValue=='' || num >10){
+        if(oValue=='' || num > 50){
             oValue = oValue.substr(0,50);
             $(this).val(oValue);
         }

@@ -17,6 +17,25 @@ body {
       float: left; }
     #container .user-info .info-top .iphone {
       float: right; }
+  #container .user-info .add_address {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px;
+    font-size: 16px;
+    margin-top: -10px;
+    display: none; }
+    #container .user-info .add_address .add_icon {
+      width: 20px;
+      height: 20px;
+      background: #f55;
+      display: inline-block;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 18px;
+      line-height: 18px;
+      text-align: center;
+      margin-right: 5px; }
   #container .user-info .arrow {
     background-image: url(../../img/ic_gd_choose_right.png);
     width: 8px;

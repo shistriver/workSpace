@@ -31,6 +31,27 @@ body{
         float:right;
       }
     }
+    .add_address{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -50px;
+      font-size: 16px;
+      margin-top: -10px;
+      display: none;
+      .add_icon{
+        width: 20px;
+        height: 20px;
+        background: #f55;
+        display: inline-block;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 18px;
+        line-height: 18px;
+        text-align: center;
+        margin-right: 5px;
+      }
+    }
     .arrow {
       background-image: $url_0;
       width: 8px;
