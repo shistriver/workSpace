@@ -21,17 +21,22 @@
             'limitChar': 'app/limitChar',
             'checkedBtn': 'app/checkedBtn',
             'goodsModify': 'app/goodsModify',
-            'getUrlPara': 'app/getUrlPara'
+            'getUrlPara': 'app/getUrlPara',
+            'tabSwitch': 'app/tabSwitch'
         }
     });
-    require(['jquery', 'cookieCrud', 'beforeSend', 'callback', 'dataService', 'config', 'getUrlPara'],
-        function($, cookieCrud, beforeSend, callback, dataService, config, getUrlPara) {
-            var 
+    require(['jquery', 'cookieCrud', 'beforeSend', 'callback', 'dataService', 'config', 'getUrlPara','tabSwitch','limitChar'],
+        function($, cookieCrud, beforeSend, callback, dataService, config, getUrlPara,tabSwitch,limitChar) {
+            var
                 
                 goodsId=getUrlPara.getUrlPara('goodsId'),
                 urlId = 'good/?goodid='+goodsId;
             //console.log(productId+'|||'+productNum+'|||||'+goodsId);
-            dataService.getData(urlId, beforeSend.showKeyListLoading, callback.showOrderConfirmData)
+            dataService.getData(urlId, beforeSend.showKeyListLoading, callback.showOrderConfirmData);
+            //购买形式
+            tabSwitch.tabBar();
+            //限制数字
+            limitChar.limit('#order_area',false,'',100);
 
         }
     );

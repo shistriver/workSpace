@@ -165,15 +165,13 @@ body{
     .color3{
       color:$color_mine_shaft_approx;
     }
-    .pay_check_com{
+    .choose-ic{
       width: 24px;
       height: 24px;
-      background-size: cover;
       float: right;
       margin-top: 7px;
-    }
-    .pay_checked{
       background-image: url(../../img/ic_pay_checked.png);
+      background-size: cover;
     }
     .pay_check{
       background-image: url(../../img/ic_pay_check.png);

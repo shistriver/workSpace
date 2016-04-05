@@ -128,14 +128,13 @@ body {
     float: right; }
   #container .item-list .color3 {
     color: #333; }
-  #container .item-list .pay_check_com {
+  #container .item-list .choose-ic {
     width: 24px;
     height: 24px;
-    background-size: cover;
     float: right;
-    margin-top: 7px; }
-  #container .item-list .pay_checked {
-    background-image: url(../../img/ic_pay_checked.png); }
+    margin-top: 7px;
+    background-image: url(../../img/ic_pay_checked.png);
+    background-size: cover; }
   #container .item-list .pay_check {
     background-image: url(../../img/ic_pay_check.png); }
   #container .item-list .num-box {
