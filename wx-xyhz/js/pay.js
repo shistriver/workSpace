@@ -18,12 +18,13 @@
             'checkedBtn': 'app/checkedBtn',
             'goodsModify': 'app/goodsModify',
             'getUrlPara': 'app/getUrlPara',
-            'payModal': 'app/payModal'
+            'payModal': 'app/payModal',
+            'tabSwitch': 'app/tabSwitch'
         }
     });
-    require(['jquery','payModal'],
-        function($,payModal) {
-            payModal.payFn();
+    require(['jquery','tabSwitch'],
+        function($,tabSwitch) {
+            tabSwitch.tabBar('#payment .item-list');
         }
     );
 })();

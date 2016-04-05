@@ -34,7 +34,7 @@
             //console.log(productId+'|||'+productNum+'|||||'+goodsId);
             dataService.getData(urlId, beforeSend.showKeyListLoading, callback.showOrderConfirmData);
             //购买形式
-            tabSwitch.tabBar();
+            tabSwitch.tabBar('#payStyle .item-list');
             //限制数字
             limitChar.limit('#order_area',false,'',100);
 

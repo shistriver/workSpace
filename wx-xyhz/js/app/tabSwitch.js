@@ -4,8 +4,8 @@
 define(["jquery"],
     function($) {
         var
-            tabBar = function() {
-                $('#payStyle .item-list').on('click',function(){
+            tabBar = function(tab_id) {
+                $(tab_id).on('click',function(){
                     var isChecked = $(this).find('.choose-ic').hasClass('pay_check');
                     if(isChecked){
                         $(this).find('.choose-ic').removeClass('pay_check');
