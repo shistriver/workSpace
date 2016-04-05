@@ -108,8 +108,10 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                             specName: specName,
                             spec: ret.data.products[productId].spec[specName],
                             p_price: Number(ret.data.products[productId].p_price).toFixed(2),
+                            price: Number(ret.data.products[productId].price).toFixed(2),
                             fre_rule_enable: ret.data.products[productId].fre_rule_enable,
-                            freight: ret.data.products[productId].freight
+                            freight: ret.data.products[productId].freight,
+                            store: ret.data.products[productId].store
                         },
                         totalPrice = function(index, productNum){//0：自买   1：凑份子 2：送礼
                             index = index || 0;
@@ -130,7 +132,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                             }
 
                             function computeFreight(cut){
-                                   return Number(iRet.p_price * productNum - cut).toFixed(2);
+                                return Number(iRet.p_price * productNum - cut).toFixed(2);
                             }
                         },
                         commodityBox = '<div class="info-left"><img src="'+iRet.image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.short_name+'</h3></div><div class="taste_wrap"><div class="weight">'+iRet.specName+'：<span>'+iRet.spec+'</span></div><p class="taste-name"><span>￥'+iRet.p_price+'</span></p><span class="number">×<i>1</i></span></div></div>';
@@ -152,27 +154,100 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                         runtimeTotalPrice(styleIndex, productNum);
                     });
 
-                    $('#goodsAdd').on('click', function() {
-                        var productNum = goodsModify.numAdd();
-                        runtimeTotalPrice(styleIndex, productNum);
-                    });
-                    $('#goodsDec').on('click', function() {
-                        var productNum = goodsModify.numDec();
+                    $('#goodsAdd').on('click', function() {//点加
+                        productNum = goodsModify.numAdd(iRet.store);
                         runtimeTotalPrice(styleIndex, productNum);
                     });
 
-                    function runtimeTotalPrice(index, productNum){
+                    $('#goodsDec').on('click', function() {//点减
+                        productNum = goodsModify.numDec(iRet.store);
+                        runtimeTotalPrice(styleIndex, productNum);
+                    });
+
+                    $('.order-confirm .order-right').click(function(event) {
+                       var 
+                            iPara = {
+                                short_name: iRet.short_name,
+                                specName: iRet.specName,
+                                spec: iRet.spec,
+                                p_price: iRet.p_price,
+                                price: iRet.price,
+                                product_num: parseInt($('#goodsNum').val()),
+                                freight: totalPrice(styleIndex, productNum) - this.p_price * this.product_num,
+                                total_price: totalPrice(styleIndex, productNum)
+                            },
+                            paraStr = 'short_name='+iPara.short_name+'&specName='+iPara.specName+'&spec='+iPara.spec+'&p_price='+iPara.p_price+'&price='+iPara.price+'&product_num='+iPara.product_num+'&freight='+iPara.freight+'&total_price='+iPara.total_price;
+                        location.href = 'orderDetail.html?'+paraStr;
+                    });
+
+                    function runtimeTotalPrice(index, productNum){//实时总需支付
+                        var txt = index == 1 ? '自己需支付:' : '需支付:';
+                        productNum = index == 1 ? 0 : productNum;
                         $('.order-confirm')
+                        .find('.pay-txt').text(txt).end()
                         .find('.integer').text(totalPrice(index, productNum).split('.')[0]).end()
                         .find('.point').text('.'+totalPrice(index, productNum).split('.')[1]);
                     }
+                } else {}
+            },
+            showDefaultAddr = function(ret) {
+                if (ret.status == '0') {
+                    if(ret.data = null || ret.data.length == 0){
+                        $('.add_address').show();
+                    }else{
+                        var
+                            iRet = {};
+                        for(var i=0; i<ret.data.length; i++){
+                            if(ret.data[i].is_default == 1){
+                                iRet.name = ret.data[i].name;
+                                iRet.mobile = ret.data[i].mobile;
+                                iRet.addr = ret.data[i].country + ret.data.province + ret.data.city + ret.data.city + detail;
+                            }
+                        }
+                        var userAddr = '<div class="info-top"><div class="name">'+iRet.name+'</div><div class="iphone">'+ iRet.mobile+'</div></div><div class="arrow"></div><div class="address">'+iRet.addr+'</div>';
+                        $('.user-info').prepend(userAddr);
+                    }
+
+                    $('.user-info').click(function(event) {
+                        location.href = 'http://www.xinyihezi.com/wallet/gift/addr/edit?order_id=EDE763E4AA5B2301FE8712A7AA369C3EB828C29AA9C405215201101A5E151030AE23A2E3FFA8BDCB6E0AFB435C66C2BC&address_id=148774';
+                    });
+
+                    
+                } else {}
+            },
+            showOrderDetail = function(ret) {
+                if (ret.status == '0' && ret.data != null) {
+                    var
+                        iRet = {
+                            order_num: ret.data.order_num,
+                            create_time: ret.data.create_time,
+                            short_name: getUrlPara.getUrlPara('short_name'),
+                            specName: getUrlPara.getUrlPara('specName'),
+                            spec: getUrlPara.getUrlPara('spec'),
+                            p_price: getUrlPara.getUrlPara('p_price'),
+                            price: getUrlPara.getUrlPara('price'),
+                            product_num: getUrlPara.getUrlPara('product_num'),
+                            freight: getUrlPara.getUrlPara('freight'),
+                            total_price: getUrlPara.getUrlPara('total_price')
+                        }
+                        orderDetailInfo = '<div class="commodity_wrap"><div class="commodity_box"><div class="info-left"><img src="img/20160218135537_29463.jpg"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.short_name+'</h3><div class="price_wrap"><span class="price"><span>￥'+iRet.p_price+'</span></span><span class="price_old"><span>￥16.80</span></span></div></div></div><div class="arrow"></div><div class="taste_wrap"><p class="taste-name">'+iRet.specName+'：<span>'+iRet.spec+'</span></p><span class="number">×1</span></div></div></div><div class="item"><div class="item-list"><span class="static">运费</span><span class="money">￥0.00</span></div><div class="item-list"><span class="static">实付款</span><span class="money">￥9.90</span></div></div>';
+                        ;
+
+                    $('#orderId').text(iRet.order_num);
+                    $('#orderTime').text(iRet.create_time);
+
+                    $('.commodity_wrap').click(function(event) {
+                        location.href = 'http://www.xinyihezi.com/wallet/gift/addr/edit?order_id=EDE763E4AA5B2301FE8712A7AA369C3EB828C29AA9C405215201101A5E151030AE23A2E3FFA8BDCB6E0AFB435C66C2BC&address_id=148774';
+                    });
+
                 } else {}
             };
 
         return {
             showGoodsListData: showGoodsListData,
             showKeyListData: showKeyListData,
-            showOrderConfirmData: showOrderConfirmData
+            showOrderConfirmData: showOrderConfirmData,
+            showDefaultAddr: showDefaultAddr
         };
     }
 );

@@ -53,12 +53,20 @@ define(['jquery','jquery.cookie'],
 
             clearCoo = function() {
                 $.cookie("history", null)
-            }
+            },
 //        console.log(111)
+            add = function(name){
+                $.cookie("ticket", name, {
+                        expires: 7, 
+                        path: '/', 
+                        domain: 'test.xinyihezi.com'
+                    });
+            };
         return {
             clearCoo: clearCoo, //清空cookie
             addCoo: addCoo, //添加
-            getCoo: getCoo //获取
+            getCoo: getCoo, //获取
+            add: add
         };
     }
 );

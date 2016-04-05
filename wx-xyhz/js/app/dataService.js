@@ -6,25 +6,30 @@
 define(['jquery', 'config'],
     function($, config) {
         var
-            callApi = function(url, type, beforeSend, callback) {
+            callApi = function(url, type, beforeSend, callback, data) {
+                type = type || 'GET';
+                data = data || null;
                 $.ajax({
                     url: url,
                     type: type,
                     dataType: 'json',
+                    data: data,
                     beforeSend: beforeSend,
-                    success: function(data) {
-                        callback(data);
+                    success: function(ret) {
+                        callback(ret);
                     }
                 });
             },
 
             getData = function(id, beforeSend, callback) {
-                url = config.baseUrl + id;
+               // url = config.baseUrl + id;
+               url = id;
                 callApi(url, 'GET', beforeSend, callback);
             },
 
             postData = function(id, beforeSend, callback) {
-                url = config.baseUrl + id;
+                //url = config.baseUrl + id;
+                url = id;
                 callApi(url, 'post', beforeSend, callback);
             };
 

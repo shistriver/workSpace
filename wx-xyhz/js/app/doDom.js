@@ -12,21 +12,21 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'callback', 'dataService', 'paging
 
 				//热搜
 				var pageIndex = 1;
-				var hotKeyUrl = 'good/?search_type=8';
-				dataService.getData(hotKeyUrl + '&page_size=9&page=' + pageIndex, beforeSend.showKeyListLoading, callback.showKeyListData);
+				var hotKeyUrl = 'http://app.xinyihezi.com:8888/good/?search_type=8';
+				dataService.getData(hotKeyUrl + '&page_size=9&page=' + pageIndex, beforeSend.showKeyListLoading, callback.showKeyListData, null);
 				$('.hs-area .change').click(function(event) {
 					if (pageIndex >= config.label_count / 9) {
 						pageIndex = 0;
 					}
 					pageIndex++;
 					var url = hotKeyUrl + '&page_size=9&page=' + pageIndex;
-					dataService.getData(url, beforeSend.showKeyListLoading, callback.showKeyListData)
+					dataService.getData(url, beforeSend.showKeyListLoading, callback.showKeyListData, null)
 					//loadKeyList(url);
 				});
 
 				//进行搜索操作
 				function doSearch(key) {
-					var url = encodeURI('good/?search_type=1&name=' + key);
+					var url = encodeURI('http://app.xinyihezi.com:8888/good/?search_type=1&name=' + key);
 					console.log(key);
 					paging.pageGetData(url, beforeSend.showGoodsListDataLoading, callback.showGoodsListData);
 				}
