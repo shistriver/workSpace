@@ -21,16 +21,16 @@ define(['jquery', 'config'],
                 });
             },
 
-            getData = function(id, beforeSend, callback) {
+            getData = function(id, beforeSend, callback, data) {
                // url = config.baseUrl + id;
                url = id;
-                callApi(url, 'GET', beforeSend, callback);
+                callApi(url, 'GET', beforeSend, callback, data);
             },
 
-            postData = function(id, beforeSend, callback) {
+            postData = function(id, beforeSend, callback, data) {
                 //url = config.baseUrl + id;
                 url = id;
-                callApi(url, 'post', beforeSend, callback);
+                callApi(url, 'post', beforeSend, callback, data);
             };
 
         return {

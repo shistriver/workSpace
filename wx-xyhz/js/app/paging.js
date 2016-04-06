@@ -28,11 +28,29 @@ define(['jquery', 'onScroll', 'dataService', 'config'],
 						
 						console.log('config.loadFlag:'+config.loadFlag + '<br>onScroll.isOnScroll():'+onScroll.isOnScroll());
 					}, 1000);
-
+			},
+			pagePostData = function(id, beforeSendFn, callbackFn, data) {
+				var
+					iIntervalId = setInterval(function() {
+						if(onScroll.isOnScroll()){
+							if (config.pageIndex == 1 || config.loadFlag) {
+								//urlId = id + '&page_size=' + config.pageSize + '&page=' + config.pageIndex;
+								data.page_index = config.pageIndex;
+								data.page_size = config.pageSize;
+								dataService.postData(id, beforeSendFn, callbackFn, data);
+								config.pageIndex++;
+							} else {
+								clearInterval(iIntervalId);
+							}
+						}else{}
+						
+						console.log('config.loadFlag:'+config.loadFlag + '<br>onScroll.isOnScroll():'+onScroll.isOnScroll());
+					}, 1000);
 			};
 
 		return {
-			pageGetData: pageGetData
+			pageGetData: pageGetData,
+			pagePostData: pagePostData
 		};
 	}
 );

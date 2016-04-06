@@ -22,14 +22,16 @@ define([],
                       var s = date.getSeconds();
                       var time = Y+M+D+h+m+s;
                       return time;
-                  };
+                  },
+                  gift_type = 0;
             return {
                   baseUrl: baseUrl,
                   label_count: label_count,
                   loadFlag: loadFlag,
                   pageIndex: pageIndex,
                   pageSize: pageSize,
-                timestamp:timestamp
+                  timestamp: timestamp,
+                  gift_type: gift_type
             };
       }
 );

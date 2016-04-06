@@ -3,8 +3,8 @@
  */
 //请求数据服务
 
-define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 'goodsModify'],
-    function($, cookieCrud, beforeSend, paging, config, getUrlPara, goodsModify) {
+define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 'goodsModify', 'dataService'],
+    function($, cookieCrud, beforeSend, paging, config, getUrlPara, goodsModify, dataService) {
         var
             showGoodsListData = function(li) {
                 if (li.status == '0') {
@@ -103,6 +103,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                     console.log(productId);
                     var
                         iRet = {
+                            product_id: ret.data.products[productId].product_id,
                             image_url: ret.data.products[productId].image_url,
                             short_name: ret.data.short_name,
                             specName: specName,
@@ -164,20 +165,22 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                         runtimeTotalPrice(styleIndex, productNum);
                     });
 
-                    $('.order-confirm .order-right').click(function(event) {
+                    $('.order-confirm .order-right').click(function(event) {//确认订单
                        var 
                             iPara = {
-                                short_name: iRet.short_name,
-                                specName: iRet.specName,
-                                spec: iRet.spec,
-                                p_price: iRet.p_price,
-                                price: iRet.price,
-                                product_num: parseInt($('#goodsNum').val()),
-                                freight: totalPrice(styleIndex, productNum) - this.p_price * this.product_num,
-                                total_price: totalPrice(styleIndex, productNum)
+                                address_id: $('.info-top').attr('data-address_id'), 
+                                customer_memo: $('#order_area').val(),
+                                good_spec: iRet.spec,
+                                order_type: (2-styleIndex), //生成订单类型--0：送礼订单， 1：凑份子 2： 自买
+                                product_id: iRet.product_id, //货品id
+                                quantity: productNum, //购买数量
+                                source: "3", //购买来源-- 写死为3即可
+                                total_price: totalPrice(styleIndex, productNum)// 前段验证的商品总额--这部分写错也没关系，因为后端会自己算价钱--但是字段必须有
                             },
-                            paraStr = 'short_name='+iPara.short_name+'&specName='+iPara.specName+'&spec='+iPara.spec+'&p_price='+iPara.p_price+'&price='+iPara.price+'&product_num='+iPara.product_num+'&freight='+iPara.freight+'&total_price='+iPara.total_price;
-                        location.href = 'orderDetail.html?'+paraStr;
+                            paraStr = '&total_price='+iPara.total_price+'&address_id='+iPara.address_id+'&customer_memo='+iPara.customer_memo+'&good_spec='+iPara.good_spec+'&order_type='+iPara.order_type+
+                            '&product_id='+iPara.product_id+'&quantity='+iPara.quantity+'&source='+iPara.source+'&total_price='+iPara.total_price;
+                        
+                        location.href = 'pay.html?'+paraStr;
                     });
 
                     function runtimeTotalPrice(index, productNum){//实时总需支付
@@ -192,7 +195,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
             },
             showDefaultAddr = function(ret) {
                 if (ret.status == '0') {
-                    if(ret.data = null || ret.data.length == 0){
+                    if(ret.data == null || ret.data.length == 0){
                         $('.add_address').show();
                     }else{
                         var
@@ -201,10 +204,18 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                             if(ret.data[i].is_default == 1){
                                 iRet.name = ret.data[i].name;
                                 iRet.mobile = ret.data[i].mobile;
-                                iRet.addr = ret.data[i].country + ret.data.province + ret.data.city + ret.data.city + detail;
+                                iRet.addr = ret.data[i].country + ret.data[i].province + ret.data[i].city + ret.data[i].city + ret.data[i].detail;
+                                iRet.address_id = ret.data[i].address_id;
+                                break;
                             }
                         }
-                        var userAddr = '<div class="info-top"><div class="name">'+iRet.name+'</div><div class="iphone">'+ iRet.mobile+'</div></div><div class="arrow"></div><div class="address">'+iRet.addr+'</div>';
+                        if(i ==ret.data.length){
+                            iRet.address_id = ret.data[0].address_id;
+                            iRet.name = ret.data[0].name;
+                            iRet.mobile = ret.data[0].mobile;
+                            iRet.addr = ret.data[0].country + ret.data[0].province + ret.data[0].city + ret.data[0].city + ret.data[0].detail;
+                        }
+                        var userAddr = '<div class="info-top" data-address_id="'+iRet.address_id+'"><div class="name">'+iRet.name+'</div><div class="iphone">'+ iRet.mobile+'</div></div><div class="arrow"></div><div class="address">'+iRet.addr+'</div>';
                         $('.user-info').prepend(userAddr);
                     }
 
@@ -219,35 +230,78 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                 if (ret.status == '0' && ret.data != null) {
                     var
                         iRet = {
-                            order_num: ret.data.order_num,
-                            create_time: ret.data.create_time,
-                            short_name: getUrlPara.getUrlPara('short_name'),
-                            specName: getUrlPara.getUrlPara('specName'),
-                            spec: getUrlPara.getUrlPara('spec'),
-                            p_price: getUrlPara.getUrlPara('p_price'),
-                            price: getUrlPara.getUrlPara('price'),
-                            product_num: getUrlPara.getUrlPara('product_num'),
-                            freight: getUrlPara.getUrlPara('freight'),
                             total_price: getUrlPara.getUrlPara('total_price')
-                        }
-                        orderDetailInfo = '<div class="commodity_wrap"><div class="commodity_box"><div class="info-left"><img src="img/20160218135537_29463.jpg"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.short_name+'</h3><div class="price_wrap"><span class="price"><span>￥'+iRet.p_price+'</span></span><span class="price_old"><span>￥16.80</span></span></div></div></div><div class="arrow"></div><div class="taste_wrap"><p class="taste-name">'+iRet.specName+'：<span>'+iRet.spec+'</span></p><span class="number">×1</span></div></div></div><div class="item"><div class="item-list"><span class="static">运费</span><span class="money">￥0.00</span></div><div class="item-list"><span class="static">实付款</span><span class="money">￥9.90</span></div></div>';
-                        ;
-
-                    $('#orderId').text(iRet.order_num);
-                    $('#orderTime').text(iRet.create_time);
-
-                    $('.commodity_wrap').click(function(event) {
-                        location.href = 'http://www.xinyihezi.com/wallet/gift/addr/edit?order_id=EDE763E4AA5B2301FE8712A7AA369C3EB828C29AA9C405215201101A5E151030AE23A2E3FFA8BDCB6E0AFB435C66C2BC&address_id=148774';
+                        };
+                        console.log(iRet.total_price);
+                    $('#total_price .money').text(iRet.total_price);
+                    $('.zhifu-btn').click(function(event) {
+                        alert('支付');
                     });
 
                 } else {}
+            },
+            showPay = function(ret) {
+                if (ret.status == '0' && ret.data != null) {
+                    var
+                        iRet = {
+                            create_time: config.timestamp("1458647137"), //订单生成时间
+                            final_amount: ret.data.final_amount, //订单成交价格
+                            order_id: ret.data.order_id,
+                            order_num: ret.data.order_num,// 订单号
+                            order_status: ret.data.order_status, //订单状态
+                            share_url: ret.data.share_url,// 分享链接
+                            status_message: ret.data.status_message //前段显示在我的订单里面的订单状态信息
+                        };
+                        console.log(iRet.total_price);
+                   
+                    $('.zhifu-btn').click(function(event) {
+                        alert('支付');
+                    });
+
+                } else {}
+            },
+            showMyGift = function(ret){
+                var 
+                    iRet = {
+                        "actual_payment": "84", 真实付的钱数
+                        "avatar": "http://7xj2g6.com2.z0.glb.qiniucdn.com/icon1445662771.jpg", 头像
+                        "bonus_money": "0", 红包钱数
+                        "create_time": "1458647265",订单生成时间
+                        "delay_time": "431833",还有多长时间超时
+                        "discount": "0",优惠价格
+                        "final_amount": "84",订单价格
+                        "goods_id": "6711",商品id
+                        "goods_spec": "???????????????",商品标签
+                        "is_secret": "0",是否是神秘礼物
+                        "mkprice": "158.00", 市场价
+                        "order_exchange_type": "0",
+                        "order_id": "34242", 订单id
+                        "order_message": "???????????????????????????????????????????????????",
+                        "order_num": "145864726534242", 订单编号
+                        "order_status": "1", 订单状态
+                        "pic_images": [], 上传的图片列表
+                        "price": "79.00", 货品价格
+                        "product_id": "52959", 货品id
+                        "product_image_url": "http://7xj26i.com2.z0.glb.qiniucdn.com/@/BackstageManager/files/image/20150625/shanli/20150625140103_46881.jpg", 商品url
+                        "product_name": "??????Ali ????????????????????? ",货品名称
+                        "quantity": "1",购买数量
+                        "share_url": "http://test.xinyihezi.com/wallet/gift/detail?order_id=E2107B3C11E06B8106CFCB83B9CE427CB828C29AA9C405215201101A5E151030203015AF69119DD3E2115F46B857AE24&order_type=0",分享链接
+                        "show_index": "1",是否显示价格
+                        "status_message": "?????????", 显示在列表里面的订单详情
+                        "to_user": "", 送礼订单这个字段表示送给谁
+                        "total_freight": "5" 运费多少钱
+                    },
+                    nexthtml = '<li><h2 class="status"><img src="http://7xipnz.com2.z0.glb.qiniucdn.com/icon1450614335.jpg"alt=""><p>送给：未知的Ta</p><span>待送出</span></h2><div class="gift"><img src="http://7xipnz.com2.z0.glb.qiniucdn.com/icon1450614335.jpg"alt=""><div class="right"><p>首播咳咳咳地方地方看见了的法律会计师的</p><span>味道：盐焗味</span><i>×1</i></div></div><p class="money"><i>¥9.00</i><span>实付款：</span></p><div class="btn-box"><button class="color-red">立即送出</button><button class="mr10">订单详情</button><button class="mr10">立即付款</button></div></li>';
             };
 
         return {
             showGoodsListData: showGoodsListData,
             showKeyListData: showKeyListData,
             showOrderConfirmData: showOrderConfirmData,
-            showDefaultAddr: showDefaultAddr
+            showDefaultAddr: showDefaultAddr,
+            showOrderDetail: showOrderDetail,
+            showPay: showPay,
+            showMyGift:showMyGift
         };
     }
 );
