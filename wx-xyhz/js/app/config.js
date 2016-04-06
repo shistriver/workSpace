@@ -11,7 +11,7 @@ define([],
                   loadFlag = true,
                   pageIndex = 1, // 当前页数，默认设为第 1 页 
                   pageSize = 10, // 每页显示的数量
-                  timestamp = function(str){
+                  timestamp = function(str){//时间戳
                       var str = parseInt(str) * 1000;
                       var date = new Date(str);
                       var Y = date.getFullYear() + '-';
