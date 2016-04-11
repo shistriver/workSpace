@@ -1,0 +1,659 @@
+/* 禁用iPhone中Safari的字号自动调整 */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+
+}
+/* 去除iPhone中默认的input样式  清除苹果浏览器的圆角表单*/
+input[type="submit"],
+
+input[type="reset"],
+
+input[type="button"],
+
+input{-webkit-appearance:none; resize: none;}
+/* 取消链接高亮  */
+body,div,ul,li,ol,h1,h2,h3,h4,h5,h6,input,textarea,select,p,dl,dt,dd,a,img,button,form,table,th,tr,td,tbody,article, 
+aside, details,figcaption,figure,footer,header,hgroup, menu,nav,section{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0); }
+/* 设置HTML5元素为块 */
+article, aside, details,figcaption,figure,footer,header,hgroup, menu,nav,section {
+display: block;
+}
+/* 图片自适应 */
+img {
+max-width: 100%;
+height: auto;
+width:auto\9; /* ie8 */
+-ms-interpolation-mode:bicubic;/*为了照顾ie图片缩放失真*/
+}
+/* 初始化 */
+body,div,ul,li,ol,h1,h2,h3,h4,h5,h6,input,textarea,select,p,dl,dt,dd,a,img,button,form,table,th,tr,td,tbody,article, 
+aside, details,figcaption,figure,footer,header,hgroup, menu,nav,section{margin:0; padding:0; border:none;}
+body{font-family: Microsoft YaHei,Tahoma,Arial,sans-serif; color:#555; background-color:#F7F7F7;}
+em,i{font-style:normal;}
+strong{font-weight: normal;}
+.clearfix:after{content:""; display:block; visibility:hidden; height:0; clear:both;}
+.clearfix{zoom:1;}
+a{text-decoration:none; color:#969696; font-family: Microsoft YaHei,Tahoma,Arial,sans-serif;}
+a:hover{ text-decoration:none;}
+ul,ol{list-style:none;}
+h1, h2, h3, h4, h5, h6{ font-size:100%; font-family: Microsoft YaHei;}
+img{border: none;}
+.scope{min-width:320px; max-width:540px;}
+
+
+/*真正的页面样式开始*/
+html{font-size: 62.5%;}
+body{ font-size: 14px;font-family: Arial, Verdana, Helvetica, "Microsoft YaHei", sans-serif; margin: 0px; padding: 0px;color: rgb(103, 103, 103);  background: #f8f8f8;  }
+*{list-style: none; margin:0; padding:0;}
+
+img {
+    display: block;
+    width: 100%;
+}
+#download{display: none; width: 100%; position: fixed; left: 0; top:0; overflow: hidden;z-index: 1000; background-color: #fff; padding: 0;}
+#download img{width: 100%;display: block;}
+#download .open{width:91%; height: 100%; position: absolute; top: 0;right: 9%;}
+#download .close{width:8%; height: 100%; position: absolute; top: 0;right: 0;}
+
+/* 本例子css start-------------------------------------- */
+    .slideBox{ position:relative; overflow:hidden; margin:0 auto;  max-width:560px;/* 设置焦点图最大宽度 */ }
+    .slideBox .hd{ position:absolute; height:28px; line-height:28px; bottom:5px; left:50%;transform: translate(-50%,0);-webkit-transform: translate(-50%,0); z-index:1; }
+    .slideBox .hd li{ display:inline-block; width:7px; height:7px; -webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px; background:#ccc; text-indent:-99999px; overflow:hidden; margin:0 4px;   }
+    .slideBox .hd li.on{ background:#ff5555;  }
+    .slideBox .bd{ position:relative; z-index:0; }
+    .slideBox .bd li{ position:relative; text-align:center;  }
+    .slideBox .bd li img{ background:url(../img/placeholder.jpg) center center no-repeat;  vertical-align:top; width:100%;/* 图片宽度100%，达到自适应效果 */}
+    .slideBox .bd li a{ -webkit-tap-highlight-color:rgba(0,0,0,0);  }  /* 去掉链接触摸高亮 */
+    .slideBox .bd li .tit{ display:block; width:100%;  position:absolute; bottom:0; text-indent:10px; height:28px; line-height:28px; background:url(images/focusBg.png) repeat-x; color:#fff;  text-align:left;  }
+
+/* 本例子css end-------------------------------------- */
+
+.buy_area{
+    overflow: hidden;
+}
+.buy_area .fn_wrap {
+    padding:.8rem 1rem;
+    position: relative;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+.buy_area .fn_wrap .fn {
+    color: #333;
+    overflow: hidden;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.6rem;
+    max-height: 4rem;
+}
+.buy_area .price_wrap{
+   padding:0 1rem;
+    line-height: 1.5rem; 
+   font-size: 1rem; 
+   background-color: #fff;
+}
+.price{
+    color: #ff5555;
+    margin-right: .1rem;
+}
+ .buy_area .price_wrap .price{
+    color: #ff5555;
+    margin-right: .1rem;
+    line-height: 1.7rem;
+}
+
+ .price b {
+    font-size: 2rem;
+    font-weight: 500;
+}
+.buy_area .price_old {
+    text-decoration: line-through;
+    color: #c9c9c9;
+    margin-right: .4rem;
+}
+.price_wrap .tip_red{
+    font-size: .8rem;
+    color: #fff;
+    background: #ff5555;
+    padding: 1px 2px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 1px;
+    margin-top: -2px;
+    line-height: 8px;
+    height: 8px;  
+    border-radius: 2px;
+}
+.buy_area .bg_grey{
+    background-color:#B8B8B8; 
+}
+.buy_area .tip_for_andriod{
+    font-size: .6rem;
+}
+.buy_area .express_wrap{
+   padding:1.2rem 1rem 2px;
+   line-height: 1.5rem;
+   font-size: 1.2rem;
+   color: #797979;
+   background-color: #fff;
+   text-align: center;
+}
+ .left{
+    float: left;
+}
+ .right{
+    float: right;
+}
+.center{
+    display: inline-block;
+}
+.buy_area .service_wrap{
+    color: #c9c9c9;
+    padding:.5rem 0 0;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #F2F2F2;
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem;
+}
+.buy_area .three{
+    height:1.5rem;
+    line-height: 1.5rem;
+    position: relative;
+    padding-left: 2.5rem;
+    padding-right: 1rem;
+}
+.buy_area .three i{
+    color: #ffc34f;
+}
+.buy_area .three img{
+ position: absolute;
+ left: 1rem;
+ top: 1px;
+ width: 1.2rem;
+ display: inline-block;
+}
+.buy_area .ser_list{
+    height:1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    padding: .9rem 3rem 1rem;
+}
+.buy_area .ser_list img{
+    width: 6.6rem;
+}
+.buy_area .chosed_wrap{
+    color:#333;
+    padding:0 1rem;
+    height:4.4rem;
+    line-height: 4.4rem;
+    font-size: 1.42rem;
+    background-color: #fff;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 1.2rem;
+    
+}
+.buy_area .chosed_box{
+    height:4.4rem;
+    background-image: url(../img/ic_gd_choose_right.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: .8rem;
+}
+.tag_wrap{
+    padding-left: 1rem;
+    font-size: 1.3rem;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+    background-color: #fff;
+    overflow: hidden;
+}
+.tag_num{
+    color: #333;
+    padding: 0 10px;
+    height: 37px;
+    line-height: 37px;
+    font-size: 14px;
+    background-color: #fff;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+}
+.tag_num .num-box{
+    float: right;
+    width: 81px;
+    margin-top: 5px;
+}
+.tag_num .num-box .reduce-btn{
+    width: 27px;
+    height: 27px;
+    float: left;
+    background: url(../img/ic_shuliang_2.png);
+    background-size: cover;
+}
+.tag_num .num-box .num-txt{
+    width: 27px;
+    float: left;
+    height: 27px;
+    background-color: #f8f8f8;
+    text-align: center;
+    outline: none;
+}
+.tag_num .num-box .plus-btn{
+    width: 27px;
+    height: 27px;
+    float: right;
+    background: url(../img/ic_shuliang_3.png);
+    background-size: cover;
+}
+.tag_tit{
+    height:3.6rem;
+    line-height: 3.6rem;
+    color: #333;
+    font-size: 1.42rem;
+    border-bottom: 1px solid #f2f2f2;
+}
+.tag_list{
+    padding-top: 10px;
+    overflow: hidden;
+}
+.tag_list li{
+    border-radius: 5px;
+    text-align: center;
+    /* width: 20%; */
+    height:3rem;
+    line-height: 3rem;
+    border:1px solid #c9c9c9;
+    box-sizing: border-box;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding:0 13px;
+}
+.choose_area{
+    height:100%;
+    width:100%;
+}
+.choose_area .full_grey{
+    height:100%;
+    width:100%;
+    background-color: rgba(0,0,0,0.6);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    display: none;
+}
+.choose_area .choose_box{
+    width: 100%;
+    background-color: #fff;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+     transform: translate(0,100%);
+    -webkit-transform: translate(0,100%); 
+    z-index: 2;
+}
+.choose_area .desc_box{
+    margin: 1rem;
+    margin-bottom: 0;
+    padding-bottom: 1rem; 
+    border-bottom: 1px solid #f2f2f2;
+    overflow: hidden;
+    position: relative;
+}
+.choose_area .image{
+    float: left;
+    width:7.5rem;
+    
+}
+.choose_area .desc{
+    padding-top: .8rem;
+    margin-left: 9rem;
+}
+.choose_area .express{
+    color: #c9c9c9;
+    margin-left: .5rem;
+}
+.choose_area .chosed_txt{
+    margin-top: 2.2rem;
+    color: #333;
+    font-size: 1.5rem;
+    width:100%;
+    overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.choose_area .tag_wrap{
+    border:0;
+    margin-top: .3rem;
+}
+.choose_area .tag_wrap .tag_tit{
+    border: 0;
+    margin-bottom: -0.5rem;
+}
+.choose_area .tag_list li{
+    color: #797979;
+    border-color: #797979;
+    border-radius: 3px;
+}
+.choose_area .tag_list li.chosed{
+    color: #fff;
+    background-color: #ff5555;
+    border-color: #ff5555;
+}
+.choose_area .choose_btn{
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: center;
+    background-color: #ff5555;
+    height:4.5rem;
+    width:100%;
+    margin-top: 1.8rem;
+    line-height: 4.5rem;
+}
+.choose_area .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height:3rem;
+    width: 3rem;
+    /* background-color: #ccc; */
+    background-image: url(../img/ic_close_grey.png);
+    background-position: 1.5rem 0;
+    background-size: 1.5rem 1.5rem;
+    background-repeat: no-repeat;
+    z-index: 3;
+}
+ .load_wrap{
+    height: 34px;
+    padding:0 1rem;
+    background-color: #f8f8f8;
+    position: relative;
+}
+ .load_wrap .line{
+    height:17px;
+    border-bottom: 1px solid #c9c9c9;
+}
+ .load_wrap .load_txt{
+    height:34px;
+    line-height: 34px;
+    color: #c9c9c9;
+    background-color: #f8f8f8;
+    padding: 0 5px;
+    display: inline-block;
+    position: absolute;
+    left:50%;
+    top: 0;
+    transform: translate(-50%,0);
+    -webkit-transform: translate(-50%,0); 
+}
+.img_list{
+    padding:.5rem;
+    padding-bottom: 0;
+    background-color: #fff;
+}
+.img_list li{
+    padding-bottom: .5rem;
+}
+
+.guang{
+    width: 100%;
+    height: 100%;
+    font-size: 2rem;
+    color: #fff;
+    background-color: rgba(0,0,0,0.8);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none; 
+}
+.guang .wp{
+    display: table;
+    width: 84%;
+    height: 84%;
+    margin:7%;
+}
+.guang .wp div{
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    border:1px solid #fff;
+    border-radius: 100%;
+    text-align: center;
+    
+   /*  height:13rem; */
+    line-height: 11rem;
+    overflow: hidden;
+
+}
+.img-c .guang .wp{
+    display: table;
+    height: 63%;
+    margin:18.5% 7%;
+}
+img {
+    display: block;
+    width: 100%;
+}
+.item .img-c a{
+    display: block;
+    width: 100%;
+     padding-bottom: 133.333333333333%;
+    background-position: center 0;
+    background-size: 100% auto;
+    background-repeat: no-repeat; 
+}
+ 
+h3,h4,h5{
+    font-size: inherit;
+    font-weight: 400;
+}
+
+.ui-btn-circle {
+    border-radius: 2.2rem;
+}
+.ui-btn-main {
+    background-color: #ff5555;
+    color: #fff;
+    background-clip: padding-box;
+}
+.ui-btn, .ui-btn-lg, .ui-btn-s {
+    min-width: 5.5rem;
+    display: inline-block;
+    text-align: center;
+    border: 0;
+    vertical-align: top;
+    box-sizing: border-box;
+  
+}
+.ui-fall {
+    /* padding: 0 1%; */
+    margin: 0;
+    margin-bottom: 5rem;
+    background-color: #f8f8f8;
+}
+.content .ui-fall{
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+} 
+.ui-fall {
+    display: block;
+    overflow: hidden;
+}
+ menu, dir {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+.ui-fall li {
+    margin: 1%;
+    padding: 0;
+    width: 49%;
+}
+.ui-fall li:nth-child(2n+1){
+    margin-left: 0;
+}
+.ui-fall li:nth-child(2n){
+    margin-right: 0;
+}
+.ui-fall li {
+    display: inline-block;
+    box-sizing: border-box;
+    float: left;
+    background-color: #fff;
+}
+.ui-fall li .img-c {
+    position: relative;
+}
+/* .ui-box:before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+} */
+.ui-fall li a {
+    display: block;
+    text-align: left;
+    font-size: 1.4rem;
+    white-space: nowrap; 
+    background-color: #fff;
+}
+.ui-fall .info-c {
+    padding: .6rem;
+}
+.ui-fall .item h3 {
+    color: #333;
+    font-size: 1.3rem;
+    overflow: hidden;
+    height: 3rem;
+    line-height: 1.5rem;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; 
+    margin-bottom: .5rem;
+}
+.ui-fall li h3 {
+    
+}
+.ui-fall .item .price {
+    font-size: .8rem;
+    font-weight: bolder;
+    color: #FC5A5C;
+    line-height: 1.5rem;
+}
+.ui-fall .item strong {
+    margin-left: 0.2rem;
+    font-size: 1.3rem;
+    font-weight: normal;
+}
+.ui-fall .item .love{
+    font-size: 1.2rem;
+    color: #989898;
+    float: right;
+    margin-top: 0.1rem;
+    padding-left: 1.5rem;
+    background: url(http://7xl439.com2.z0.glb.qiniucdn.com/redenvelope_xiababy_icon_shoucang.png) 0 center no-repeat;
+    background-size: auto 78%;
+}
+.loader{
+    width: 100%;
+
+}
+.loader img{
+    width:10%;
+    margin-left: 45%;
+} 
+.want{
+    height:4.5rem;
+    width:100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+   /* border-top: 1px solid #f2f2f2;*/
+    background-color: #fff;
+}
+.want div{
+    width:50%;
+    height: 4.5rem;
+    line-height: 4.5rem;
+    color: #fff;
+    text-align: center;
+    font-size: 1.5rem;
+    float: left;
+}
+.want div.iwant{
+    background-color: #FFBF25;
+}
+.want div.tota{
+    background-color: #ff5555;
+}
+.want div.bg_grey{
+    background-color:#B8B8B8;
+}
+.consult{
+    height:45px;
+    width:20%;
+    padding:10px;
+    box-sizing: border-box;
+    text-align: center;
+    float: left;
+}
+.consult .txt{
+
+}
+@media (device-height:667px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone6 */
+.title{
+    height: 90px;
+    margin-bottom: -5px;
+    width:100%;
+}
+}
+
+#to_top{
+    width:40px; 
+    height:40px;
+    background-image: url(http://7xlen1.com2.z0.glb.qiniucdn.com/pc_up.png);
+    background-position: center center;
+    background-repeat:no-repeat;
+    background-size:100%;
+    position: fixed;
+    right: 15px;
+    bottom:-40px;
+    z-index: 999;
+    cursor: pointer;
+    opacity: 0;
+}
+#fuceng{
+    width: 100%; 
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    background-color: rgba(0,0,0,.7);
+    padding:2rem 3rem;
+    box-sizing: border-box;
+}
+.Warning {
+    width: 180px;
+    height: 54px;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 54px;
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 12px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 100;
+    margin-top: -25px;
+    margin-left: -90px; }

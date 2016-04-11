@@ -34,7 +34,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                         $('.ui-fall').html($('.ui-fall').html() + nextpagehtml);
                         $('.ui-fall li').on('click', function(event) {
                             var goodsid = $(this).attr('data-goodsid');
-                            location.href = 'http://app.xinyihezi.com:8881/index.html#/goods/' + goodsid;
+                            location.href = config.baseUrlPage + '/index.html#/goods/' + goodsid;
                         });
                         config.loadFlag = true;
                     }
@@ -92,34 +92,34 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
             showOrderConfirmData = function(ret) {
                 if (ret.status == '0') {
                     var
-                        productId = getUrlPara.getUrlPara('productId'),
-                        productNum = Number(getUrlPara.getUrlPara('productNum')).toFixed(2);
+                        tagId = getUrlPara.getUrlPara('tagId'),
+                        productNum = Number(getUrlPara.getUrlPara('productNum'));
                         styleIndex = 0,//购买形式 默认为0,0：自买   1：凑份子 2：送礼
                         specName = (function() {//规格名
                         for (var p in ret.data.products[0].spec) {
                             return p;
                         }
                     })();
-                    console.log(productId);
+                    console.log(tagId);
                     var
                         iRet = {
-                            product_id: ret.data.products[productId].product_id,
-                            image_url: ret.data.products[productId].image_url,
+                            product_id: ret.data.products[tagId].product_id,
+                            image_url: ret.data.products[tagId].image_url,
                             short_name: ret.data.short_name,
                             specName: specName,
-                            spec: ret.data.products[productId].spec[specName],
-                            p_price: Number(ret.data.products[productId].p_price).toFixed(2),
-                            price: Number(ret.data.products[productId].price).toFixed(2),
-                            fre_rule_enable: ret.data.products[productId].fre_rule_enable,
-                            freight: ret.data.products[productId].freight,
-                            store: ret.data.products[productId].store
+                            spec: ret.data.products[tagId].spec[specName],
+                            p_price: Number(ret.data.products[tagId].p_price).toFixed(2),
+                            price: Number(ret.data.products[tagId].price).toFixed(2),
+                            fre_rule_enable: ret.data.products[tagId].fre_rule_enable,
+                            freight: ret.data.products[tagId].freight,
+                            store: ret.data.products[tagId].store
                         },
                         totalPrice = function(index, productNum){//0：自买   1：凑份子 2：送礼
                             index = index || 0;
                             if(iRet.fre_rule_enable != '0'){
-                                iRet.gift_cut_freight = Number(ret.data.products[productId].gift_freight_rule[0].cut_freight).toFixed(2);//2
-                                iRet.raise_cut_freight = Number(ret.data.products[productId].raise_freight_rule[0].cut_freight).toFixed(2);//1
-                                iRet.self_buy_cut_freight = Number(ret.data.products[productId].self_buy_freight_rule[0].cut_freight).toFixed(2);//0
+                                iRet.gift_cut_freight = Number(ret.data.products[tagId].gift_freight_rule[0].cut_freight).toFixed(2);//2
+                                iRet.raise_cut_freight = Number(ret.data.products[tagId].raise_freight_rule[0].cut_freight).toFixed(2);//1
+                                iRet.self_buy_cut_freight = Number(ret.data.products[tagId].self_buy_freight_rule[0].cut_freight).toFixed(2);//0
 
                                 if(index == 0){
                                     return computeFreight(iRet.self_buy_cut_freight);
@@ -136,10 +136,10 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                                 return Number(iRet.p_price * productNum - cut).toFixed(2);
                             }
                         },
-                        commodityBox = '<div class="info-left"><img src="'+iRet.image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.short_name+'</h3></div><div class="taste_wrap"><div class="weight">'+iRet.specName+'：<span>'+iRet.spec+'</span></div><p class="taste-name"><span>￥'+iRet.p_price+'</span></p><span class="number">×<i>1</i></span></div></div>';
+                        commodityBox = '<div class="info-left"><img src="'+iRet.image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.short_name+'</h3></div><div class="taste_wrap"><div class="weight">'+iRet.specName+'：<span>'+iRet.spec+'</span></div><p class="taste-name"><span>￥'+iRet.p_price+'</span></p><span class="number">×<i>'+productNum+'</i></span></div></div>';
 
                     $('.commodity_box').html(commodityBox);
-
+                    $('#goodsNum').val(productNum);
                     //totalPrice(0);//默认自买
                      runtimeTotalPrice(styleIndex, productNum);
 
@@ -164,6 +164,12 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                         productNum = goodsModify.numDec(iRet.store);
                         runtimeTotalPrice(styleIndex, productNum);
                     });
+
+                    $('#goodsNum').keyup(function() {//输入
+                        productNum = goodsModify.keyNum(iRet.store);
+                        runtimeTotalPrice(styleIndex, productNum);
+                    });
+                    
 
                     $('.order-confirm .order-right').click(function(event) {//确认订单
                        var 
@@ -223,7 +229,6 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                         location.href = 'http://www.xinyihezi.com/wallet/gift/addr/edit?order_id=EDE763E4AA5B2301FE8712A7AA369C3EB828C29AA9C405215201101A5E151030AE23A2E3FFA8BDCB6E0AFB435C66C2BC&address_id=148774';
                     });
 
-                    
                 } else {}
             },
             showOrderDetail = function(ret) {
@@ -261,37 +266,73 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                 } else {}
             },
             showMyGift = function(ret){
-                var 
-                    iRet = {
-                        "actual_payment": "84", 真实付的钱数
-                        "avatar": "http://7xj2g6.com2.z0.glb.qiniucdn.com/icon1445662771.jpg", 头像
-                        "bonus_money": "0", 红包钱数
-                        "create_time": "1458647265",订单生成时间
-                        "delay_time": "431833",还有多长时间超时
-                        "discount": "0",优惠价格
-                        "final_amount": "84",订单价格
-                        "goods_id": "6711",商品id
-                        "goods_spec": "???????????????",商品标签
-                        "is_secret": "0",是否是神秘礼物
-                        "mkprice": "158.00", 市场价
-                        "order_exchange_type": "0",
-                        "order_id": "34242", 订单id
-                        "order_message": "???????????????????????????????????????????????????",
-                        "order_num": "145864726534242", 订单编号
-                        "order_status": "1", 订单状态
-                        "pic_images": [], 上传的图片列表
-                        "price": "79.00", 货品价格
-                        "product_id": "52959", 货品id
-                        "product_image_url": "http://7xj26i.com2.z0.glb.qiniucdn.com/@/BackstageManager/files/image/20150625/shanli/20150625140103_46881.jpg", 商品url
-                        "product_name": "??????Ali ????????????????????? ",货品名称
-                        "quantity": "1",购买数量
-                        "share_url": "http://test.xinyihezi.com/wallet/gift/detail?order_id=E2107B3C11E06B8106CFCB83B9CE427CB828C29AA9C405215201101A5E151030203015AF69119DD3E2115F46B857AE24&order_type=0",分享链接
-                        "show_index": "1",是否显示价格
-                        "status_message": "?????????", 显示在列表里面的订单详情
-                        "to_user": "", 送礼订单这个字段表示送给谁
-                        "total_freight": "5" 运费多少钱
-                    },
-                    nexthtml = '<li><h2 class="status"><img src="http://7xipnz.com2.z0.glb.qiniucdn.com/icon1450614335.jpg"alt=""><p>送给：未知的Ta</p><span>待送出</span></h2><div class="gift"><img src="http://7xipnz.com2.z0.glb.qiniucdn.com/icon1450614335.jpg"alt=""><div class="right"><p>首播咳咳咳地方地方看见了的法律会计师的</p><span>味道：盐焗味</span><i>×1</i></div></div><p class="money"><i>¥9.00</i><span>实付款：</span></p><div class="btn-box"><button class="color-red">立即送出</button><button class="mr10">订单详情</button><button class="mr10">立即付款</button></div></li>';
+                ///////////////////////////////
+                if (ret.status == '0') {
+                    if (config.pageIndex == 1 && (ret.data == null || ret.data.length == 0)) {
+                        $('.no-data').show();
+                        $('#loader').hide();
+                        //$('.ui-fall').html('').hide();
+                        config.loadFlag = false;
+                    } else if (ret.data.length < config.pageSize) {
+                        $('#loader').hide();
+                        config.loadFlag = false;
+                    } else {
+                        config.loadFlag = true;
+                    }
+                    for (var i = 0; i < ret.data.length; i++) {
+                        var
+                            iRet = {
+                                actual_payment: ret.data[i].actual_payment, //真实付的钱数
+                                avatar: ret.data[i].avatar, //头像
+                                bonus_money: ret.data[i].bonus_money, //红包钱数
+                                create_time: config.timestamp(ret.data[i].create_time), //订单生成时间
+                                //delay_time: ret.data.delay_time,//还有多长时间超时
+                                //discount: ret.data.discount,//优惠价格
+                                //final_amount: ret.data.final_amount,//订单价格
+                                goods_id: ret.data[i].goods_id, //商品id
+                                goods_spec: ret.data[i].goods_spec, //商品标签
+                                //is_secret: ret.data.is_secret,//是否是神秘礼物
+                                //mkprice: ret.data.mkprice, //市场价
+                                //order_exchange_type: ret.data.order_exchange_type,
+                                order_id: ret.data[i].order_id, //订单id
+                                order_message: ret.data[i].order_message,
+                                order_num: ret.data[i].order_num, //订单编号
+                                order_status: ret.data[i].order_status, //订单状态
+                                //pic_images: ret.data.pic_images, //上传的图片列表
+                                //price: ret.data.price, //货品价格
+                                //product_id: ret.data.product_id, //货品id
+                                product_image_url: ret.data[i].product_image_url, //商品url
+                                product_name: ret.data[i].product_name, //货品名称
+                                quantity: ret.data[i].quantity, //购买数量
+                                share_url: ret.data[i].share_url, //分享链接
+                                show_index: ret.data[i].show_index, //是否显示价格
+                                status_message: ret.data.status_message, //订单状态文字
+                                to_user: ret.data[i].to_user //送礼订单这个字段表示送给谁
+                                //total_freight: ret.data.total_freight //运费多少钱
+                            },
+                            nexthtml = '';
+
+                        if (config.gift_type == 0) { //收到
+                            nexthtml = '<li><h2 class="status"><img src="' + iRet.avatar + '"alt=""><p>送给：' + iRet.to_user + '</p><span>' + iRet.order_status + '</span></h2><div class="gift"><img src="' + iRet.product_image_url + '"alt=""><div class="right"><p>' + iRet.product_name + '</p><span>' + iRet.goods_spec + '</span><i>×1</i></div></div><p class="money"><i>¥' + iRet.actual_payment + '</i><span>实付款：</span></p><div class="btn-box"><button class="color-red">立即送出</button><button class="mr10">订单详情</button><button class="mr10">立即付款</button></div></li>';
+                        } else if (config.gift_type == 1) { //送出
+                            nexthtml = '<li><h2 class="status"><img src="' + iRet.avatar + '"alt=""><p>来自：' + iRet.to_user + '</p><span>' + iRet.order_status + '</span></h2><div class="gift"><img src="' + iRet.product_image_url + '"alt=""><div class="right"><p>' + iRet.product_name + '</p><span>' + iRet.goods_spec + '</span><i>×1</i></div></div><p class="money"><i>¥' + iRet.actual_payment + '</i><span>实付款：</span></p><div class="btn-box"><button class="color-red">立即送出</button><button class="mr10">订单详情</button><button class="mr10">立即付款</button></div></li>';
+                        } else { //凑份子
+                            nexthtml = '<li><h2 class="status"><p style="margin-left:0;">送给：' + iRet.to_user + '</p><span>' + iRet.order_status + '</span></h2><div class="gift"><img src="' + iRet.product_image_url + '"alt=""><div class="right"><p>' + iRet.product_name + '</p><span>' + iRet.goods_spec + '</span><i>×1</i></div></div><p class="money"><i>¥' + iRet.actual_payment + '</i><span>实付款：</span></p><div class="btn-box"><button class="color-red">立即送出</button><button class="mr10">立即付款</button><button class="mr10">订单详情</button></div></li>';
+                        }
+
+                        $('.order-list:visible').append(nexthtml);
+                    }
+                } else {
+                    //$('.no-data').show();
+                    //$('#loader').hide();
+                    //$('.ui-fall').html('').hide();
+                    config.loadFlag = false;
+                }
+                //////////////////////////////
+                
+                
+
+            //根据订单状态判断显示什么按钮待定写
             };
 
         return {

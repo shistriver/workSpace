@@ -29,8 +29,8 @@
         function($, cookieCrud, beforeSend, callback, dataService, config, getUrlPara,tabSwitch,limitChar) {
             var 
                 goodsId=getUrlPara.getUrlPara('goodsId'),
-                urlId = 'http://app.xinyihezi.com:8888/good/?goodid='+goodsId,
-                addrUrl = 'http://test.xinyihezi.com/wallet/h5/order/address?';
+                urlId = config.baseUrlCpp + '/good/?goodid='+goodsId,
+                addrUrl = config.baseUrlPython + '/wallet/h5/order/address?';
             cookieCrud.add('edeb9886b1df444dbe700077798ad063');
             dataService.postData(addrUrl, beforeSend.showKeyListLoading, callback.showDefaultAddr, null);   
             dataService.getData(urlId, beforeSend.showKeyListLoading, callback.showOrderConfirmData, null);

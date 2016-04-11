@@ -27,7 +27,7 @@
 
         }
     });
-   
+
     require(['jquery','cookieCrud', 'beforeSend', 'callback', 'dataService', 'config', 'tabSwitch', 'getUrlPara'],
         function($, cookieCrud, beforeSend, callback, dataService, config, tabSwitch, getUrlPara) {
             tabSwitch.tabBar('#payment .item-list');
@@ -46,7 +46,7 @@
 
             dataService.postData(urlId, beforeSend.showKeyListLoading, callback.showPay, postData);
 
-            $('#total_price .money').text('¥'+postData.total_price); 
+            $('#total_price .money').text('¥'+postData.total_price);
         }
     );
 })();

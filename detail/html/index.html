@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport" />
+  <meta name="format-detection" content="telephone=no">
+  <meta name="format-detection" content="email=no">
+  <title></title>
+  <link href="../css/style.css" rel="stylesheet" type="text/css" />
+  <link href="http://7xlen1.com2.z0.glb.qiniucdn.com/favicon.ico" type="image/x-icon" rel="shortcut icon" /> 
+  <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="../js/TouchSlide.1.1.js"></script>
+  <script type="text/javascript" src="../js/detail.js"></script>
+  <script type="text/javascript" src="../js/morelist.js"></script>
+  <script type="text/javascript" src="../js/js.js"></script>
+   </head>
+   <body>
+   <span id="labelid" style="display:none"></span>
+    <div class="event">
+    <div id="download">
+     <img src="http://7xl439.com2.z0.glb.qiniucdn.com/download.png" alt="">
+     <span class="open"></span>
+     <span class="close"></span>  
+  </div>
+      <div class="container" id="container">
+        <div class="content">
+          <!-- 本例主要代码 Start ================================ -->
+          <div id="slideBox" class="slideBox">
+            <div class="bd">
+              <ul></ul>
+            </div>
+            <div class="hd">
+              <ul></ul>
+            </div> 
+          </div>
+          <!-- 本例主要代码 End ================================ -->
+          <div class="buy_area" style="display:none">
+            <div class="fn_wrap">
+              <h1 class="fn"></h1>
+            </div>
+            <div class="price_wrap">
+              <span class="price"><i>￥ </i><b></b><i class="f"></i></span>
+              <span class="price_old"><i>￥</i><span></span></span>
+              <span class="tip_red"></span>
+            </div>
+            <div class="express_wrap">
+              <span class="left">快递<i></i>元</span>
+              <span class="center">送出<i></i>次</span>
+              <span class="right">收藏<i></i>人</span>
+            </div>
+            <div class="service_wrap">
+              <p class="three"><img src="../img/icon_detail_ty.png" height="18" width="18" alt="">该礼物由<i>第三方</i>发货并提供售后服务</p>
+              <p class="ser_list">
+                <img class="left" src="../img/icon_01.png" >
+                <img class="center" src="../img/icon_02.png" >
+                <img class="right" src="../img/icon_03.png" >
+              </p>
+            </div>
+            <div class="chosed_wrap">
+              <div class="chosed_box">
+                <span class="static">选择: </span>
+                <span class="chosed"></span>
+              </div>
+            </div>
+            <div class="tag_wrap">
+              <p class="tag_tit">礼物标签</p>
+              <ul class="tag_list">
+            <!-- <li>追女必备</li>
+            <li>可爱哒</li>
+            <li>萌物</li>
+            <li>潮牌</li>
+            <li>精选礼物</li> -->
+          </ul>
+        </div>
+        <div class="load_wrap">
+         <div class="line">
+         </div>
+         <span class="load_txt">继续拖动查看商品详情</span>
+       </div>
+      </div> 
+      <div class="choose_area">
+        <div class="full_grey"></div>
+        <div class="choose_box">
+          <div class="desc_box">
+            <div class="image">
+              <img src="http://7xj26i.com2.z0.glb.qiniucdn.com/@/BackstageManager/files/image/20150925/panhongyan/20150925174314_48032.jpg" alt="">
+            </div>
+            <div class="desc">
+              <span class="price"><i>￥ </i><b></b><i class="f"></i></span>
+              <span class="express">快递:￥<i></i></span>
+              <p class="chosed_txt"><span>未选择 </span><i></i></p>
+            </div>
+            <div class="close">
+            </div>
+          </div>
+          <div class="tag_wrap">
+            <p class="tag_tit">选择规格:</p>
+            <ul class="tag_list">
+              <!-- <li class="chosed">油壶两件套</li>
+              <li>单个玻璃盖(不包邮)</li>
+              <li>竹盖光面三件套</li>
+              <li>三件套</li>
+              <li>竹盖光面三件套</li> -->
+            </ul>
+          </div>
+            <div class="tag_num">
+                <span class="static">数量</span>
+                <div class="num-box">
+                    <botton id="goodsDec" class="reduce-btn"></botton>
+                    <input id="goodsNum" class="num-txt" type="text" value="1">
+                    <botton id="goodsAdd" class="plus-btn"></botton>
+                </div>
+            </div>
+          <div class="choose_btn">选择好了</div>
+
+        </div>
+      </div> 
+      <ul class="img_list">
+        
+      </ul>
+      <div class="load_wrap" id="more">
+        <div class="line">
+        </div>
+        <span class="load_txt" >更多相关礼物</span>
+      </div>
+      <ul class="ui-fall ui-clearfix items-box" id="ui-fall" >
+	</ul>
+  <div class="loader" style="display:none"><img src="../img/loading.gif" height="124" width="124" alt="">
+  </div>   
+</div>
+</div>
+<span id="store" style="display:none"></span>
+<div class="want">
+  <div class="iwant">我想要</div>
+  <div class="tota ">送给Ta</div>
+</div>
+</div>
+<span id="to_top"></span>
+<div id="fuceng" style="display:none">
+    <img src="http://7xlen1.com2.z0.glb.qiniucdn.com/view_yindao.png">
+  </div>
+
+<script>
+        //加载
+        document.onreadystatechange = completeLoading;
+        function completeLoading() {
+         if (document.readyState == "complete") {
+           $('.buy_area').show();
+         } 
+       }
+     </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

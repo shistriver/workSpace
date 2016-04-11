@@ -16,7 +16,7 @@
             'tabNav': 'app/tabNav'
         }
     });
-    require(['jquery','tabNav','config'],
+    require(['jquery','tabNav'],
         function($,tabNav) {
             $('.chosed_wrap span').click(function(){
                 var index = $(this).index();

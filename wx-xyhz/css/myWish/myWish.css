@@ -54,5 +54,15 @@ body {
     margin-bottom: 10px;
     color: #8c8c8d;
     font-size: 14px; }
+#container .btn-share {
+  height: 50px;
+  background-color: #f55;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 18px;
+  color: #fff;
+  z-index: 1; }
 
 /*# sourceMappingURL=myWish.css.map */
