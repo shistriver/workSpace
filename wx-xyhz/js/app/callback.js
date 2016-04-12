@@ -94,12 +94,12 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                     var
                         tagId = getUrlPara.getUrlPara('tagId'),
                         productNum = Number(getUrlPara.getUrlPara('productNum'));
-                        styleIndex = 0,//购买形式 默认为0,0：自买   1：凑份子 2：送礼
-                        specName = (function() {//规格名
-                        for (var p in ret.data.products[0].spec) {
-                            return p;
-                        }
-                    })();
+                        styleIndex = 0, //购买形式 默认为0,0：自买   1：凑份子 2：送礼
+                        specName = (function() { //规格名
+                            for (var p in ret.data.products[0].spec) {
+                                return p;
+                            }
+                        })();
                     console.log(tagId);
                     var
                         iRet = {
@@ -114,36 +114,44 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                             freight: ret.data.products[tagId].freight,
                             store: ret.data.products[tagId].store
                         },
-                        totalPrice = function(index, productNum){//0：自买   1：凑份子 2：送礼
+                        totalPrice = function(index, productNum) { //0：自买   1：凑份子 2：送礼
                             index = index || 0;
-                            if(iRet.fre_rule_enable != '0'){
-                                iRet.gift_cut_freight = Number(ret.data.products[tagId].gift_freight_rule[0].cut_freight).toFixed(2);//2
-                                iRet.raise_cut_freight = Number(ret.data.products[tagId].raise_freight_rule[0].cut_freight).toFixed(2);//1
-                                iRet.self_buy_cut_freight = Number(ret.data.products[tagId].self_buy_freight_rule[0].cut_freight).toFixed(2);//0
+                            var curfreight = 0;
+                            if (iRet.fre_rule_enable != '0') {
+                                iRet.gift_cut_freight = Number(ret.data.products[tagId].gift_freight_rule[0].cut_freight).toFixed(2); //2
+                                iRet.raise_cut_freight = Number(ret.data.products[tagId].raise_freight_rule[0].cut_freight).toFixed(2); //1
+                                iRet.self_buy_cut_freight = Number(ret.data.products[tagId].self_buy_freight_rule[0].cut_freight).toFixed(2); //0
 
-                                if(index == 0){
-                                    return computeFreight(iRet.self_buy_cut_freight);
-                                }else if(index == 1){
-                                    return computeFreight(iRet.raise_cut_freight);
-                                }else if(index == 2){
-                                    return computeFreight(iRet.gift_cut_freight);
-                                }else{}
-                            }else{
-                                return computeFreight(iRet.freight);
+                                if (index == 0) {
+                                    curfreight = iRet.self_buy_cut_freight;
+                                } else if (index == 1) {
+                                    curfreight = iRet.raise_cut_freight;
+                                } else if (index == 2) {
+                                    curfreight = iRet.gift_cut_freight;
+                                } else {}
+
+                            } else {
+                                curfreight = iRet.freight;
                             }
+                            return {
+                                freight: curfreight,
+                                totalPrice: computeFreight(curfreight)
+                            };
 
-                            function computeFreight(cut){
-                                return Number(iRet.p_price * productNum - cut).toFixed(2);
+                            function computeFreight(curfreight) {
+                                curfreight = parseFloat(curfreight);
+                                return Number(iRet.p_price * productNum + curfreight).toFixed(2);
                             }
                         },
-                        commodityBox = '<div class="info-left"><img src="'+iRet.image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.short_name+'</h3></div><div class="taste_wrap"><div class="weight">'+iRet.specName+'：<span>'+iRet.spec+'</span></div><p class="taste-name"><span>￥'+iRet.p_price+'</span></p><span class="number">×<i>'+productNum+'</i></span></div></div>';
+                        commodityBox = '<div class="info-left"><img src="' + iRet.image_url + '"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">' + iRet.short_name + '</h3></div><div class="taste_wrap"><div class="weight">' + iRet.specName + '：<span>' + iRet.spec + '</span></div><p class="taste-name"><span>￥' + iRet.p_price + '</span></p><span class="number">×<i>' + productNum + '</i></span></div></div>';
 
                     $('.commodity_box').html(commodityBox);
                     $('#goodsNum').val(productNum);
                     //totalPrice(0);//默认自买
-                     runtimeTotalPrice(styleIndex, productNum);
+                    runtimeTotalPrice(styleIndex, productNum);
 
-                    var check_img = ['url(img/ic_pay_checked.png)', 'url(img/ic_pay_check.png)']
+                    var check_img = ['url(img/ic_pay_checked.png)', 'url(img/ic_pay_check.png)'];
+
                     $('#payStyle .item-list').on('click', function() {
                         $(this).find('.pay_check_com').css({
                             'background-image': check_img[0]
@@ -155,81 +163,142 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                         runtimeTotalPrice(styleIndex, productNum);
                     });
 
-                    $('#goodsAdd').on('click', function() {//点加
+                    $('#goodsAdd').on('click', function() { //点加
                         productNum = goodsModify.numAdd(iRet.store);
                         runtimeTotalPrice(styleIndex, productNum);
                     });
 
-                    $('#goodsDec').on('click', function() {//点减
+                    $('#goodsDec').on('click', function() { //点减
                         productNum = goodsModify.numDec(iRet.store);
                         runtimeTotalPrice(styleIndex, productNum);
                     });
 
-                    $('#goodsNum').keyup(function() {//输入
+                    $('#goodsNum').keyup(function() { //输入
                         productNum = goodsModify.keyNum(iRet.store);
                         runtimeTotalPrice(styleIndex, productNum);
                     });
-                    
 
-                    $('.order-confirm .order-right').click(function(event) {//确认订单
-                       var 
-                            iPara = {
-                                address_id: $('.info-top').attr('data-address_id'), 
-                                customer_memo: $('#order_area').val(),
-                                good_spec: iRet.spec,
-                                order_type: (2-styleIndex), //生成订单类型--0：送礼订单， 1：凑份子 2： 自买
-                                product_id: iRet.product_id, //货品id
-                                quantity: productNum, //购买数量
-                                source: "3", //购买来源-- 写死为3即可
-                                total_price: totalPrice(styleIndex, productNum)// 前段验证的商品总额--这部分写错也没关系，因为后端会自己算价钱--但是字段必须有
-                            },
-                            paraStr = '&total_price='+iPara.total_price+'&address_id='+iPara.address_id+'&customer_memo='+iPara.customer_memo+'&good_spec='+iPara.good_spec+'&order_type='+iPara.order_type+
-                            '&product_id='+iPara.product_id+'&quantity='+iPara.quantity+'&source='+iPara.source+'&total_price='+iPara.total_price;
-                        
-                        location.href = 'pay.html?'+paraStr;
+
+                    $('.order-confirm .order-right').click(function(event) { //点确认订单
+                        if ($('.add_address').is(':visible')) { //如果没地址
+                            $('.user-info').trigger('click');
+                        } else {
+                            var
+                                postData = {
+                                    address_id: $('.info-top').attr('data-address_id'),
+                                    customer_memo: $('#order_area').val(),
+                                    good_spec: iRet.spec,
+                                    order_type: (2 - styleIndex), //生成订单类型--0：送礼订单， 1：凑份子 2： 自买
+                                    product_id: iRet.product_id, //货品id
+                                    quantity: productNum, //购买数量
+                                    source: "3", //购买来源-- 写死为3即可
+                                    total_price: totalPrice(styleIndex, productNum).totalPrice // 前段验证的商品总额--这部分写错也没关系，因为后端会自己算价钱--但是字段必须有
+                                },
+                                urlId = config.baseUrlPython + '/wallet/h5/order/request?';
+
+                            dataService.postData(urlId, beforeSend.showKeyListLoading, orderGener, postData);
+
+                            function orderGener(curret){
+                                var ret = curret;
+                                if(ret.status == '0'){
+                                    var
+                                        iRet = {
+                                            create_time: config.timestamp(ret.data.create_time), //订单生成时间时间戳是以秒为单位
+                                            final_amount: ret.data.final_amount, //订单成交价格
+                                            order_id: ret.data.order_id,
+                                            order_num: ret.data.order_num, // 订单号
+                                            order_status: ret.data.order_status, //订单状态
+                                            share_url: ret.data.share_url, // 分享链接
+                                            status_message: ret.data.status_message //前段显示在我的订单里面的订单状态信息
+                                        };
+                                    if(styleIndex == 0){//自付
+                                        location.href = 'pay.html?' + jsonToKeyvalue(iRet);
+                                    }else{//凑份子
+                                        location.href = 'myWish.html?' + jsonToKeyvalue(iRet);
+                                    }
+                                    
+                                }else{
+                                   alert('参数错误'); 
+                                }
+
+                                function jsonToKeyvalue(json){//作用相当于ajax请求参数放到请求地址后面
+                                    var keyValue = '';
+                                    for(key in iRet){
+                                        keyValue += '&'+ key + '=' + iRet[key];
+                                    }
+                                    return keyValue.substring(1);//首字母不是'&'
+                                }
+                                
+                            }
+
+                            
+                        }
+
                     });
 
-                    function runtimeTotalPrice(index, productNum){//实时总需支付
-                        var txt = index == 1 ? '自己需支付:' : '需支付:';
-                        productNum = index == 1 ? 0 : productNum;
-                        $('.order-confirm')
-                        .find('.pay-txt').text(txt).end()
-                        .find('.integer').text(totalPrice(index, productNum).split('.')[0]).end()
-                        .find('.point').text('.'+totalPrice(index, productNum).split('.')[1]);
+                    function runtimeTotalPrice(index, productNum) { //实时总需支付
+                        var runtimeTxt = {};
+                        if (index == 1) { //凑份子
+                            runtimeTxt.txt = '自己需支付:';
+                            runtimeTxt.integer = '0';
+                            runtimeTxt.point = '00';
+                            runtimeTxt.freight = totalPrice(index, productNum).freight == 0 ? '包邮' : ('¥' + totalPrice(index, productNum).freight);
+                        } else if (index == 0) { //自付
+                            runtimeTxt.txt = '需支付:';
+                            runtimeTxt.integer = totalPrice(index, productNum).totalPrice.split('.')[0];
+                            runtimeTxt.point = totalPrice(index, productNum).totalPrice.split('.')[1];
+                            runtimeTxt.freight = totalPrice(index, productNum).freight == 0 ? '包邮' : ('¥' + totalPrice(index, productNum).freight);
+                        } else {}
+
+                        $('.order-confirm') //自己需要支付的金额
+                            .find('.pay-txt').text(runtimeTxt.txt).end()
+                            .find('.integer').text(runtimeTxt.integer).end()
+                            .find('.point').text('.' + runtimeTxt.point);
+
+                        $('#freight').html(runtimeTxt.freight);
                     }
                 } else {}
             },
             showDefaultAddr = function(ret) {
                 if (ret.status == '0') {
-                    if(ret.data == null || ret.data.length == 0){
+                    var
+                        iRet = {
+                            address_id: '0'
+                        }, //存放地址
+                        address_id = config.getUrlPara('address_id');
+
+                    if (ret.data == null || !(ret.data instanceof Array) || ret.data.length == 0) {
                         $('.add_address').show();
-                    }else{
-                        var
-                            iRet = {};
-                        for(var i=0; i<ret.data.length; i++){
-                            if(ret.data[i].is_default == 1){
-                                iRet.name = ret.data[i].name;
-                                iRet.mobile = ret.data[i].mobile;
-                                iRet.addr = ret.data[i].country + ret.data[i].province + ret.data[i].city + ret.data[i].city + ret.data[i].detail;
-                                iRet.address_id = ret.data[i].address_id;
+                    } else {
+                        for (var i = 0; i < ret.data.length; i++) {
+                            if (ret.data[i].address_id == address_id) {
+                                evalOpt(ret.data[i]);
                                 break;
+                            } else if (ret.data[i].is_default == 1) {
+                                evalOpt(ret.data[i]);
                             }
                         }
-                        if(i ==ret.data.length){
-                            iRet.address_id = ret.data[0].address_id;
-                            iRet.name = ret.data[0].name;
-                            iRet.mobile = ret.data[0].mobile;
-                            iRet.addr = ret.data[0].country + ret.data[0].province + ret.data[0].city + ret.data[0].city + ret.data[0].detail;
+
+                        if (!iRet.hasOwnProperty('name')) { //如果address_id==0 并且没有取到给定的地址，取第一个地址
+                            evalOpt(ret.data[0]);
                         }
-                        var userAddr = '<div class="info-top" data-address_id="'+iRet.address_id+'"><div class="name">'+iRet.name+'</div><div class="iphone">'+ iRet.mobile+'</div></div><div class="arrow"></div><div class="address">'+iRet.addr+'</div>';
+
+                        var userAddr = '<div class="info-top" data-address_id="' + iRet.address_id + '"><div class="name">' + iRet.name + '</div><div class="iphone">' + iRet.mobile + '</div></div><div class="arrow"></div><div class="address">' + iRet.addr + '</div>';
                         $('.user-info').prepend(userAddr);
                     }
 
                     $('.user-info').click(function(event) {
-                        location.href = 'http://www.xinyihezi.com/wallet/gift/addr/edit?order_id=EDE763E4AA5B2301FE8712A7AA369C3EB828C29AA9C405215201101A5E151030AE23A2E3FFA8BDCB6E0AFB435C66C2BC&address_id=148774';
+                        location.href = config.baseUrlPage + '/wallet/gift/addr/edit' + location.search + '&address_id=' + iRet.address_id + '&gift_type=wx_xyhz';
                     });
 
                 } else {}
+
+                function evalOpt(data) {
+                    iRet.address_id = data.address_id;
+                    iRet.name = data.name;
+                    iRet.mobile = data.mobile;
+                    iRet.addr = data.country + data.province + data.city + data.city + data.detail;
+                }
             },
             showOrderDetail = function(ret) {
                 if (ret.status == '0' && ret.data != null) {
@@ -237,7 +306,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                         iRet = {
                             total_price: getUrlPara.getUrlPara('total_price')
                         };
-                        console.log(iRet.total_price);
+                    console.log(iRet.total_price);
                     $('#total_price .money').text(iRet.total_price);
                     $('.zhifu-btn').click(function(event) {
                         alert('支付');
@@ -249,23 +318,16 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                 if (ret.status == '0' && ret.data != null) {
                     var
                         iRet = {
-                            create_time: config.timestamp("1458647137"), //订单生成时间
-                            final_amount: ret.data.final_amount, //订单成交价格
-                            order_id: ret.data.order_id,
-                            order_num: ret.data.order_num,// 订单号
-                            order_status: ret.data.order_status, //订单状态
-                            share_url: ret.data.share_url,// 分享链接
-                            status_message: ret.data.status_message //前段显示在我的订单里面的订单状态信息
+                            
                         };
-                        console.log(iRet.total_price);
-                   
+
                     $('.zhifu-btn').click(function(event) {
                         alert('支付');
                     });
 
                 } else {}
             },
-            showMyGift = function(ret){
+            showMyGift = function(ret) {
                 ///////////////////////////////
                 if (ret.status == '0') {
                     if (config.pageIndex == 1 && (ret.data == null || ret.data.length == 0)) {
@@ -308,7 +370,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                                 show_index: ret.data[i].show_index, //是否显示价格
                                 status_message: ret.data.status_message, //订单状态文字
                                 to_user: ret.data[i].to_user //送礼订单这个字段表示送给谁
-                                //total_freight: ret.data.total_freight //运费多少钱
+                                    //total_freight: ret.data.total_freight //运费多少钱
                             },
                             nexthtml = '';
 
@@ -329,10 +391,10 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                     config.loadFlag = false;
                 }
                 //////////////////////////////
-                
-                
 
-            //根据订单状态判断显示什么按钮待定写
+
+
+                //根据订单状态判断显示什么按钮待定写
             };
 
         return {
@@ -342,7 +404,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
             showDefaultAddr: showDefaultAddr,
             showOrderDetail: showOrderDetail,
             showPay: showPay,
-            showMyGift:showMyGift
+            showMyGift: showMyGift
         };
     }
 );
