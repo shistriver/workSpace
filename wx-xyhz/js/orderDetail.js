@@ -5,7 +5,7 @@
  * Created by guixin on 2016/3/29.
  */
 //cookie操作
-(function(){
+(function() {
     require.config({
         paths: {
             'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min',
@@ -27,10 +27,15 @@
     });
     require(['jquery', 'cookieCrud', 'beforeSend', 'callback', 'dataService', 'config', 'getUrlPara', 'data'],
         function($, cookieCrud, beforeSend, callback, dataService, config, getUrlPara, data) {
-            var 
-                url = config.baseUrlPython + '/wallet/h5/order/request?';
-                
-            dataService.postData(url, beforeSend.showKeyListLoading, callback.showDefaultAddr, null);
+            var
+                postData = {
+                    gift_type: config.getUrlPara('gift_type'),
+                    single_order: 1,
+                    order_id: config.getUrlPara('order_id')
+                },
+                url = config.baseUrlPython + '/wallet/h5/order/search?';
+
+            dataService.postData(url, beforeSend.showKeyListLoading, callback.showOrderDetail, postData);
         }
     );
 })();

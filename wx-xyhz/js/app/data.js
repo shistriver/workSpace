@@ -3,14 +3,15 @@
  */
 //请求数据服务
 
-define(['jquery', 'cookieCrud'],
-    function($, cookieCrud) {
-    	var orderDetail = {};
+function ccc(){
+	aaa('ccc');
+}
 
+function ddd(){
+	bbb('ddd');
+}
 
-
-        return {
-        	orderDetail: orderDetail
-        };
-    }
-);
+var obj = {
+	ccc:ccc,
+	ddd:ddd
+};

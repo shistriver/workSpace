@@ -68,7 +68,8 @@ body {
   border-bottom: 1px solid #f2f2f2; }
 #container .commodity_box {
   position: relative;
-  overflow: hidden; }
+  overflow: hidden;
+  height: 72px; }
   #container .commodity_box .info-left {
     float: left;
     width: 72px;

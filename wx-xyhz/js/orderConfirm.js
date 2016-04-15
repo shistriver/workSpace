@@ -31,14 +31,22 @@
                 goodsId=getUrlPara.getUrlPara('goodsId'),
                 urlId = config.baseUrlCpp + '/good/?goodid='+goodsId,
                 addrUrl = config.baseUrlPython + '/wallet/h5/order/address?';
-            cookieCrud.add('edeb9886b1df444dbe700077798ad063');
-            dataService.postData(addrUrl, beforeSend.showKeyListLoading, callback.showDefaultAddr, null);   
-            dataService.getData(urlId, beforeSend.showKeyListLoading, callback.showOrderConfirmData, null);
-            //购买形式
-            tabSwitch.tabBar('#payStyle .item-list');
-            //限制数字
-            limitChar.limit('#order_area',false,'',100);
-
+            //cookieCrud.add('edeb9886b1df444dbe700077798ad063');
+            if(!cookieCrud.checkCoo()){//如果未登录
+                var url = location.protocol +'//'+ location.host + location.port + location.pathname;
+                if(config.getUrlPara('jumpLogin')){
+                }else{
+                    location.href = config.baseUrl + '/wallet/h5/login' + location.search + '&url=' + url + '&jumpLogin=1';
+                }
+            }else{
+                dataService.postData(addrUrl, beforeSend.showLoadImg, callback.showDefaultAddr, null); //请求地址  
+                dataService.getData(urlId, beforeSend.showKeyListLoading, callback.showOrderConfirmData, null);//请求商品
+                //购买形式
+                tabSwitch.tabBar('#payStyle .item-list');
+                //限制数字
+                limitChar.limit('#order_area',false,'',100);
+            }
+            
         }
     );
 })();

@@ -19,26 +19,65 @@
             'goodsModify': 'app/goodsModify',
             'getUrlPara': 'app/getUrlPara',
             'payModal': 'app/payModal',
-            'sha1': 'http://www.xinyihezi.com/wallet/static/js/sha1',
-            'jquery.md5': 'http://www.xinyihezi.com/wallet/static/js/jquery.md5',
-            'pay': 'http://www.xinyihezi.com/wallet/static/js/pay'
+            'sha1': 'lib/sha1',
+            'jquery.md5': 'http://www.xinyihezi.com/static/js/jquery.md5',
+            'pay': 'http://www.xinyihezi.com/static/js/pay',
+            'jweixin': 'http://res.wx.qq.com/open/js/jweixin-1.0.0',
+            'rpWxPay': 'app/rpWxPay'
         },
         skim: {
-
+            //sha1: ['jquery'],
+            rpWxPay: {
+                deps: ['jquery', 'jquery.md5', 'sha1', 'pay', 'jweixin'],
+                exports: ''
+            }
         }
     });
 
-    require(['jquery','cookieCrud', 'beforeSend', 'callback', 'dataService', 'config', 'tabSwitch', 'getUrlPara'],
-        function($, cookieCrud, beforeSend, callback, dataService, config, tabSwitch, getUrlPara) {
-            tabSwitch.tabBar('#payment .item-list');
+    require(['jquery','cookieCrud', 'beforeSend', 'callback', 'dataService', 'config', 'tabSwitch', 'getUrlPara', 'sha1', 'jquery.md5', 'pay', 'rpWxPay'],
+        function($, cookieCrud, beforeSend, callback, dataService, config, tabSwitch, getUrlPara, sha1, md5, pay, rpWxPay) {
+           $('#total_price .money').text('¥'+getUrlPara.getUrlPara('final_amount'));
             var
-                postData = {
-                },
-                urlId = config.baseUrlPython + '/wallet/h5/order/request?';
+                paraData = {
+                    order_id: config.getUrlPara('order_id'),
+                    order_money: config.getUrlPara('final_amount'),
+                    payment_fee: config.getUrlPara('final_amount'),
+                    paySuccCallback: paySuccCallback,
+                    payCancelCallback: payCancelCallback,
+                    payFailCallback: payFailCallback
+                };
 
-            dataService.postData(urlId, beforeSend.showKeyListLoading, callback.showPay, postData);
+            $('.zhifu-btn').click(function(event) {
+                if (config.btnLock === 0) {
+                    config.btnLock = 1;
+                    $('.zhifu-btn').css('background', '#c9c9c9');
+                    rpWxPay.rpWxPay(paraData.order_id, paraData.order_money, paraData.payment_fee, paraData.paySuccCallback, paraData.payCancelCallback, paraData.payFailCallback);
+                }else{}
+            });
 
-            $('#total_price .money').text('¥'+getUrlPara.getUrlPara('final_amount'));
+            function paySuccCallback(res){
+                setTimeout(function(){
+                     config.btnLock = 0;
+                 }, 500);
+                $('#loadImg').fadeOut();
+                $('.zhifu-btn').attr('style', '');
+            }
+
+            function payCancelCallback(){
+                $('#loadImg').fadeOut();
+                config.btnLock = 0;
+                $('.zhifu-btn').attr('style', '');
+                $('#statusTip').html('您取消了支付').fadeIn(500).delay(1000).fadeOut(500);
+            }
+
+            function payFailCallback(){
+                $('#loadImg').fadeOut();
+                config.btnLock = 0;
+                $('.zhifu-btn').attr('style', '');
+            }
+
+
+            
         }
     );
 })();

@@ -100,9 +100,8 @@ html, body {
         font-size: 12px;
         border-radius: 3px;
         float: right;
-        color: #797979; }
-      #container .order-list li .btn-box .mr10 {
-        margin-right: 10px; }
+        color: #797979;
+        margin-left: 10px; }
       #container .order-list li .btn-box .color-red {
         color: #f55;
         border-color: #f55; }

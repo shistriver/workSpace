@@ -9,14 +9,20 @@ define(['jquery'],
             showGoodsListDataLoading = function() {
                 $('#loader').show();
             },
+
             showKeyListLoading = function(){
                 $('#loadImg').show();
                 $('.hs-area ul').hide();
+            },
+
+            showLoadImg = function(){
+                $('#loadImg').fadeIn();
             };
 
         return {
             showGoodsListDataLoading: showGoodsListDataLoading,
-            showKeyListLoading: showKeyListLoading
+            showKeyListLoading: showKeyListLoading,
+            showLoadImg: showLoadImg
         };
     }
 );

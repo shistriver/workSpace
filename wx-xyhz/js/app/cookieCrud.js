@@ -54,6 +54,10 @@ define(['jquery','jquery.cookie'],
             clearCoo = function() {
                 $.cookie("history", null)
             },
+
+            checkCoo = function() {
+                return $.cookie("ticket");
+            },
 //        console.log(111)
             add = function(name){
                 $.cookie("ticket", name, {
@@ -66,7 +70,8 @@ define(['jquery','jquery.cookie'],
             clearCoo: clearCoo, //清空cookie
             addCoo: addCoo, //添加
             getCoo: getCoo, //获取
-            add: add
+            checkCoo: checkCoo,//查询是否有ticket 确认是否登录
+            add: add//写入ticket【用于测试】
         };
     }
 );
