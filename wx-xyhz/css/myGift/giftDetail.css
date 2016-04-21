@@ -9,15 +9,14 @@ body {
   line-height: 40px;
   font-size: 16px;
   color: #f55;
-  background-color: #fff; }
+  background-color: #fff;
+  border-bottom: 1px solid #f2f2f2; }
 #container .commodity_wrap {
-  padding: 8px 8px 14px;
-  border-top: 1px solid #f2f2f2;
+  padding: 10px 8px 10px;
   border-bottom: 1px solid #f2f2f2;
   background: #fff; }
 #container .commodity_box {
   position: relative;
-  padding-bottom: 10px;
   overflow: hidden; }
   #container .commodity_box .info-left {
     float: left;
@@ -51,7 +50,7 @@ body {
     #container .commodity_box .taste_wrap .number {
       float: right;
       margin-right: 20px;
-      color: #c9c9c9; }
+      color: #8c8c8d; }
 #container .price_wrap {
   position: absolute;
   right: 20px;
@@ -80,14 +79,21 @@ body {
   #container .item-list .money {
     float: right; }
 #container .list-line {
-  margin-top: 14px;
+  margin-top: 10px;
   border-top: 1px solid #f2f2f2; }
 #container .info-right .detailed .det-title {
   font-size: 14px;
-  padding-right: 80px;
+  padding-right: 84px;
   box-sizing: border-box;
   word-break: break-all;
-  color: #616162; }
+  color: #616162;
+  height: 38px;
+  line-height: 19px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; }
 #container .zhifu-btn {
   height: 50px;
   background-color: #f55;
@@ -98,5 +104,95 @@ body {
   font-size: 18px;
   color: #fff;
   z-index: 1; }
+
+.user-info {
+  height: 53px;
+  margin-bottom: 10px;
+  padding: 0 10px 0 10px;
+  background: #fff;
+  font-size: 14px;
+  position: relative;
+  border-bottom: 1px solid #f2f2f2; }
+  .user-info .info-top {
+    padding: 5px 5px 3px 0px;
+    overflow: hidden; }
+    .user-info .info-top .name {
+      float: left; }
+    .user-info .info-top .iphone {
+      float: right; }
+  .user-info .add_address {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px;
+    font-size: 16px;
+    margin-top: -10px;
+    display: none; }
+    .user-info .add_address .add_icon {
+      width: 20px;
+      height: 20px;
+      background: #f55;
+      display: inline-block;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 18px;
+      line-height: 18px;
+      text-align: center;
+      margin-right: 5px; }
+  .user-info .arrow {
+    background-image: url(../../img/ic_gd_choose_right.png);
+    width: 8px;
+    height: 16px;
+    background-image: url(../../img/ic_gd_choose_right.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -8px;
+    background-size: 8px; }
+  .user-info .address {
+    color: #c9c9c9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
+.addr-title {
+  border-bottom: 1px solid #f2f2f2;
+  border-top: 1px solid #f2f2f2;
+  height: 30px;
+  line-height: 30px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  padding: 0 10px;
+  margin-top: 10px; }
+  .addr-title span {
+    font-size: 12px;
+    color: #797979; }
+
+.coufenzi {
+  height: 50px;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden; }
+  .coufenzi button {
+    height: 44px;
+    float: left;
+    width: 40%;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 3px 5%; }
+  .coufenzi .bf {
+    box-sizing: border-box;
+    border: 1px solid #f55;
+    color: #f55;
+    background-color: #fff; }
+  .coufenzi .zf {
+    color: #fff;
+    background-color: #f55; }
 
 /*# sourceMappingURL=giftDetail.css.map */

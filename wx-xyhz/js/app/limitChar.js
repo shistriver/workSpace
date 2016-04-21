@@ -3,10 +3,14 @@
  */
 //cookie操作
 
-define(['jquery'],function($) {
-    var limit = function(id,booleanV,className,max){
+define(['jquery', 'config'],function($, config) {
+    var limit = function(id, booleanV, className, max, callback){
+        callback = callback || function(){};
         //限制输入框字数
         $(id).bind('input propertychange', function() {
+            callback();
+            config.shareInfo.title = $(this).val();
+            //console.log(config.shareInfo);
             var curLength = $(this).val().length;
             if(curLength > max){
                 var oValue = $(this).val().substr(0,max);

@@ -58,7 +58,11 @@ define(['jquery','jquery.cookie'],
             checkCoo = function() {
                 return $.cookie("ticket");
             },
-//        console.log(111)
+
+            checkIsInApp = function(){//undefine表示不再心意盒子app内
+                 return $.cookie("appOS") && $.cookie("appVersion");
+            },
+
             add = function(name){
                 $.cookie("ticket", name, {
                         expires: 7, 
@@ -71,6 +75,7 @@ define(['jquery','jquery.cookie'],
             addCoo: addCoo, //添加
             getCoo: getCoo, //获取
             checkCoo: checkCoo,//查询是否有ticket 确认是否登录
+            checkIsInApp: checkIsInApp,
             add: add//写入ticket【用于测试】
         };
     }

@@ -23,6 +23,7 @@ body{
     border-bottom: 1px solid $concrete;
     .money {
       float: right;
+      font-weight: bold;
     }
     .red-box{
       color: #c9c9c9;
@@ -34,6 +35,14 @@ body{
   .list-line {
     margin-top: 14px;
     border-top: 1px solid $concrete;
+  }
+  #total_price{
+    height:50px;
+    line-height: 50px;
+  }
+  #styleTitle{
+    height: 30px;
+    line-height: 30px;
   }
   .pay-style-list{
     li{
@@ -53,16 +62,11 @@ body{
         margin-left:40px ;
         h2{
           color: #333;
-          font-size:14px ;
-          height: 20px;
-          line-height: 20px;
+          font-size:16px ;
+          height: 40px;
+          line-height: 40px;
         }
-        p{
-          font-size: 12px;
-          color: #c9c9c9;
-          height: 20px;
-          line-height: 20px;
-        }
+
       }
       .choose-ic{
         width:20px;
@@ -72,10 +76,12 @@ body{
         top: 20px;
         background: url(../../img/ic_pay_check.png) no-repeat;
         background-size: 100%;
+        background-repeat: no-repeat;
       }
       .pay_check{
         background: url(../../img/ic_pay_checked.png) no-repeat;
         background-size: 100%;
+        background-repeat: no-repeat;
       }
     }
 

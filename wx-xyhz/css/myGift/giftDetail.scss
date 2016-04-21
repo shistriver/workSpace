@@ -21,16 +21,17 @@ body{
     font-size: 16px;
     color: #f55;
     background-color: #fff;
+    border-bottom: 1px solid #f2f2f2;
   }
   .commodity_wrap {
-    padding: 8px 8px 14px;
-    border-top: 1px solid $concrete;
+    padding: 10px 8px 10px;
+//    border-top: 1px solid $concrete;
     border-bottom: 1px solid $concrete;
     background: $white;
   }
   .commodity_box {
     position: relative;
-    padding-bottom: 10px;
+//    padding-bottom: 10px;
     overflow: hidden;
     .info-left {
       float: left;
@@ -68,7 +69,7 @@ body{
       .number {
         float: right;
         margin-right: 20px;
-        color: $color_pumice_approx;
+        color: $color_stack_approx;
       }
     }
   }
@@ -107,15 +108,22 @@ body{
     }
   }
   .list-line {
-    margin-top: 14px;
+    margin-top: 10px;
     border-top: 1px solid $concrete;
   }
   .info-right .detailed .det-title {
     font-size: 14px;
-    padding-right: 80px;
+    padding-right: 84px;
     box-sizing: border-box;
     word-break: break-all;
     color: $color_storm_dust_approx;
+    height: 38px;
+    line-height: 19px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .zhifu-btn{
     height: 50px;
@@ -127,5 +135,108 @@ body{
     font-size: 18px;
     color: #fff;
     z-index: 1;
+  }
+}
+
+.user-info{
+  height: 53px;
+  margin-bottom: 10px;
+  padding: 0 10px 0 10px;
+  background: #fff;
+  font-size: 14px;
+  position: relative;
+  border-bottom: 1px solid #f2f2f2;
+  .info-top{
+    padding: 5px 5px 3px 0px;
+    overflow: hidden;
+    .name{
+      float:left;
+    }
+    .iphone{
+      float:right;
+    }
+  }
+  .add_address{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px;
+    font-size: 16px;
+    margin-top: -10px;
+    display: none;
+    .add_icon{
+      width: 20px;
+      height: 20px;
+      background: #f55;
+      display: inline-block;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 18px;
+      line-height: 18px;
+      text-align: center;
+      margin-right: 5px;
+    }
+  }
+  .arrow {
+    background-image: $url_0;
+    width: 8px;
+    height: 16px;
+    background-image: url(../../img/ic_gd_choose_right.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -8px;
+    background-size: 8px;
+  }
+  .address{
+    color:$color_pumice_approx;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
+.addr-title{
+  border-bottom: 1px solid #f2f2f2;
+  border-top: 1px solid #f2f2f2;
+  height: 30px;
+  line-height: 30px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  padding: 0 10px;
+  margin-top: 10px;
+  span{
+    font-size: 12px;
+    color: #797979;
+  }
+}
+
+.coufenzi{
+  height: 50px;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  button{
+    height: 44px;
+    float: left;
+    width: 40%;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 3px 5%;
+  }
+  .bf{
+    box-sizing: border-box;
+    border: 1px solid #f55;
+    color: #f55;
+    background-color: #fff;
+  }
+  .zf{
+    color: #fff;
+    background-color: #f55;
   }
 }

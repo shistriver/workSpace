@@ -22,14 +22,17 @@
             'checkedBtn': 'app/checkedBtn',
             'goodsModify': 'app/goodsModify',
             'getUrlPara': 'app/getUrlPara',
-            'data': 'app/data'
+            'data': 'app/data',
+            'jweixin': 'http://res.wx.qq.com/open/js/jweixin-1.0.0',
+            'wxShare': 'app/wxShare'
         }
     });
-    require(['jquery', 'cookieCrud', 'beforeSend', 'callback', 'dataService', 'config', 'getUrlPara', 'data'],
-        function($, cookieCrud, beforeSend, callback, dataService, config, getUrlPara, data) {
+    require(['jquery', 'cookieCrud', 'beforeSend', 'callback', 'dataService', 'config', 'getUrlPara', 'data', 'wxShare'],
+        function($, cookieCrud, beforeSend, callback, dataService, config, getUrlPara, data, wxShare) {
+            wxShare.wxShare(false);//不可分享
             var
                 postData = {
-                    gift_type: config.getUrlPara('gift_type'),
+                    gift_type: config.getUrlPara('gift_type'),//0收礼 1送礼  2凑份子
                     single_order: 1,
                     order_id: config.getUrlPara('order_id')
                 },

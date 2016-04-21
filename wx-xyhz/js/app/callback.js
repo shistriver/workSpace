@@ -3,8 +3,9 @@
  */
 //请求数据服务
 
-define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 'goodsModify', 'dataService'],
-    function($, cookieCrud, beforeSend, paging, config, getUrlPara, goodsModify, dataService) {
+define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 'goodsModify', 'dataService', 'wxShare', 'limitChar'],
+    function($, cookieCrud, beforeSend, paging, config, getUrlPara, goodsModify, dataService, wxShare, limitChar) {
+        //setTimeout(wxShare.wxShare,1000);//注册分享事件，要等到分享信息获取到才可以，所以加个延时
         var
             showGoodsListData = function(li) {
                 if (li.status == '0') {
@@ -34,7 +35,7 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                         $('.ui-fall').html($('.ui-fall').html() + nextpagehtml);
                         $('.ui-fall li').on('click', function(event) {
                             var goodsid = $(this).attr('data-goodsid');
-                            location.href = config.baseUrlPage + '/index.html#/goods/' + goodsid;
+                            location.href = config.goodsDetailBaseUrl + goodsid;
                         });
                         config.loadFlag = true;
                     }
@@ -89,17 +90,18 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                     paging.pageGetData(url, beforeSend.showGoodsListDataLoading, showGoodsListData);
                 }
             },
-            showOrderConfirmData = function(ret) {
+
+            showOrderConfirmData = function(ret) { // 获取商品详情数据成功
                 if (ret.status == '0') {
                     var
                         tagId = getUrlPara.getUrlPara('tagId'),
-                        productNum = Number(getUrlPara.getUrlPara('productNum'));
-                    styleIndex = 0, //购买形式 默认为0,0：自买   1：凑份子 2：送礼
-                        specName = (function() { //规格名
-                            for (var p in ret.data.products[0].spec) {
+                        productNum = Number(getUrlPara.getUrlPara('productNum')),
+                        styleIndex = config.getUrlPara('order_type') || 0, //购买形式 默认为0,0：自买   1：凑份子 2：送礼
+                        specName = (function(tagId) { //规格名
+                            for (var p in ret.data.products[tagId].spec) {
                                 return p;
                             }
-                        })();
+                        })(tagId);
                     console.log(tagId);
                     var
                         iRet = {
@@ -150,14 +152,10 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                     //totalPrice(0);//默认自买
                     runtimeTotalPrice(styleIndex, productNum);
 
-                    var check_img = ['url(img/ic_pay_checked.png)', 'url(img/ic_pay_check.png)'];
-
                     $('#payStyle .item-list').on('click', function() { //选择付款方式
-                        $(this).find('.pay_check_com').css({
-                            'background-image': check_img[0]
-                        }).parent().siblings().find('.pay_check_com').css({
-                            'background-image': check_img[1]
-                        });
+
+                        $(this).find('.choose-ic').removeClass('pay_check')
+                            .parent().siblings().find('.choose-ic').addClass('pay_check');
 
                         styleIndex = $(this).index();
                         runtimeTotalPrice(styleIndex, productNum);
@@ -179,9 +177,24 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                     });
 
 
+                    /* 确认订单, 需求提供order_type 参数表示订单类型
+                        送礼: order_type == 0, gift_type == 1
+                        凑份子: order_type == 1, gift_type = 2
+                        收礼(自买): order_type == 2, gift_type = 0
+                        styleIndex: 0: 自己买, 1: 凑份子
+                     */
                     $('.order-confirm .order-right').click(function(event) { //点确认订单
                         if (config.btnLock === 0) {
                             config.btnLock = 1; //进来先锁住
+
+                            // order_type 检测
+                            var order_type = config.getUrlPara("order_type");
+                            if (order_type === undefined) { // 为给出时说明是自买或凑份子，根据styleIndex判断
+                                if (styleIndex === 0) order_type = 2;
+                                else if (styleIndex === 1) order_type = 1;
+                                else order_type = 2; // 默认为自买
+                            }                      
+
                             if ($('.add_address').is(':visible')) { //如果没地址
                                 config.btnLock = 0; //解锁
                                 $('.user-info').trigger('click');
@@ -190,8 +203,8 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                                     postData = {
                                         address_id: $('.info-top').attr('data-address_id'),
                                         customer_memo: $('#order_area').val(), //客户留言
-                                        good_spec: iRet.spec,
-                                        order_type: (2 - styleIndex), //生成订单类型--0：送礼订单， 1：凑份子 2： 自买
+                                        good_spec: iRet.specName + ': ' + iRet.spec,
+                                        order_type: order_type, //生成订单类型--0：送礼订单， 1：凑份子 2： 自买
                                         product_id: iRet.product_id, //货品id
                                         quantity: productNum, //购买数量
                                         source: "3", //购买来源-- 写死为3即可
@@ -199,9 +212,10 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                                     },
                                     urlId = config.baseUrlPython + '/wallet/h5/order/request?';
 
-                                dataService.postData(urlId, beforeSend.showKeyListLoading, orderGener, postData);
+                                dataService.postData(urlId, beforeSend.fullScreenLoadImg, orderGener, postData);
 
-                                function orderGener(curret) {
+                                function orderGener(curret) { // 下单成功的回调函数
+                                    $('#fullScreenLoadImg').hide();
                                     config.btnLock = 0; //解锁
                                     var ret = curret;
                                     console.log('orderGener:' + ret.status);
@@ -216,19 +230,64 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                                                 share_url: ret.data.share_url, // 分享链接
                                                 status_message: ret.data.status_message //前段显示在我的订单里面的订单状态信息
                                             };
-                                        if (styleIndex == 0) { //自付
-                                            location.href = 'orderPay.html?' + config.jsonToKeyvalue(iRet);
-                                        } else { //凑份子
-                                            var
-                                                myWishPara = {
-                                                    gift_type: postData.order_type,
-                                                    single_order: 1,
-                                                    order_id: iRet.order_id
-                                                };
 
-                                            location.href = 'myWish.html?' + config.jsonToKeyvalue(myWishPara);
+                                        var
+                                            myWishPara = {
+                                                gift_type: postData.order_type,
+                                                single_order: 1,
+                                                order_id: iRet.order_id
+                                            };
+
+                                        /*
+                                        order_type 与 gift_type 的关系
+                                        送礼: order_type == 0, gift_type == 1
+                                        凑份子: order_type == 1, gift_type = 2
+                                        收礼(自买): order_type == 2, gift_type = 0
+                                        */
+                                        if (postData.order_type == 0) {
+                                            myWishPara.gift_type = 1;
+                                        } else if (postData.order_type == 1) {
+                                            myWishPara.gift_type = 2;
+                                        } else {
+                                            myWishPara.gift_type = 0;
                                         }
 
+                                        //////////////app/////////////////////
+                                        if(cookieCrud.checkIsInApp()){
+                                            if(!cookieCrud.checkCoo()){//未登录
+                                                if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
+                                                    toLogin();
+                                                } else {
+                                                    window.android_interface.navLogin();
+                                                }
+                                            }else{
+                                                //{"order_id": 订单id, "type": 订单类型：0、普通订单 1、百宝箱订单 }
+                                                var opts = {
+                                                    order_id: iRet.order_id,
+                                                    type: 0
+                                                };
+
+                                                if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
+                                                    toPay(opts);
+                                                } else {
+                                                    window.android_interface.navPay(opts);
+                                                }
+                                            }
+                                            config.btnLock = 0
+                                            return;
+                                        }else{}
+
+                                        ///////////////app///////////////////
+                                        
+                                        /////////////////h5/////////////////////////
+                                        if (styleIndex == 0) { //自付
+                                            location.href = 'orderPay.html?' + config.jsonToKeyvalue(iRet);
+                                        } else if (styleIndex == 1) { //凑份子
+                                            location.href = 'myWish.html?' + config.jsonToKeyvalue(myWishPara);
+                                        } else { //送礼
+                                            location.href = 'giftGiving.html?' + config.jsonToKeyvalue(myWishPara);
+                                        }
+                                        //////////////////h5/////////////////////////
                                     } else {
                                         alert('参数错误');
                                     }
@@ -291,10 +350,14 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                     }
 
                     $('.user-info').click(function(event) {
-                        location.href = config.baseUrlPage + '/wallet/gift/addr/edit' + location.search + '&address_id=' + iRet.address_id + '&gift_type=wx_xyhz';
+                        location.href = config.baseUrl + '/wallet/gift/addr/edit' + location.search + '&address_id=' + iRet.address_id + '&gift_type=wx_xyhz';
                     });
 
-                } else {}
+                } else if (ret.status != '0' && ret.errcode == '80005') {
+                    config.requireLogin(ret.errcode);
+                } else {
+                    $('.add_address').show(); //新增地址
+                }
 
                 function evalOpt(data) {
                     iRet.address_id = data.address_id;
@@ -306,31 +369,131 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
 
             showOrderDetail = function(ret) {
                 if (ret.status == '0' && ret.data != null) {
+                    var orderObj = {
+                        receive: function(ret){//收到
+                                var
+                                    iRet = {
+                                        order_status: ret.data.order_status, //订单状态 编号
+                                        status_message: ret.data.status_message, //订单状态文字////
+                                        goods_id: ret.data.goods_id, //商品id
+                                        product_image_url: ret.data.product_image_url, //商品url
+                                        product_name: ret.data.product_name, //货品名称
+                                        quantity: ret.data.quantity, //购买数量
+                                        show_index: ret.data.show_index, //是否显示价格
+                                        mkprice: Number(ret.data.mkprice).toFixed(2),//原价
+                                        price: Number(ret.data.price).toFixed(2),//现价
+                                        goods_spec: ret.data.goods_spec, //商品标签//////
+                                        address_id: ret.data.address_id,//地址id
+                                        user_name: ret.data.user_name,//收件人名字
+                                        mobile: ret.data.mobile,//收件人手机号
+                                        addr: ret.data.province + ret.data.city + ret.data.city + ret.data.detail,//详细地址////
+                                        order_id: ret.data.order_id, //订单id
+                                        order_num: ret.data.order_num, //订单编号
+                                        create_time: config.timestamp(ret.data.create_time), //订单生成时间
+                                    },
+                                    nexthtml = '<div class="status-msg">'+iRet.status_message+'</div><!--商品信息--><div class="commodity_wrap" data-goods_id="'+iRet.goods_id+'"><div class="commodity_box"><div class="info-left"><img src="'+iRet.product_image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.product_name+'</h3><div class="price_wrap"><span class="price"><span>￥'+iRet.price+'</span></span><span class="price_old"><span>￥'+iRet.mkprice+'</span></span></div></div></div><div class="arrow"></div><div class="taste_wrap"><p class="taste-name">'+iRet.goods_spec+'</p><span class="number">×'+iRet.quantity+'</span></div></div></div><!--地址--><div class="addr-title">收货信息<span></span></div><div class="user-info giving-no"><div class="info-top"data-address_id="'+iRet.address_id+'"><div class="name">'+iRet.user_name+'</div><div class="iphone">'+iRet.mobile+'</div></div><div class="arrow" style="display:none;"></div><div class="address">'+iRet.addr+'</div></div><div class="item list-line"><div class="item-list"><span class="static">订单编号</span><span class="money"id="orderId">'+iRet.order_num+'</span></div><div class="item-list"><span class="static">确认订单时间</span><span class="money"id="orderTime">'+iRet.create_time+'</span></div></div>';
+                                
+                                $('#container').prepend(nexthtml);
+                        },
+                        send: function(ret){//送出
+                                var
+                                    iRet = {
+                                        status_message: ret.data.status_message, //订单状态文字////
+                                        avatar: ret.data.avatar,
+                                        to_user: (ret.data.to_user || '未知的Ta'), //送礼订单这个字段表示送给谁
+                                        order_message: ret.data.order_message,//留言////
+                                        total_freight: Number(ret.data.total_freight).toFixed(2), //运费
+                                        final_amount: Number(ret.data.final_amount).toFixed(2), //订单价格/////
+                                        order_num: ret.data.order_num, //订单编号
+                                        create_time: config.timestamp(ret.data.create_time), //订单生成时间////
+                                        actual_payment: Number(ret.data.actual_payment).toFixed(2), //订单价格
+                                        order_id: ret.data.order_id, //订单id
+                                        order_status: ret.data.order_status, //订单状态////
+                                        goods_id: ret.data.goods_id, //商品id
+                                        product_image_url: ret.data.product_image_url, //商品url
+                                        product_name: ret.data.product_name, //货品名称
+                                        mkprice: Number(ret.data.mkprice).toFixed(2),//原价
+                                        price: Number(ret.data.price).toFixed(2),//现价
+                                        quantity: ret.data.quantity, //购买数量
+                                        goods_spec: ret.data.goods_spec, //商品标签
+                                        show_index: ret.data.show_index, //是否显示价格
+                                    },
+                                    nexthtml = '<div class="status-msg">'+iRet.status_message+'</div><!--商品信息--><div class="commodity_wrap" data-goods_id="'+iRet.goods_id+'"><div class="commodity_box"><div class="info-left"><img src="'+iRet.product_image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.product_name+'</h3><div class="price_wrap"><span class="price"><span>￥'+iRet.price+'</span></span><span class="price_old"><span>￥'+iRet.mkprice+'</span></span></div></div></div><div class="arrow"></div><div class="taste_wrap"><p class="taste-name">'+iRet.goods_spec+'</p><span class="number">×'+iRet.quantity+'</span></div></div></div><div class="item"><div class="item-list"><span class="static">运费</span><span class="money">￥'+iRet.total_freight+'</span></div><div class="item-list"><span class="static">实付款</span><span class="money">￥'+iRet.final_amount+'</span></div></div><div class="item list-line"><div class="item-list"><span class="static">订单编号</span><span class="money"id="orderId">'+iRet.order_num+'</span></div><div class="item-list"><span class="static">确认订单时间</span><span class="money"id="orderTime">'+iRet.create_time+'</span></div></div>';
+
+                                $('#container').prepend(nexthtml);
+                        },
+                        coufenzi: function(ret){//凑份子
+                                var
+                                    iRet = {
+                                        order_id: ret.data.order_id, //订单id
+                                        order_status: ret.data.order_status, //订单状态编号
+                                        status_message: ret.data.status_message, //订单状态文字////
+                                        address_id: ret.data.address_id,//地址id
+                                        user_name: ret.data.user_name,//地址名字
+                                        mobile: ret.data.mobile,//地址手机号
+                                        addr: ret.data.province + ret.data.city + ret.data.city + ret.data.detail,//详细地址////
+                                        goods_id: ret.data.goods_id, //商品id
+                                        product_image_url: ret.data.product_image_url, //商品url
+                                        product_name: ret.data.product_name, //货品名称
+                                        mkprice: Number(ret.data.mkprice).toFixed(2),//原价
+                                        price: Number(ret.data.price).toFixed(2),//现价
+                                        quantity: ret.data.quantity, //购买数量
+                                        goods_spec: ret.data.goods_spec, //商品标签//////
+                                        total_freight: Number(ret.data.total_freight).toFixed(2), //运费
+                                        final_amount: Number(ret.data.final_amount).toFixed(2), //订单价格/////
+                                        order_num: ret.data.order_num, //订单编号
+                                        create_time: config.timestamp(ret.data.create_time) //订单生成时间
+                                    },
+                                    nexthtml = '<div class="status-msg">'+iRet.status_message+'</div><!--商品信息--><div class="commodity_wrap" data-goods_id="'+iRet.goods_id+'"><div class="commodity_box"><div class="info-left"><img src="'+iRet.product_image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.product_name+'</h3><div class="price_wrap"><span class="price"><span>￥'+iRet.price+'</span></span><span class="price_old"><span>￥'+iRet.mkprice+'</span></span></div></div></div><div class="arrow"></div><div class="taste_wrap"><p class="taste-name">'+iRet.goods_spec+'</p><span class="number">×'+iRet.quantity+'</span></div></div></div><!--地址--><div class="addr-title">收货信息<span></span></div><div class="user-info giving-no"><div class="info-top"data-address_id="'+iRet.address_id+'"><div class="name">'+iRet.user_name+'</div><div class="iphone">'+iRet.mobile+'</div></div><div class="arrow" style="display:none;"></div><div class="address">'+iRet.addr+'</div></div><div class="item"><div class="item-list"><span class="static">运费</span><span class="money">￥'+iRet.total_freight+'</span></div><div class="item-list"><span class="static">实付款</span><span class="money">￥'+iRet.final_amount+'</span></div></div><div class="item list-line"><div class="item-list"><span class="static">订单编号</span><span class="money"id="orderId">'+iRet.order_num+'</span></div><div class="item-list"><span class="static">确认订单时间</span><span class="money"id="orderTime">'+iRet.create_time+'</span></div></div>';
+
+                                $('#container').prepend(nexthtml);
+                        }
+                    };
+
+                    var gift_type = config.getUrlPara('gift_type');//0收 1送 2凑份子
+                    if(gift_type == '0'){
+                        orderObj.receive(ret);
+                    }else if(gift_type == '1'){
+                        orderObj.send(ret);
+                    }else if(gift_type == '2'){
+                        orderObj.coufenzi(ret);
+                    }else{}
+
+                    var order_status = ret.data.order_status;
+                    if (order_status == 0) { //待支付  立即支付
+                        $('.zhifu-btn').text('立即支付').show().addClass('toPay');
+                    } else if (order_status == 1) { //待送出 立即送出
+                        $('.zhifu-btn').text('立即送出').show().addClass('toGive');
+                    } else if (order_status == 8) { ////8：凑份子中
+                        $('.coufenzi').show();
+                    } else {}
+
                     var
-                        iRet = {
-                            order_id: ret.data.order_id,
-                            price: Number(ret.data.price).toFixed(2),
-                            mkprice: Number(ret.data.mkprice).toFixed(2),
-                            goods_spec: ret.data.goods_spec,
-                            product_image_url: ret.data.product_image_url,
-                            product_name: ret.data.product_name,
-                            actual_payment: Number(ret.data.actual_payment).toFixed(2),
-                            order_num: ret.data.order_num,
-                            create_time: config.timestamp(ret.data.create_time),
-                            order_status: ret.data.order_status,
-                            order_type: ret.data.order_type,
-                            payed: ret.data.payed,
-                            quantity: ret.data.quantity,
-                            share_url: ret.data.share_url,
-                            status_message: ret.data.status_message,
-                            total_freight: Number(ret.data.total_freight).toFixed(2),
+                        urlPara = {
+                            order_id: config.getUrlPara('order_id'),
+                            final_amount: config.getUrlPara('final_amount'),
+                            gift_type: config.getUrlPara('gift_type')
                         };
-                    var nexthtml = '<div class="status-msg">'+iRet.status_message+'</div><div class="commodity_wrap"><div class="commodity_box"><div class="info-left"><img src="'+iRet.product_image_url+'"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">'+iRet.product_name+'</h3><div class="price_wrap"><span class="price"><span>￥'+iRet.price+'</span></span><span class="price_old"><span>￥'+iRet.mkprice+'</span></span></div></div></div><div class="arrow"></div><div class="taste_wrap"><p class="taste-name">'+iRet.goods_spec+'<span></span></p><span class="number">×'+iRet.quantity+'</span></div></div></div><div class="item"><div class="item-list"><span class="static">运费</span><span class="money">￥'+iRet.total_freight+'</span></div><div class="item-list"><span class="static">实付款</span><span class="money">￥'+iRet.actual_payment+'</span></div></div><div class="item list-line"><div class="item-list"><span class="static">订单编号</span><span class="money"id="orderId">'+iRet.order_num+'</span></div><div class="item-list"><span class="static">确认订单时间</span><span class="money"id="orderTime">'+iRet.create_time+'</span></div></div>';
-                    $('#container').prepend(nexthtml);
 
-                    $('.zhifu-btn').click(function(event) {
-
+                    $('#container').on('click', '.toPay', function(event) { //点击立即支付gd
+                        location.href = 'orderPay.html?' + config.jsonToKeyvalue(urlPara);
                     });
+
+                    $('#container').on('click', '.toGive', function(event) { //点击立即送出gd
+                        location.href = 'giftGiving.html?' + config.jsonToKeyvalue(urlPara);
+                    });
+
+                    $('#container').on('click', '.toPool', function(event) { //点击找人帮付
+                        location.href = 'myWish.html?' + config.jsonToKeyvalue(urlPara);
+                    });
+
+                    $('#container').on('click', '.commodity_wrap', function(event) {//点击条商品详情
+                        location.href = config.goodsDetailBaseUrl + $(this).attr('data-goods_id');
+                    });
+
+                    // $('.user-info').click(function(event) {
+                    //     location.href = config.baseUrl + '/wallet/gift/addr/edit' + location.search + '&address_id=' + iRet.address_id + '&gift_type=wx_xyhz';
+                    // });
 
                 } else {}
             },
@@ -354,23 +517,139 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                     var
                         iRet = {
                             product_image_url: ret.data.product_image_url,
-                            name: ret.data.name,
+                            product_name: ret.data.product_name,
                             goods_spec: ret.data.goods_spec,
-                            price: (ret.data.show_index == '1' ? ('¥' + ret.data.price) : ''),
+                            price: (ret.data.show_index == '1' ? ('¥' + Number(ret.data.price).toFixed(2)) : ''),
                             share_url: ret.data.share_url,
                         },
-                        nexthtml = '<div class="info-left"><img src="' + iRet.product_image_url + '"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">' + iRet.name + '</h3></div><div class="gift_det_wrap margin_t25"><div class="gift-color float_l"><span>' + iRet.goods_spec + '</span></div><p class="gift_price float_r no_margin"><span>' + iRet.price + '</span></p></div></div>';
+                        shareInfo = { //分享信息
+                            title: ($('#wish_area').val() == '' ? (function() {
+                            var str = '钱不够？情来凑！有情人来帮人家凑份子嘛~';
+                            return str;
+                        })() : $('#wish_area').val()), //留言内容
+                            desc: iRet.product_name, //商品名称
+                            link: iRet.share_url, //share_url
+                            imgUrl: iRet.product_image_url //商品图片
+                        },
+                        nexthtml = '<div class="info-left"><img src="' + iRet.product_image_url + '"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">' + iRet.product_name + '</h3></div><div class="gift_det_wrap"><div class="gift-color float_l"><span>' + iRet.goods_spec + '</span></div><p class="gift_price float_r no_margin"><span>' + iRet.price + '</span></p></div></div>';
 
                     $('.gift_giving_box').html(nexthtml);
 
+                    getShareInfo();//如果没有编辑留言内容，执行分享参数
+
+                    limitChar.limit('#wish_area', true, '.limit_min', 70, getShareInfo); //留言.留言改变时要触发分享
+
+                    function getShareInfo() {
+                        var title = $('#wish_area').val();
+                        shareInfo.title = (title == '' ? (function() {
+                            var str = '钱不够？情来凑！有情人来帮人家凑份子嘛~';
+                            return str;
+                        })() : title); //留言标题
+                        wxShare.wxShare(true, shareInfo, toLeaveWord); //微信分享 
+                    }
+
+                    function toLeaveWord(){//留言
+                        var 
+                            url = config.baseUrl + '/wallet/h5/order/leaveMessage?',
+                            postData = {
+                                message: shareInfo.title,//--留言信息，可以为空
+                                order_id: config.getUrlPara('order_id'),//订单id 非空
+                                update_type: "5" //写死为5 表示留言
+                            };
+
+                        dataService.postData(url, beforeSend.showKeyListLoading, afterLeaveMessage, postData);
+
+                        function afterLeaveMessage(ret){
+                            //alert(ret.status);
+                            if(ret.status == '0'){
+                                location.href = 'myGift.html?gift_type=2';//留言成功跳凑份子订单列表
+                            }else{
+                                alert('留言失败');
+                            }
+                        }
+                    }
+
                     $('.btn-share').click(function(event) {
-                        alert('发起凑份子，分享到好友或朋友圈');
+                        $('#fuceng').fadeIn();  
+                    });
+
+                    $('#fuceng').click(function(event) {
+                        $(this).fadeOut();
                     });
 
                 } else {}
             },
 
-            showMyGift = function(ret) { //我的订单列表
+            showGiftGiving = function(ret) { //送礼
+                if (ret.status == '0' && ret.data != null) {
+                    var
+                        iRet = {
+                            product_image_url: ret.data.product_image_url,
+                            product_name: ret.data.product_name,
+                            goods_spec: ret.data.goods_spec,
+                            price: Number(ret.data.price).toFixed(2),
+                            show_index: ret.data.show_index,
+                            share_url: ret.data.share_url,
+                            avatar: ret.data.avatar//用户头像
+                        },
+                        shareInfo = { //分享信息
+                            title: '我用心意盒子送了一份礼物给你，钱已付过，赶快接收吧', //用户名+用心意盒子送了一份礼物给你，钱已付过，赶快接收吧
+                            desc: iRet.product_name, //商品名称
+                            link: iRet.share_url, //share_url
+                            imgUrl: iRet.product_image_url //商品图片
+                        },
+                        nexthtml = '<div class="gift_giving_box"><div class="info-left"><img src="' + iRet.product_image_url + '"alt=""></div><div class="info-right"><div class="detailed"><h3 class="det-title">' + iRet.product_name + '</h3></div><div class="gift_det_wrap"><div class="gift-color"><span>' + iRet.goods_spec + '</span></div><p class="gift_price"><span>￥11.9</span><span class="icon_price"></span></p><span class="gift_num">×1</span></div></div></div>';
+
+                    $('.gift_giving_wrap').html(nexthtml);
+                    $('.bless_box .head_portrait img').attr('src', iRet.avatar);//用户头像
+
+                    getShareInfo();//如果没有编辑留言内容，执行分享参数
+
+                    limitChar.limit('#txt_area', true, '.limit_min', 70, getShareInfo); //留言.留言改变时要触发分享
+
+                    function getShareInfo() {//分享+留言
+                        var message = $('#txt_area').val() || $('#txt_area').attr('placeholder');
+                        wxShare.wxShare(true, shareInfo, function(){
+                            toLeaveWord(message);
+                        }); //微信分享 
+                    }
+
+                    function toLeaveWord(message){//留言
+
+                        var 
+                            url = config.baseUrl + '/wallet/h5/order/leaveMessage?',
+                            postData = {
+                                is_secret: "0", //是否送出神秘礼物-非必填， 1 是  0- 否
+                                message: message,//--留言信息，可以为空
+                                order_id: config.getUrlPara('order_id'),//订单id 非空
+                                show_index: ($('.icon_price').is(':visible') ? 0 : 1), //是否显示商品价格-0 否 1 可以显示商品价格
+                                update_type: "5" //写死为5 表示留言
+                            };
+
+                        dataService.postData(url, beforeSend.showKeyListLoading, afterLeaveMessage, postData);
+
+                         function afterLeaveMessage(ret){
+                            alert(ret.status);
+                            if(ret.status == '0'){
+                                location.href = 'myGift.html?gift_type=1';//留言成功跳送礼订单列表
+                            }else{
+                                alert('留言失败');
+                            }
+                        }
+                    }
+
+                    $('.btn-share').click(function(event) { //分享到好友或朋友圈等等
+                        $('#fuceng').fadeIn();
+                    });
+
+                    $('#fuceng').click(function(event) {
+                        $(this).fadeOut();
+                    });
+
+                } else {}
+            },
+
+            showMyGift = function(ret, dataHandler) { //我的订单列表
                 ///////////////////////////////
                 if (ret.status == '0') {
                     if (config.pageIndex == 1 && (ret.data == null || !(ret.data instanceof Array) || ret.data.length == 0)) {
@@ -384,84 +663,58 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
                     } else {
                         config.loadFlag = true;
                     }
-                    for (var i = 0; i < ret.data.length; i++) {
+                
+                    dataHandler(ret);
+                    
+                    $('.order-list').on('click', '.toPay', function(event) { //点击立即支付gd
                         var
-                            iRet = {
-                                actual_payment: Number(ret.data[i].actual_payment).toFixed(2), //真实付的钱数
-                                avatar: ret.data[i].avatar, //头像
-                                bonus_money: Number(ret.data[i].bonus_money).toFixed(2), //红包钱数
-                                create_time: config.timestamp(ret.data[i].create_time), //订单生成时间
-                                //delay_time: ret.data.delay_time,//还有多长时间超时
-                                //discount: ret.data.discount,//优惠价格
-                                //final_amount: ret.data.final_amount,//订单价格
-                                goods_id: ret.data[i].goods_id, //商品id
-                                goods_spec: ret.data[i].goods_spec, //商品标签
-                                //is_secret: ret.data.is_secret,//是否是神秘礼物
-                                //mkprice: ret.data.mkprice, //市场价
-                                //order_exchange_type: ret.data.order_exchange_type,
-                                order_id: ret.data[i].order_id, //订单id
-                                order_message: ret.data[i].order_message,
-                                order_num: ret.data[i].order_num, //订单编号
-                                order_status: ret.data[i].order_status, //订单状态
-                                //pic_images: ret.data.pic_images, //上传的图片列表
-                                //price: ret.data.price, //货品价格
-                                //product_id: ret.data.product_id, //货品id
-                                product_image_url: ret.data[i].product_image_url, //商品url
-                                product_name: ret.data[i].product_name, //货品名称
-                                quantity: ret.data[i].quantity, //购买数量
-                                share_url: ret.data[i].share_url, //分享链接
-                                show_index: ret.data[i].show_index, //是否显示价格
-                                status_message: ret.data.status_message, //订单状态文字
-                                to_user: ret.data[i].to_user //送礼订单这个字段表示送给谁
-                                    //total_freight: ret.data.total_freight //运费多少钱
-                            },
-                            nexthtml = '';
+                            $thisLi = $(this).parent('div').parent('li'),
+                            urlPara = {
+                                order_id: $thisLi.attr('data-order_id'),
+                                final_amount: $thisLi.attr('data-actual_payment')
+                            };
 
-                        if (config.gift_type == 0) { //收到
-                            nexthtml = '<li data-gift_type="0" data-actual_payment="'+iRet.actual_payment+'"><h2 class="status"><img src="' + iRet.avatar + '"alt=""><p>送给：' + iRet.to_user + '</p><span>' + iRet.order_status + '</span></h2><div class="gift"><img src="' + iRet.product_image_url + '"alt=""><div class="right"><p>' + iRet.product_name + '</p><span>' + iRet.goods_spec + '</span><i>×1</i></div></div><p class="money"><i>¥' + iRet.actual_payment + '</i><span>实付款：</span></p><div class="btn-box">' + config.orderStatus(iRet.order_status, config.gift_type) + '</div></li>';
-                        } else if (config.gift_type == 1) { //送出
-                            nexthtml = '<li data-gift_type="1" data-actual_payment="'+iRet.actual_payment+'"><h2 class="status"><img src="' + iRet.avatar + '"alt=""><p>来自：' + iRet.to_user + '</p><span>' + iRet.order_status + '</span></h2><div class="gift"><img src="' + iRet.product_image_url + '"alt=""><div class="right"><p>' + iRet.product_name + '</p><span>' + iRet.goods_spec + '</span><i>×1</i></div></div><p class="money"><i>¥' + iRet.actual_payment + '</i><span>实付款：</span></p><div class="btn-box">' + config.orderStatus(iRet.order_status, config.gift_type) + '</div></li>';
-                        } else { //凑份子
-                            nexthtml = '<li data-gift_type="2" data-actual_payment="'+iRet.actual_payment+'"><h2 class="status"><p style="margin-left:0;">送给：' + iRet.to_user + '</p><span>' + iRet.order_status + '</span></h2><div class="gift"><img src="' + iRet.product_image_url + '"alt=""><div class="right"><p>' + iRet.product_name + '</p><span>' + iRet.goods_spec + '</span><i>×1</i></div></div><p class="money"><i>¥' + iRet.actual_payment + '</i><span>实付款：</span></p><div class="btn-box">' + config.orderStatus(iRet.order_status, config.gift_type) + '</div></li>';
-                        }
+                        location.href = 'orderPay.html?' + config.jsonToKeyvalue(urlPara);
+                    });
 
-                        $('.order-list:visible').append(nexthtml);
+                    $('.order-list').on('click', '.toGive', function(event) { //点击立即送出gd
+                        var
+                            $thisLi = $(this).parent('div').parent('li'),
+                            urlPara = {
+                                order_id: $thisLi.attr('data-order_id'),
+                                gift_type: $thisLi.attr('data-gift_type')
+                            };
 
-                        $('#toPay').on('click', function(event) {//点击立即支付
-                            var 
-                                $thisLi = $(this).parent('div').parent('li'),
-                                urlPara = {
-                                    gift_type : $thisLi.attr('data-gift_type'),
-                                    actual_payment : $thisLi.attr('data-actual_payment')
-                                };
-                               
-                            location.href = 'orderPay.html?' + config.jsonToKeyvalue(urlPara);//跳支付页面
-                        });
+                        location.href = 'giftGiving.html?' + config.jsonToKeyvalue(urlPara);
+                    });
 
-                        $('#toGive').on('click', function(event) {//点击立即送出
-                            var 
-                                $thisLi = $(this).parent('div').parent('li'),
-                                urlPara = {
-                                    gift_type : $thisLi.attr('data-gift_type'),
-                                    actual_payment : $thisLi.attr('data-actual_payment')
-                                };
-                               
-                            location.href = 'orderPay.html?' + config.jsonToKeyvalue(urlPara);//跳支付页面
-                        });
+                    $('.order-list').on('click', '.toPool', function(event) { //点击找人帮付
+                        var
+                            $thisLi = $(this).parent('div').parent('li'),
+                            urlPara = {
+                                gift_type: $thisLi.attr('data-gift_type'),
+                                order_id: $thisLi.attr('data-order_id')
+                            };
 
-                        $('#toPool').on('click', function(event) {//点击立即送出
-                            var 
-                                $thisLi = $(this).parent('div').parent('li'),
-                                urlPara = {
-                                    gift_type : $thisLi.attr('data-gift_type'),
-                                    actual_payment : $thisLi.attr('data-actual_payment')
-                                };
-                               
-                            location.href = 'orderPay.html?' + config.jsonToKeyvalue(urlPara);//跳支付页面
-                        });
-                    }
-                } else {
-                    $('.no-data').show();
+                        location.href = 'myWish.html?' + config.jsonToKeyvalue(urlPara);
+                    });
+
+                    $('.order-list').on('click', '.toOrderDetail', function(event) { //点击订单详情gd
+                        var
+                            $thisLi = $(this).parent('div').parent('li'),
+                            urlPara = {
+                                gift_type: $thisLi.attr('data-gift_type'),
+                                order_id: $thisLi.attr('data-order_id'),
+                                final_amount: $thisLi.attr('data-actual_payment') //用于订单详情中点击立即付款用
+                            };
+
+                        location.href = 'orderDetail.html?' + config.jsonToKeyvalue(urlPara);
+                    });
+
+                } else if ( ret.status != '0' && ret.errcode == '80005') {
+                    config.requireLogin(ret.errcode);
+                } else  {
+                   // $('.no-data').show();
                     $('#loader').hide();
                     //$('.ui-fall').html('').hide();
                     config.loadFlag = false;
@@ -473,12 +726,13 @@ define(['jquery', 'cookieCrud', 'beforeSend', 'paging', 'config', 'getUrlPara', 
         return {
             showGoodsListData: showGoodsListData,
             showKeyListData: showKeyListData,
-            showOrderConfirmData: showOrderConfirmData,
-            showDefaultAddr: showDefaultAddr,
-            showOrderDetail: showOrderDetail,
-            showOrderPay: showOrderPay,
-            showMyGift: showMyGift,
-            showMyWish: showMyWish
+            showOrderConfirmData: showOrderConfirmData, //确认订单
+            showDefaultAddr: showDefaultAddr, //获取用户地址
+            showOrderDetail: showOrderDetail, //订单详情
+            showOrderPay: showOrderPay, //支付货款
+            showMyGift: showMyGift, //订单列表
+            showMyWish: showMyWish, //我的愿望  凑份子页
+            showGiftGiving: showGiftGiving //赠送礼物
         };
     }
 );

@@ -10,59 +10,94 @@
 </head>
 <body> 
 	<div id="container">
+    <!-- <div class="status-msg">
+      待送出
+    </div>
     
-       <!--  
-       <div class="status-msg">
-        待送出
+    商品信息
+    <div class="commodity_wrap">
+      <div class="commodity_box">
+    <div class="info-left">
+      <img src="img/20160218135537_29463.jpg" alt="">
     </div>
-       <div class="commodity_wrap">
-            <div class="commodity_box">
-                <div class="info-left">
-                    <img src="img/20160218135537_29463.jpg" alt="">
-                </div>
-                <div class="info-right">
-                    <div class="detailed">
-                        <h3 class="det-title">手剥薄壳 香脆巴旦木200g（偏远地区不配送）</h3>
-                        <div class="price_wrap">
-                          <span class="price">
-                              <span>￥9.90</span>
-                          </span>
-                          <span class="price_old">
-                              <span>￥16.80</span>
-                          </span>
-
-                      </div>
-                  </div>
-              </div>
-              <div class="arrow"></div>
-              <div class="taste_wrap">
-                <p class="taste-name">味道：<span>草莓</span></p>
-                <span class="number">×1</span>
-            </div>
+    <div class="info-right">
+      <div class="detailed">
+        <h3 class="det-title">手剥薄壳 香脆巴旦木200g（偏远地区不配送）</h3>
+        <div class="price_wrap">
+          <span class="price">
+            <span>￥9.90</span>
+          </span>
+          <span class="price_old">
+            <span>￥16.80</span>
+          </span>
+    
         </div>
+      </div>
     </div>
-
+    <div class="arrow"></div>
+    <div class="taste_wrap">
+      <p class="taste-name">味道：<span>草莓</span></p>
+      <span class="number">×1</span>
+    </div>
+      </div>
+    </div>
+    地址
+    <div class="addr-title">收货信息<span>(凑份子完成前可变更地址)</span></div>
+    <div class="user-info giving-no">
+      <div class="info-top" data-address_id="23242">
+        <div class="name">
+          ttt
+        </div>
+        <div class="iphone">
+          13666666666
+        </div>
+      </div>
+      <div class="arrow">
+      </div>
+      <div class="address">
+        北京市北京市北京市66666666666666
+      </div>
+     
+      <div id="loadImg" style="width: 30px; height: 30px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none;">
+    <img src="http://7xl439.com2.z0.glb.qiniucdn.com/loading.gif" alt="">
+      </div>
+      <div class="add_address">
+    <span class="add_icon">
+      +
+    </span>
+    <span>
+      添加新地址
+    </span>
+      </div>
+    </div>
+    运费
     <div class="item">
-        <div class="item-list">
-            <span class="static">运费</span>
-            <span class="money" >￥0.00</span>
-        </div>
-        <div class="item-list">
-            <span class="static">实付款</span>
-            <span class="money">￥9.90</span>
-        </div>
+      <div class="item-list">
+    <span class="static">运费</span>
+    <span class="money" >￥0.00</span>
+      </div>
+      <div class="item-list">
+    <span class="static">实付款</span>
+    <span class="money">￥9.90</span>
+      </div>
     </div>
     <div class="item list-line">
-        <div class="item-list">
-            <span class="static">订单编号</span>
-            <span class="money" id="orderId">1322434234</span>
-        </div>
-        <div class="item-list">
-            <span class="static">确认订单时间</span>
-            <span class="money" id="orderTime">2016-03-23 16:34:32</span>
-        </div>
+      <div class="item-list">
+    <span class="static">订单编号</span>
+    <span class="money" id="orderId">1322434234</span>
+      </div>
+      <div class="item-list">
+    <span class="static">确认订单时间</span>
+    <span class="money" id="orderTime">2016-03-23 16:34:32</span>
+      </div>
     </div> -->
-    <button class="zhifu-btn">立即支付</button>
+
+
+<button class="zhifu-btn" style="display: none"></button>
+<div class="coufenzi" style="display: none;height: 50px;position: fixed;left: 0;bottom: 0;width: 100%;overflow: hidden;">
+  <button class="bf toPool" style="">找人帮付</button>
+  <button class="zf toPay" style="">自己付款</button>
+</div>
 </div>
 </body>
 </html>

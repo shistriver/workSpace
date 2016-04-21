@@ -4,9 +4,9 @@
 define([],
     function() {
         var
-            tab_nav = function(index,$curClass,listClass){
-                $curClass.addClass('cur').siblings().removeClass('cur');
-                $(listClass).eq(index).addClass('cur-ul').siblings().removeClass('cur-ul');
+            tab_nav = function(navIndex){
+                $('.chosed_wrap span').eq(navIndex).addClass('cur').siblings().removeClass('cur');
+                $('.order-list').eq(navIndex).addClass('cur-ul').siblings().removeClass('cur-ul');
             };
         return {
             tab_nav: tab_nav

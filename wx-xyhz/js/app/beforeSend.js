@@ -15,14 +15,20 @@ define(['jquery'],
                 $('.hs-area ul').hide();
             },
 
+            showFullScreenLoadImg = function(){
+                $('#fullScreenLoadImg').show();
+            },
+
             showLoadImg = function(){
                 $('#loadImg').fadeIn();
             };
 
+
         return {
             showGoodsListDataLoading: showGoodsListDataLoading,
             showKeyListLoading: showKeyListLoading,
-            showLoadImg: showLoadImg
+            showLoadImg: showLoadImg,
+            showFullScreenLoadImg: showFullScreenLoadImg
         };
     }
 );

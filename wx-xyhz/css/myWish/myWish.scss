@@ -3,7 +3,6 @@
 //colors
 $concrete: #f2f2f2;
 $white: #fff;
-$color_storm_dust_approx: #616162;
 $color_mine_shaft_approx: #333;
 $color_pumice_approx: #c9c9c9;
 $color_stack_approx: #8c8c8d;
@@ -15,9 +14,12 @@ body{
 }
 #container{
   .gift_giving_wrap {
+    height: 102px;
+    box-sizing: border-box;
     padding: 8px 8px 10px;
     border-top: 1px solid $concrete;
     border-bottom: 1px solid $concrete;
+    border-top: 1px solid $concrete;
     background: $white;
   }
   .margin_t15{
@@ -34,10 +36,26 @@ body{
     .info-right {
       position: relative;
       margin-left: 92px;
+      padding: 5px 0;
+      .detailed{
+        .det-title{
+          font-size: 14px;
+          box-sizing: border-box;
+          word-break: break-all;
+          color: #333;
+          height: 38px;
+          line-height: 19px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+      }
     }
     .gift_det_wrap {
       font-size: 14px;
-      margin-top: 10px;
+      margin-top: 15px;
       overflow: hidden;
       .gift-color{
         color: #8c8c8d;
@@ -66,8 +84,8 @@ body{
     border-bottom: 1px solid $concrete;
     textarea{
       width: 100%;
-      height:120px;
-      padding: 20px 10px 0;
+      height: 90px;
+      padding: 10px 10px 0;
       box-sizing: border-box;
       font-size: 14px;
       outline: none;

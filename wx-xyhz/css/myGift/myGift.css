@@ -107,5 +107,23 @@ html, body {
         border-color: #f55; }
 #container .cur-ul {
   display: block; }
+#container .no-data {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  text-align: center;
+  -webkit-transform: translate(0, -50%); }
+  #container .no-data img {
+    width: 20%;
+    margin: 0 auto; }
+  #container .no-data p {
+    line-height: 24px; }
+    #container .no-data p span {
+      font-size: 14px;
+      color: #333; }
+    #container .no-data p i {
+      font-size: 12px;
+      color: #797979; }
 
 /*# sourceMappingURL=myGift.css.map */

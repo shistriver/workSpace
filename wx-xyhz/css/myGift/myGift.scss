@@ -128,4 +128,27 @@ html,body{
   .cur-ul{
     display: block;
   }
+  .no-data{
+    width:100%;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    text-align: center;
+    -webkit-transform:translate(0,-50%);
+    img {
+      width: 20%;
+      margin: 0 auto;
+    }
+    p {
+      line-height: 24px;
+      span {
+        font-size: 14px;
+        color: #333;
+      }
+      i {
+        font-size: 12px;
+        color: #797979;
+      }
+    }
+  }
 }

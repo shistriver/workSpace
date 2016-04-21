@@ -3,8 +3,8 @@
  */
 //获取链接中search字段的值
 
-define(['jquery'],
-  function($) {
+define(['jquery', 'cookieCrud'],
+  function($, cookieCrud) {
 
     var
       baseUrl = 'http://test.xinyihezi.com', //默认域名      正式服: http://www.xinyihezi.com
@@ -16,8 +16,11 @@ define(['jquery'],
 
       baseUrlCpp = baseUrlApp + ':8888', //c++服务， 正式服为 baseUrlApp
       baseUrlPython = baseUrl, // python服务
-      baseUrlPage = baseUrlApp + "/static/detail/html", //页面协议域名端口号  商品详情地址前缀 test
-      //baseUrlPage = baseUrlApp + ":8881", //页面协议域名端口号   商品详情地址前缀 online
+     
+      //商品详情基地址  真实地址是：goodsDetailBaseUrl+goodsid; 
+      //如：http://www.xinyihezi.com/static/detail/html/index.html?#goods/14367
+      goodsDetailBaseUrl = '/static/detail/html/index.html#/goods/', 
+
       label_count = 0,
       loadFlag = true, //分页需要，true表示当前可以继续加载
       pageIndex = 1, // 当前页数，默认设为第 1 页 
@@ -36,16 +39,17 @@ define(['jquery'],
         var time = Y + M + D + h + m + s;
         return time;
       },
+      interval = [],
 
       orderStatus = function(order_status, gift_type) {
         var
-          btn = '<button>订单详情</button>',
+          btn = '<button class="toOrderDetail">订单详情</button>',
           btns = '';
 
         if (order_status == 0) { //0：待支付
-          btns = '<button class="color-red" id="toPay">立即付款</button>';
+          btns = '<button class="color-red toPay">立即付款</button>';
         } else if (order_status == 1) { //1：待送出
-          btns = '<button class="color-red" id="toGive">立即送出</button>';
+          btns = '<button class="color-red toGive">立即送出</button>';
         } else if (order_status == 2) { //2：待发货
           btns = '';
         } else if (order_status == 3) { //3：待签收
@@ -63,7 +67,7 @@ define(['jquery'],
         } else if (order_status == 7) { //7：退款
           btns = '';
         } else if (order_status == 8) { //8：凑份子中
-          btns = '<button class="color-red" id="toPool">找人帮付</button><button id="toPay">立即付款</button>';
+          btns = '<button class="color-red toPool">找人帮付</button><button class="toPay">立即付款</button>';
         } else if (order_status == 9) { //9：活动订单
           btns = '';
         }
@@ -101,14 +105,28 @@ define(['jquery'],
         return keyValue.substring(1); //首字母不是'&'
       },
 
-      statusTip = '<button id="statusTip" style="position:fixed;z-index:10000;left:50%;top:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:60%;height:60px;background-color:rgba(0,0,0,.8);color:#fff;font-size:16px;border-radius:5px;display: none"></button>';
+      requireLogin = function(errcode) {
+            if (errcode == '80005' || !cookieCrud.checkCoo()) { //如果未登录
+                var url = location.protocol + '//' + location.host + location.port + location.pathname;
+                if (getUrlPara('jumpLogin')) {} else {
+                    location.href = baseUrl + '/wallet/h5/login' + (location.search == '' ? '?' : location.search) + '&url=' + url + '&jumpLogin=1&errcode='+errcode;
+                }
+            }
+      },
 
-    $(statusTip).appendTo('body');
+      shareInfo = {//分享信息
+                    title: ($('#wish_area').val() == '' ? function(){
+                      var str = '钱不够？情来凑！有情人来帮人家凑份子嘛~';
+                      return str;
+                    } : $('#wish_area').val()),//留言内容
+                },
+
+      statusTip = '<button id="statusTip" style="position:fixed;z-index:10000;left:50%;top:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:60%;height:60px;background-color:rgba(0,0,0,.8);color:#fff;font-size:16px;border-radius:5px;display: none"></button>';
+      $(statusTip).appendTo('body');
 
     return {
       baseUrlCpp: baseUrlCpp,
       baseUrlPython: baseUrlPython,
-      baseUrlPage: baseUrlPage,
       label_count: label_count,
       loadFlag: loadFlag,
       pageIndex: pageIndex,
@@ -120,9 +138,11 @@ define(['jquery'],
       isWeixin: isWeixin,
       baseUrl: baseUrl,
       btnLock: btnLock,
-      jsonToKeyvalue: jsonToKeyvalue
+      jsonToKeyvalue: jsonToKeyvalue,
+      shareInfo: shareInfo,
+      requireLogin: requireLogin,
+      interval: interval,
+      goodsDetailBaseUrl:goodsDetailBaseUrl
     };
-
-
   }
 );

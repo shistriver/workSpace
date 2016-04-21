@@ -7,6 +7,7 @@ define(['jquery', 'config'],
     function($, config) {
         var
             callApi = function(url, type, beforeSend, callback, data) {
+                console.log(data, callback);
                 type = type || 'GET';
                 data = data || null;
                 $.ajax({

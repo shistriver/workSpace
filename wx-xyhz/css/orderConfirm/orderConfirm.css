@@ -77,6 +77,14 @@ body {
   #container .commodity_box .info-right {
     position: relative;
     margin-left: 82px; }
+    #container .commodity_box .info-right .detailed {
+      height: 38px;
+      line-height: 19px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; }
   #container .commodity_box .taste_wrap {
     font-size: 14px; }
     #container .commodity_box .taste_wrap .weight {
@@ -91,10 +99,10 @@ body {
   margin-top: 12px; }
   #container .txtarea textarea {
     width: 100%;
-    height: 58px;
+    height: 80px;
     padding: 10px 10px;
     font-size: 12px;
-    color: #8c8c8c;
+    color: #333;
     outline: none;
     border-top: 1px solid #f2f2f2;
     border-bottom: 1px solid #f2f2f2;
@@ -135,7 +143,8 @@ body {
     float: right;
     margin-top: 7px;
     background-image: url(../../img/ic_pay_checked.png);
-    background-size: cover; }
+    background-size: 100%;
+    background-repeat: no-repeat; }
   #container .item-list .pay_check {
     background-image: url(../../img/ic_pay_check.png); }
   #container .item-list .num-box {
