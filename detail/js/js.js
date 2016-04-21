@@ -102,8 +102,8 @@ $(function() {
                     } else {
                         if(btnFlag == 'iwant'){
                             location.href = '../../wx-xyhz/orderConfirml.html?tagId=' + tagId + '&productNum=' + productNum + '&goodsId=' + goodsId;
-                        }else if(btnFlag == 'tota'){
-                            location.href = '../../wx-xyhz/giftGiving.html';
+                        }else if(btnFlag == 'tota'){//order_type值 0 送礼，1凑份子，2自买
+                            location.href = '../../wx-xyhz/orderConfirml.html?tagId=' + tagId + '&productNum=' + productNum + '&goodsId=' + goodsId + '&order_type=0';
                         }
                     }
                 };
